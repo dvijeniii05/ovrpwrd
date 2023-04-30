@@ -22,7 +22,7 @@ const LandingScreen = ({navigation}: ScreenProps) => {
         <Text>Steam Login</Text>
         <TextInput />
         <TouchableOpacity
-          onPress={() => navigation.navigate(StackScreenName.home)}>
+          onPress={() => navigation.navigate(StackScreenName.steamModal)}>
           <Text>Link Steam</Text>
         </TouchableOpacity>
       </View>

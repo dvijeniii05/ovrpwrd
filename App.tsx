@@ -13,14 +13,15 @@ import React from 'react';
 import AppDrawer from './src/navigation/AppDrawer';
 import './i18';
 import {Provider} from 'react-redux';
+import {mainStore} from './src/redux/store/mainStore';
 
 const App = () => {
   return (
-    // <Provider store={productStore}>
-    <NavigationContainer>
-      <AppDrawer />
-    </NavigationContainer>
-    // </Provider>
+    <Provider store={mainStore}>
+      <NavigationContainer>
+        <AppDrawer />
+      </NavigationContainer>
+    </Provider>
   );
 };
 
