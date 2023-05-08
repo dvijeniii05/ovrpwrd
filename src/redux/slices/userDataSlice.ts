@@ -13,7 +13,7 @@ export const fetchStartingPointData = createAsyncThunk(
   'fetchStartingPointData',
   async (steamID32: string): Promise<StartingPointDataProps> => {
     const response = await axios.get(
-      `http://localhost:3000/recentMatches/startingMatchData/${steamID32}`,
+      `https://sleepy-badlands-00627.herokuapp.com/recentMatches/startingMatchData/${steamID32}`,
     );
     console.log(response.data);
     return response.data;
@@ -27,7 +27,7 @@ export const fetchRecentGamesData = createAsyncThunk(
     fromThisTime: string;
   }): Promise<MatchStatsProps[]> => {
     const response = await axios.get(
-      `http://localhost:3000/recentMatches/getMatches/${arg.steamID32}/${arg.fromThisTime}`,
+      `https://sleepy-badlands-00627.herokuapp.com/recentMatches/getMatches/${arg.steamID32}/${arg.fromThisTime}`,
     );
     return response.data;
   },

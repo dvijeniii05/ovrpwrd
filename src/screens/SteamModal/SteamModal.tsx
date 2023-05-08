@@ -26,7 +26,7 @@ const SteamModal = () => {
 
   return (
     <WebView
-      source={{uri: 'http://localhost:3000/auth/steam'}}
+      source={{uri: 'https://sleepy-badlands-00627.herokuapp.com/auth/steam'}}
       onNavigationStateChange={stateChanged}
     />
   );
