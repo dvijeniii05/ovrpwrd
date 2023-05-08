@@ -1,13 +1,13 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 interface initialStateProps {
-  steamID: null | string;
+  steamID: string;
   status: 'idle' | 'fulfilled' | 'pending';
   error: null | string;
 }
 
 const initialState: initialStateProps = {
-  steamID: null,
+  steamID: '',
   status: 'idle',
   error: null,
 };

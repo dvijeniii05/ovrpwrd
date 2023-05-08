@@ -6,6 +6,7 @@ import {StackScreenName} from '../../../ScreenNames';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '../../redux/store/mainStore';
 import {setSteamID} from '../../redux/slices/steamAuthSlice';
+import {fetchStartingPointData} from '../../redux/slices/userDataSlice';
 
 const SteamModal = () => {
   const navigation = useNavigation<StackProps>();
@@ -13,11 +14,13 @@ const SteamModal = () => {
 
   const stateChanged = (navState: WebViewNavigation) => {
     console.log('STATE_CHANGED', navState);
-    if (navState.url === 'http://localhost:3000/steamid/?id=367396390') {
+    navState.url.includes('steamid/?id=');
+    if (navState.url.includes('steamid/?id=')) {
       const steamID32 = navState.url.split('id=')[1];
       console.log('steamID32', steamID32);
       dispatch(setSteamID(steamID32));
-      navigation.navigate(StackScreenName.home);
+      dispatch(fetchStartingPointData('367396390'));
+      // navigation.navigate(StackScreenName.home);
     }
   };
 
