@@ -5,7 +5,6 @@ import {useTranslation} from 'react-i18next';
 import {styles} from './HomeScreen.style';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../redux/store/mainStore';
-import {useGetStartingFromMatchDataQuery} from '../../redux/query/apiSlice';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
