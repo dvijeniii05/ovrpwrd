@@ -4,8 +4,8 @@ export interface UserStatsProps {
   steamAccountId: 367396390;
   isRadiant: true;
   numKills: 13;
-  numDeaths: 5;
-  numAssists: 17;
+  numDeaths: number;
+  numAssists: number;
   leaverStatus: 0;
   numLastHits: 229;
   numDenies: 4;

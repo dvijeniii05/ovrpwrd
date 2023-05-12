@@ -13,16 +13,26 @@ import {
   fetchRecentGamesData,
   resetPointsDev,
 } from '../../redux/slices/userDataSlice';
-import {DUMMY_MATCH_DATA} from '../../constans/gameStatsDummy';
+import {
+  ASHRAF_MATCH_DATA,
+  DUMMY_MATCH_DATA,
+} from '../../constans/gameStatsDummy';
 
 const HomeScreen = () => {
   const {t} = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const steamData = useSelector((state: RootState) => state.steamAuth);
   const userData = useSelector((state: RootState) => state.userData);
-  const {startingGameID, startingGameTime, matchData} = userData.data;
+  const {
+    startingGameID,
+    startingGameTime,
+    matchData,
+    firstEverGameID,
+    firstEverGameTime,
+  } = userData.data;
 
   const matchDataDummy = DUMMY_MATCH_DATA;
+  const ashrafDataDummy = ASHRAF_MATCH_DATA;
 
   // const {
   //   data: startinMatchData,
@@ -47,15 +57,16 @@ const HomeScreen = () => {
       matchData.map(match => {
         const stat = match.players[0];
         const isSupport = stat.role == 1 || stat.role == 2;
+        const deathCorrection = stat.numDeaths == 0 ? 1 : stat.numDeaths;
 
         if (isSupport) {
           const kda = Math.floor(
-            (stat.numKills + 2 * stat.numAssists) / stat.numDeaths,
+            (stat.numKills + 2 * stat.numAssists) / deathCorrection,
           ); //round to low decimal
-          const heroDamagePoints = (15 * stat.heroDamage) / 1000;
-          const heroHealPoints = (10 * stat.heroHealing) / 1000;
+          const heroDamagePoints = Math.round((3 * stat.heroDamage) / 1000);
+          const heroHealPoints = Math.round((10 * stat.heroHealing) / 1000);
           const matchResultPoints = stat.isVictory ? 100 : 40;
-          const kdaPoints = kda * 5 + 5;
+          const kdaPoints = kda * 2 + 2;
           points +=
             match.gameMode == 23
               ? 0.5 *
@@ -79,16 +90,24 @@ const HomeScreen = () => {
           console.log('SUPPORT', points);
         } else {
           const kda = Math.floor(
-            (stat.numKills + stat.numAssists) / stat.numDeaths,
+            (stat.numKills + stat.numAssists) / deathCorrection,
           ); //round to low decimal
-          const heroDamagePoints = (10 * stat.heroDamage) / 1000;
+          const heroDamagePoints = Math.round((2 * stat.heroDamage) / 1000);
           const matchResultPoints = stat.isVictory ? 100 : 40;
-          const kdaPoints = kda * 5 + 5;
+          const kdaPoints = kda * 2 + 2;
           points +=
             match.gameMode == 23
               ? 0.5 * (heroDamagePoints + matchResultPoints + kdaPoints)
               : heroDamagePoints + matchResultPoints + kdaPoints;
-          console.log('CORE', points);
+          // console.log('KDA', kda, 'KDA_POINTS', kdaPoints);
+          // console.log(
+          //   'DAMAGE',
+          //   stat.heroDamage,
+          //   'DAMAGE_POINTS',
+          //   heroDamagePoints,
+          // );
+          // console.log('MATCH_RESULT', matchResultPoints);
+          // console.log('TOTAL_CORE', points);
         }
       });
       dispatch(addPoints(points));
@@ -115,10 +134,10 @@ const HomeScreen = () => {
         <View>
           <Text style={{textAlign: 'center', color: 'white'}}>
             Your stats will be counted starting from this match ID:
-            {startingGameID}
+            {firstEverGameID}
           </Text>
           <Text style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
-            and from this epochTime: {startingGameTime}
+            and from this epochTime: {firstEverGameTime}
           </Text>
           <Text style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
             Kajdiy match parsitsya 240 sekund.
@@ -155,7 +174,7 @@ const HomeScreen = () => {
             [
               {
                 text: 'DA',
-                onPress: () => dispatch(resetPointsDev),
+                onPress: () => dispatch(resetPointsDev()),
               },
               {
                 text: 'NET',

@@ -14,16 +14,16 @@ const LandingScreen = ({navigation}: ScreenProps) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: 'red',
+        backgroundColor: 'black',
         justifyContent: 'center',
         alignItems: 'center',
       }}>
       <View style={{height: 500, justifyContent: 'space-around'}}>
-        <Text>Steam Login</Text>
+        <Text style={{color: 'white'}}>Steam Login</Text>
         <TextInput />
         <TouchableOpacity
           onPress={() => navigation.navigate(StackScreenName.steamModal)}>
-          <Text>Link Steam</Text>
+          <Text style={{color: 'white'}}>Link Steam</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

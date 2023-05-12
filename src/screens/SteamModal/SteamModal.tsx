@@ -19,7 +19,7 @@ const SteamModal = () => {
       const steamID32 = navState.url.split('id=')[1];
       console.log('steamID32', steamID32);
       dispatch(setSteamID(steamID32));
-      dispatch(fetchStartingPointData('367396390'));
+      dispatch(fetchStartingPointData(steamID32));
       // navigation.navigate(StackScreenName.home);
     }
   };
