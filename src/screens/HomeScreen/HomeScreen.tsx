@@ -12,26 +12,14 @@ import {
   fetchRecentGamesData,
   resetPointsDev,
 } from '../../redux/slices/userDataSlice';
-import {
-  ASHRAF_MATCH_DATA,
-  DUMMY_MATCH_DATA,
-} from '../../constans/gameStatsDummy';
 
 const HomeScreen = () => {
   const {t} = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const steamData = useSelector((state: RootState) => state.steamAuth);
   const userData = useSelector((state: RootState) => state.userData);
-  const {
-    startingGameID,
-    startingGameTime,
-    matchData,
-    firstEverGameID,
-    firstEverGameTime,
-  } = userData.data;
-
-  const matchDataDummy = DUMMY_MATCH_DATA;
-  const ashrafDataDummy = ASHRAF_MATCH_DATA;
+  const {startingGameTime, matchData, firstEverGameID, firstEverGameTime} =
+    userData.data;
 
   // const {
   //   data: startinMatchData,
