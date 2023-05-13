@@ -19,8 +19,13 @@ const HomeScreen = () => {
   const dispatch = useDispatch<AppDispatch>();
   const steamData = useSelector((state: RootState) => state.steamAuth);
   const userData = useSelector((state: RootState) => state.userData);
-  const {startingGameTime, matchData, firstEverGameID, firstEverGameTime} =
-    userData.data;
+  const {
+    startingGameID,
+    startingGameTime,
+    matchData,
+    firstEverGameID,
+    firstEverGameTime,
+  } = userData.data;
 
   const [customMatchId, setCustomMatchId] = useState<string>('');
 
