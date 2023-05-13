@@ -15,7 +15,7 @@ export const fetchStartingPointData = createAsyncThunk(
   'fetchStartingPointData',
   async (steamID32: string): Promise<StartingPointDataProps> => {
     const response = await axios.get(
-      `https://sleepy-badlands-00627.herokuapp.com/recentMatches/startingMatchData/${steamID32}`,
+      `https://ovrpwrd-backend.herokuapp.com/recentMatches/startingMatchData/${steamID32}`,
     );
     console.log(response.data);
     return response.data;
@@ -29,7 +29,19 @@ export const fetchRecentGamesData = createAsyncThunk(
     fromThisTime: string;
   }): Promise<MatchStatsProps[]> => {
     const response = await axios.get(
-      `https://sleepy-badlands-00627.herokuapp.com/recentMatches/getMatches/${arg.steamID32}/${arg.fromThisTime}`,
+      `https://ovrpwrd-backend.herokuapp.com/recentMatches/getMatches/${arg.steamID32}/${arg.fromThisTime}`,
+    );
+    return response.data;
+  },
+);
+
+export const fetchCustomMatchData = createAsyncThunk(
+  'fetchCustomMatchData',
+  async (arg: {
+    matchID: string;
+  }): Promise<{startDateTime: number; id: number}> => {
+    const response = await axios.get(
+      `https://ovrpwrd-backend.herokuapp.com/recentMatches/getCustomMatch/${arg.matchID}`,
     );
     return response.data;
   },
@@ -103,6 +115,23 @@ const userDataSlice = createSlice({
         state.status = 'fulfilled';
       })
       .addCase(fetchRecentGamesData.rejected, state => {
+        state.status = 'fulfilled';
+      })
+      .addCase(fetchCustomMatchData.pending, state => {
+        state.status = 'pending';
+      })
+      .addCase(fetchCustomMatchData.fulfilled, (state, action) => {
+        const {startDateTime, id} = action.payload;
+        if (startDateTime > 0) {
+          state.data.startingGameTime = startDateTime;
+          state.data.startingGameID = id;
+          state.status = 'fulfilled';
+        } else {
+          state.status = 'rejected';
+          state.error = 'Game ID is incorrect';
+        }
+      })
+      .addCase(fetchCustomMatchData.rejected, state => {
         state.status = 'fulfilled';
       });
   },

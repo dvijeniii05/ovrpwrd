@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, Text, Alert} from 'react-native';
+import {View, Text, Alert, TextInput} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {styles} from './HomeScreen.style';
 import {useDispatch, useSelector} from 'react-redux';
@@ -9,6 +9,7 @@ import LoadingComponent from '../../components/LoadingComponent/LoadingComponent
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
   addPoints,
+  fetchCustomMatchData,
   fetchRecentGamesData,
   resetPointsDev,
 } from '../../redux/slices/userDataSlice';
@@ -20,6 +21,8 @@ const HomeScreen = () => {
   const userData = useSelector((state: RootState) => state.userData);
   const {startingGameTime, matchData, firstEverGameID, firstEverGameTime} =
     userData.data;
+
+  const [customMatchId, setCustomMatchId] = useState<string>('');
 
   // const {
   //   data: startinMatchData,
@@ -135,9 +138,7 @@ const HomeScreen = () => {
         <Text style={{color: 'white'}}>
           Current points: {userData.data.points}
         </Text>
-        <Text style={{color: 'white'}}>
-          Last Game ID: {userData.data.matchData[0]?.id}
-        </Text>
+        <Text style={{color: 'white'}}>Last Game ID: {startingGameID}</Text>
       </View>
       <TouchableOpacity
         style={styles.refreshButton}
@@ -147,8 +148,9 @@ const HomeScreen = () => {
               steamID32: steamData.steamID,
               fromThisTime: startingGameTime.toString(),
             }),
+          ).then(res =>
+            res.meta.requestStatus == 'fulfilled' ? calculatePoints() : null,
           );
-          calculatePoints();
         }}>
         <Text>REFRESH</Text>
       </TouchableOpacity>
@@ -172,6 +174,31 @@ const HomeScreen = () => {
         }}>
         <Text>RESET POINTS</Text>
       </TouchableOpacity>
+      <View
+        style={{
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          height: 100,
+        }}>
+        <TextInput
+          placeholder="from this gameID"
+          style={{backgroundColor: 'white'}}
+          onChangeText={text => setCustomMatchId(text)}
+        />
+        <TouchableOpacity
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 100,
+            height: 50,
+            backgroundColor: 'blue',
+          }}
+          onPress={() =>
+            dispatch(fetchCustomMatchData({matchID: customMatchId}))
+          }>
+          <Text>Recalculate</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
