@@ -1,5 +1,4 @@
 import {ViewStyle} from 'react-native/types';
-import {WIDTH} from '../../utils/dimension';
 
 const parentContainer: ViewStyle = {
   flex: 1,
@@ -17,7 +16,7 @@ const idContainer: ViewStyle = {
   height: 20,
   backgroundColor: 'green',
   top: 60,
-  right: 20,
+  right: 0,
 };
 
 const refreshButton: ViewStyle = {
@@ -33,10 +32,27 @@ const resetButton: ViewStyle = {
   ...refreshButton,
   backgroundColor: 'red',
 };
+
+const recalContainer: ViewStyle = {
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  height: 100,
+};
+
+const recalcButton: ViewStyle = {
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 100,
+  height: 50,
+  backgroundColor: 'blue',
+};
+
 export const styles = {
   parentContainer,
   welcomeContainer,
   idContainer,
   refreshButton,
   resetButton,
+  recalContainer,
+  recalcButton,
 };

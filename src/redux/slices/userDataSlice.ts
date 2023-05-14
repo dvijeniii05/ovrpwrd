@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {MatchStatsProps} from '../../staticTypes';
+import {calculatePoints} from '../../utils/pointCalculation/pointCalculation';
 
 interface StartingPointDataProps {
   firstEverGameID: number;
@@ -106,9 +107,11 @@ const userDataSlice = createSlice({
           matches.slice(0, -1).length,
         );
         if (matches.length > 1) {
-          state.data.matchData = matches.slice(0, -1); //need to check
+          const newMatches = matches.slice(0, -1);
+          state.data.matchData = newMatches;
           state.data.startingGameTime = matches[0].startDateTime;
           state.data.startingGameID = matches[0].id;
+          state.data.points = calculatePoints(newMatches);
         } else {
           state.data.matchData = [];
         }
