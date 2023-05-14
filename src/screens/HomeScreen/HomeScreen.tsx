@@ -18,7 +18,7 @@ import {
   ASHRAF_MATCH_DATA,
   DUMMY_MATCH_DATA,
 } from '../../constans/gameStatsDummy';
-import {calculatePoints} from '../../utils/pointCalculation/pointCalculation';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const HomeScreen = () => {
   const {t} = useTranslation();
@@ -61,80 +61,83 @@ const HomeScreen = () => {
         loadingText={'Fetching data...'}
         isLoading={userData.status === 'pending' ? true : false}
       />
-      {steamData.status === 'fulfilled' && (
-        <View style={styles.idContainer}>
-          <Text>SteamID32: {steamData.steamID}</Text>
+
+      <KeyboardAwareScrollView contentContainerStyle={styles.parentContainer}>
+        {steamData.status === 'fulfilled' && (
+          <View style={styles.idContainer}>
+            <Text>ID: {steamData.steamID}</Text>
+          </View>
+        )}
+        <View style={styles.welcomeContainer}>
+          <Text style={{color: 'white'}}>{t('appName')}</Text>
         </View>
-      )}
-      <View style={styles.welcomeContainer}>
-        <Text style={{color: 'white'}}>{t('appName')}</Text>
-      </View>
-      {userData.status === 'fulfilled' ? (
+        {userData.status === 'fulfilled' ? (
+          <View>
+            <Text style={{textAlign: 'center', color: 'white'}}>
+              Your stats will be counted starting from this match ID:
+              {firstEverGameID}
+            </Text>
+            <Text style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
+              and from this epochTime: {firstEverGameTime}
+            </Text>
+            <Text style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
+              Kajdiy match parsitsya 240 sekund.
+            </Text>
+          </View>
+        ) : null}
         <View>
-          <Text style={{textAlign: 'center', color: 'white'}}>
-            Your stats will be counted starting from this match ID:
-            {firstEverGameID}
+          <Text style={{color: 'white'}}>
+            Current points: {userData.data.points}
           </Text>
-          <Text style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
-            and from this epochTime: {firstEverGameTime}
-          </Text>
-          <Text style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
-            Kajdiy match parsitsya 240 sekund.
-          </Text>
+          <Text style={{color: 'white'}}>Last Game ID: {startingGameID}</Text>
         </View>
-      ) : null}
-      <View>
-        <Text style={{color: 'white'}}>
-          Current points: {userData.data.points}
-        </Text>
-        <Text style={{color: 'white'}}>Last Game ID: {startingGameID}</Text>
-      </View>
-      <TouchableOpacity
-        style={styles.refreshButton}
-        onPress={() => {
-          dispatch(
-            fetchRecentGamesData({
-              steamID32: steamData.steamID,
-              fromThisTime: startingGameTime.toString(),
-            }),
-          );
-        }}>
-        <Text>REFRESH</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.resetButton}
-        onPress={() => {
-          Alert.alert(
-            'Tebe kaef udalit vse ochki?',
-            'Vse ochki naxuy sletyat na 0',
-            [
-              {
-                text: 'DA',
-                onPress: () => dispatch(resetPointsDev()),
-              },
-              {
-                text: 'NET',
-                onPress: () => {},
-              },
-            ],
-          );
-        }}>
-        <Text>RESET POINTS</Text>
-      </TouchableOpacity>
-      <View style={styles.recalContainer}>
-        <TextInput
-          placeholder="from this gameID"
-          style={{backgroundColor: 'white'}}
-          onChangeText={text => setCustomMatchId(text)}
-        />
         <TouchableOpacity
-          style={styles.recalcButton}
-          onPress={() =>
-            dispatch(fetchCustomMatchData({matchID: customMatchId}))
-          }>
-          <Text style={{color: 'white'}}>Recalculate</Text>
+          style={styles.refreshButton}
+          onPress={() => {
+            dispatch(
+              fetchRecentGamesData({
+                steamID32: steamData.steamID,
+                fromThisTime: startingGameTime.toString(),
+              }),
+            );
+          }}>
+          <Text>REFRESH</Text>
         </TouchableOpacity>
-      </View>
+        <TouchableOpacity
+          style={styles.resetButton}
+          onPress={() => {
+            Alert.alert(
+              'Tebe kaef udalit vse ochki?',
+              'Vse ochki naxuy sletyat na 0',
+              [
+                {
+                  text: 'DA',
+                  onPress: () => dispatch(resetPointsDev()),
+                },
+                {
+                  text: 'NET',
+                  onPress: () => {},
+                },
+              ],
+            );
+          }}>
+          <Text>RESET POINTS</Text>
+        </TouchableOpacity>
+        <View style={styles.recalContainer}>
+          <TextInput
+            placeholder="from this gameID"
+            style={{backgroundColor: 'white'}}
+            onChangeText={text => setCustomMatchId(text)}
+          />
+          <TouchableOpacity
+            style={styles.recalcButton}
+            onPress={() =>
+              dispatch(fetchCustomMatchData({matchID: customMatchId}))
+            }>
+            <Text style={{color: 'white'}}>Recalculate</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };

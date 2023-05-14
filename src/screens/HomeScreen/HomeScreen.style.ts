@@ -16,7 +16,7 @@ const idContainer: ViewStyle = {
   height: 20,
   backgroundColor: 'green',
   top: 60,
-  right: 20,
+  right: 0,
 };
 
 const refreshButton: ViewStyle = {
