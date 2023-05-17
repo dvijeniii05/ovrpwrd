@@ -5,11 +5,10 @@ import {useTranslation} from 'react-i18next';
 import {styles} from './HomeScreen.style';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../redux/store/mainStore';
-import {useGetStartingFromMatchDataQuery} from '../../redux/query/apiSlice';
+import {useGetCurentLeaguesQuery} from '../../redux/query/apiSlice';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
-  addPoints,
   fetchCustomMatchData,
   fetchRecentGamesData,
   resetPointsDev,
@@ -19,6 +18,7 @@ import {
   DUMMY_MATCH_DATA,
 } from '../../constans/gameStatsDummy';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {LeagueCard} from '../../components/LeagueCard/LeagueCard';
 
 const HomeScreen = () => {
   const {t} = useTranslation();
@@ -31,6 +31,7 @@ const HomeScreen = () => {
     matchData,
     firstEverGameID,
     firstEverGameTime,
+    points,
   } = userData.data;
 
   const matchDataDummy = DUMMY_MATCH_DATA;
@@ -38,13 +39,13 @@ const HomeScreen = () => {
 
   const [customMatchId, setCustomMatchId] = useState<string>('');
 
-  // const {
-  //   data: startinMatchData,
-  //   isFetching,
-  //   isLoading,
-  //   isError,
-  //   isSuccess,
-  // } = useGetStartingFromMatchDataQuery(steamData?.steamID);
+  const {
+    data: currentLeaguesData,
+    isFetching,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useGetCurentLeaguesQuery();
 
   //Add raw statisctics from openDotaApi & calculated value
   //Data should be fetched onPress for now
@@ -54,6 +55,9 @@ const HomeScreen = () => {
   // role: 1 or 2 = supports
   //gameMode: 23 = turbo, 2 = all_draft
   //lobbyType: 5,6,7 = ranking
+  console.log('isSuccess', isSuccess);
+  console.log('isFetching', isFetching);
+  console.log('isError', isError);
 
   return (
     <SafeAreaView style={styles.parentContainer}>
@@ -65,12 +69,22 @@ const HomeScreen = () => {
       <KeyboardAwareScrollView contentContainerStyle={styles.parentContainer}>
         {steamData.status === 'fulfilled' && (
           <View style={styles.idContainer}>
-            <Text>ID: {steamData.steamID}</Text>
+            <Text style={{color: 'black'}}>ID: {steamData.steamID}</Text>
           </View>
         )}
         <View style={styles.welcomeContainer}>
           <Text style={{color: 'white'}}>{t('appName')}</Text>
         </View>
+        <>
+          {isSuccess ? (
+            <LeagueCard leagueData={currentLeaguesData} userPoints={points} />
+          ) : null}
+          {isError ? (
+            <Text style={{textAlign: 'center', color: 'white'}}>
+              Failed fethcing leagues
+            </Text>
+          ) : null}
+        </>
         {userData.status === 'fulfilled' ? (
           <View>
             <Text style={{textAlign: 'center', color: 'white'}}>
@@ -86,9 +100,7 @@ const HomeScreen = () => {
           </View>
         ) : null}
         <View>
-          <Text style={{color: 'white'}}>
-            Current points: {userData.data.points}
-          </Text>
+          <Text style={{color: 'white'}}>Current points: {points}</Text>
           <Text style={{color: 'white'}}>Last Game ID: {startingGameID}</Text>
         </View>
         <TouchableOpacity
@@ -101,7 +113,7 @@ const HomeScreen = () => {
               }),
             );
           }}>
-          <Text>REFRESH</Text>
+          <Text style={{color: 'black'}}>REFRESH</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.resetButton}
@@ -121,12 +133,12 @@ const HomeScreen = () => {
               ],
             );
           }}>
-          <Text>RESET POINTS</Text>
+          <Text style={{color: 'black'}}>RESET POINTS</Text>
         </TouchableOpacity>
         <View style={styles.recalContainer}>
           <TextInput
             placeholder="from this gameID"
-            style={{backgroundColor: 'white'}}
+            style={{backgroundColor: 'white', color: 'black'}}
             onChangeText={text => setCustomMatchId(text)}
           />
           <TouchableOpacity
