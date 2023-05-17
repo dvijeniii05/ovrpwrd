@@ -49,9 +49,6 @@ const HomeScreen = () => {
   // role: 1 or 2 = supports
   //gameMode: 23 = turbo, 2 = all_draft
   //lobbyType: 5,6,7 = ranking
-  console.log('isSuccess', isSuccess);
-  console.log('isFetching', isFetching);
-  console.log('isError', isError);
 
   return (
     <SafeAreaView style={styles.parentContainer}>
