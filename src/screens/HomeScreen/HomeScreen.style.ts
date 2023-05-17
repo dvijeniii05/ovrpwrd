@@ -12,11 +12,8 @@ const welcomeContainer: ViewStyle = {
 };
 
 const idContainer: ViewStyle = {
-  position: 'absolute',
   height: 20,
   backgroundColor: 'green',
-  top: 60,
-  right: 0,
 };
 
 const refreshButton: ViewStyle = {
