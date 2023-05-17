@@ -11,7 +11,7 @@ export interface LeagueData {
 
 export const apiSlice = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3000'}),
+  baseQuery: fetchBaseQuery({baseUrl: 'https://ovrpwrd-backend.herokuapp.com'}),
   endpoints: builder => ({
     //swap this query to asyncthunk
     getSingleMatchData: builder.query({
