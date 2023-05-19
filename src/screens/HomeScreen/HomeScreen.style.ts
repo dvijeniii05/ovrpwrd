@@ -1,4 +1,5 @@
 import {ViewStyle} from 'react-native/types';
+import {WIDTH} from '../../utils/dimension';
 
 const parentContainer: ViewStyle = {
   flex: 1,
@@ -13,7 +14,9 @@ const welcomeContainer: ViewStyle = {
 
 const idContainer: ViewStyle = {
   height: 20,
-  backgroundColor: 'green',
+  width: 0.9 * WIDTH,
+  flexDirection: 'row',
+  justifyContent: 'space-between',
 };
 
 const refreshButton: ViewStyle = {
