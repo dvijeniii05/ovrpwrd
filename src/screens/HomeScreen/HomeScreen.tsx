@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, Text, Alert, TextInput} from 'react-native';
+import {View, Text, Alert, TextInput, Image} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {styles} from './HomeScreen.style';
 import {useDispatch, useSelector} from 'react-redux';
@@ -50,6 +50,8 @@ const HomeScreen = () => {
   //gameMode: 23 = turbo, 2 = all_draft
   //lobbyType: 5,6,7 = ranking
 
+  const relicPoints = (points / 1000).toFixed(2);
+
   return (
     <SafeAreaView style={styles.parentContainer}>
       <LoadingComponent
@@ -60,7 +62,23 @@ const HomeScreen = () => {
       <KeyboardAwareScrollView contentContainerStyle={styles.parentContainer}>
         {steamData.status === 'fulfilled' && (
           <View style={styles.idContainer}>
-            <Text style={{color: 'black'}}>ID: {steamData.steamID}</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{color: 'white'}}>{points}</Text>
+              <Image
+                source={require('../../assets/bad1.png')}
+                style={{width: 20, height: 20}}
+                resizeMode="contain"
+              />
+              <Text style={{color: 'white', marginLeft: 8}}>{relicPoints}</Text>
+              <Image
+                source={require('../../assets/good2.png')}
+                style={{width: 20, height: 20}}
+                resizeMode="contain"
+              />
+            </View>
+            <Text style={{color: 'black', backgroundColor: 'green'}}>
+              ID: {steamData.steamID}
+            </Text>
           </View>
         )}
         <View style={styles.welcomeContainer}>
