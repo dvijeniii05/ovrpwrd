@@ -111,7 +111,7 @@ const userDataSlice = createSlice({
           state.data.matchData = newMatches;
           state.data.startingGameTime = matches[0].startDateTime;
           state.data.startingGameID = matches[0].id;
-          state.data.points = calculatePoints(newMatches);
+          state.data.points += calculatePoints(newMatches);
         } else {
           state.data.matchData = [];
         }
