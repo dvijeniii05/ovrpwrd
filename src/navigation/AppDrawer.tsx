@@ -4,18 +4,21 @@ import {StackParamList} from './navigationTypes';
 import {StackScreenName} from '../../ScreenNames';
 import LandingScreen from '../screens/LandingScreen/LandingScreen';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
-import SteamModal from '../screens/SteamModal/SteamModal';
+import SteamModal from '../screens/Modals/SteamModal/SteamModal';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/store/mainStore';
+import SteamLoginScreen from '../screens/SteamLoginScreen/SteamLoginScreen';
+import GoogleModal from '../screens/Modals/GoogleModal/GoogleModal';
 
 const Stack = createStackNavigator<StackParamList>();
 
 const AppDrawer = () => {
   const steamData = useSelector((state: RootState) => state.steamAuth);
+  const email = useSelector((state: RootState) => state.userData.data.email);
 
-  const [isAuthed, setIsAuthed] = useState(steamData.steamID.length);
+  const [isAuthed, setIsAuthed] = useState<boolean>(false);
   useEffect(() => {
-    setIsAuthed(steamData.steamID.length);
+    setIsAuthed(steamData.steamID.length > 1 && email != '');
   }, [steamData.steamID]);
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -26,6 +29,14 @@ const AppDrawer = () => {
           <Stack.Screen
             name={StackScreenName.landing}
             component={LandingScreen}
+          />
+          <Stack.Screen
+            name={StackScreenName.googleModal}
+            component={GoogleModal}
+          />
+          <Stack.Screen
+            name={StackScreenName.steamLogin}
+            component={SteamLoginScreen}
           />
           <Stack.Screen
             name={StackScreenName.steamModal}
