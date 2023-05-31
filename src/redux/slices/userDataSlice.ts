@@ -4,6 +4,8 @@ import {MatchStatsProps} from '../../staticTypes';
 import {calculatePoints} from '../../utils/pointCalculation/pointCalculation';
 
 interface StartingPointDataProps {
+  email: string;
+  displayName: string;
   firstEverGameID: number;
   firstEverGameTime: number;
   startingGameID: number;
@@ -56,6 +58,8 @@ export interface userDataStateProps {
 
 const userDataState: userDataStateProps = {
   data: {
+    email: '',
+    displayName: '',
     firstEverGameID: 0,
     firstEverGameTime: 0,
     startingGameID: 0,
@@ -71,12 +75,18 @@ const userDataSlice = createSlice({
   name: 'userData',
   initialState: userDataState,
   reducers: {
+    updateUserInfo: (state, action) => {
+      console.log('UPDATE_USERINFO_REDUCER_CALLED', action.payload);
+      const {email, displayName} = action.payload;
+      state.data.email = email;
+      state.data.displayName = displayName;
+    },
     addPoints: (state, action) => {
-      console.log('REDUCER', action.payload);
+      console.log('ADD_POINTS_REDUCER_CALLED', action.payload);
       state.data.points += action.payload;
     },
     resetPointsDev: state => {
-      console.log('RESET_REDUCER_CALLED');
+      console.log('RESET_POINTS_REDUCER_CALLED');
       state.data.points *= 0;
     },
   },
@@ -140,5 +150,6 @@ const userDataSlice = createSlice({
   },
 });
 
-export const {addPoints, resetPointsDev} = userDataSlice.actions;
+export const {updateUserInfo, addPoints, resetPointsDev} =
+  userDataSlice.actions;
 export default userDataSlice.reducer;

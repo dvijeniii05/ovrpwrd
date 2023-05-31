@@ -1,12 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import WebView, {WebViewNavigation} from 'react-native-webview';
-import {StackProps} from '../../navigation/navigationTypes';
-import {StackScreenName} from '../../../ScreenNames';
+import {StackProps} from '../../../navigation/navigationTypes';
+import {StackScreenName} from '../../../../ScreenNames';
 import {useDispatch} from 'react-redux';
-import {AppDispatch} from '../../redux/store/mainStore';
-import {setSteamID} from '../../redux/slices/steamAuthSlice';
-import {fetchStartingPointData} from '../../redux/slices/userDataSlice';
+import {AppDispatch} from '../../../redux/store/mainStore';
+import {setSteamID} from '../../../redux/slices/steamAuthSlice';
+import {fetchStartingPointData} from '../../../redux/slices/userDataSlice';
 
 const SteamModal = () => {
   const navigation = useNavigation<StackProps>();
