@@ -8,7 +8,6 @@ import SteamModal from '../screens/Modals/SteamModal/SteamModal';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/store/mainStore';
 import SteamLoginScreen from '../screens/SteamLoginScreen/SteamLoginScreen';
-import GoogleModal from '../screens/Modals/GoogleModal/GoogleModal';
 
 const Stack = createStackNavigator<StackParamList>();
 
@@ -29,10 +28,6 @@ const AppDrawer = () => {
           <Stack.Screen
             name={StackScreenName.landing}
             component={LandingScreen}
-          />
-          <Stack.Screen
-            name={StackScreenName.googleModal}
-            component={GoogleModal}
           />
           <Stack.Screen
             name={StackScreenName.steamLogin}

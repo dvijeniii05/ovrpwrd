@@ -4,11 +4,17 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {StackParamList} from '../../navigation/navigationTypes';
 import {StackScreenName} from '../../../ScreenNames';
+import {useRegisterUserQuery} from '../../redux/query/apiSlice';
+import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.steamLogin>;
 
 const SteamLoginScreen = ({navigation, route}: ScreenProps) => {
   const {email, displayName} = route.params ?? 'note ready yet';
+  const {isSuccess, isError, isLoading} = useRegisterUserQuery({
+    email,
+    displayName,
+  });
   return (
     <SafeAreaView
       style={{
@@ -17,16 +23,24 @@ const SteamLoginScreen = ({navigation, route}: ScreenProps) => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
+      <LoadingComponent isLoading={isLoading} loadingText="Creating user" />
       <View
         style={{
           height: 500,
           justifyContent: 'space-around',
           alignItems: 'center',
         }}>
-        <View style={{alignItems: 'center'}}>
-          <Text style={{color: 'white'}}>{email}</Text>
-          <Text style={{color: 'white'}}>{displayName}</Text>
-        </View>
+        {isSuccess ? (
+          <View style={{alignItems: 'center'}}>
+            <Text style={{color: 'white'}}>
+              User registered with following email and display name: {email}{' '}
+              {displayName}
+            </Text>
+          </View>
+        ) : null}
+        {isError ? (
+          <Text style={{color: 'white'}}>Error during registration</Text>
+        ) : null}
         <Text style={{color: 'white'}}>Steam Login</Text>
         <TouchableOpacity
           onPress={() => navigation.navigate(StackScreenName.steamModal)}>
