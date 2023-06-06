@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {StackParamList} from '../../navigation/navigationTypes';
@@ -22,7 +22,6 @@ const LandingScreen = ({navigation}: ScreenProps) => {
       webClientId: '',
       // offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
       forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-      iosClientId: '', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
     });
     isSignedIn();
   }, []);
@@ -34,7 +33,10 @@ const LandingScreen = ({navigation}: ScreenProps) => {
       console.log(userInfo);
       const {email, name} = userInfo.user;
       dispatch(updateUserInfo({email, displayName: name}));
-      navigation.navigate('SteamLogin', {email, displayName: name ?? 'noName'});
+      navigation.navigate(StackScreenName.steamLogin, {
+        email,
+        displayName: name ?? 'noName',
+      });
     } catch (error: any) {
       console.log('Message', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -50,7 +52,7 @@ const LandingScreen = ({navigation}: ScreenProps) => {
   };
   const isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
-    if (!!isSignedIn) {
+    if (!isSignedIn) {
       getCurrentUserInfo();
     } else {
       console.log('Please Login');
@@ -59,7 +61,7 @@ const LandingScreen = ({navigation}: ScreenProps) => {
   const getCurrentUserInfo = async () => {
     try {
       const userInfo = await GoogleSignin.signInSilently();
-      console.log('IS_SIGNED_IN');
+      console.log('SILENT_SIGNING');
     } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         // alert('User has not signed in yet');
