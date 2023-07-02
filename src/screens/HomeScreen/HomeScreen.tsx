@@ -5,7 +5,10 @@ import {useTranslation} from 'react-i18next';
 import {styles} from './HomeScreen.style';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../redux/store/mainStore';
-import {useGetCurentLeaguesQuery} from '../../redux/query/apiSlice';
+import {
+  useGetCurentLeaguesQuery,
+  useLinkSteamIDQuery,
+} from '../../redux/query/apiSlice';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
@@ -32,6 +35,7 @@ const HomeScreen = () => {
     firstEverGameID,
     firstEverGameTime,
     points,
+    email,
   } = userData.data;
 
   const matchDataDummy = DUMMY_MATCH_DATA;
@@ -46,6 +50,9 @@ const HomeScreen = () => {
     isError,
     isSuccess,
   } = useGetCurentLeaguesQuery();
+
+  const {isFetching: steamLinkFetching, isSuccess: steamLinkSuccess} =
+    useLinkSteamIDQuery({email, steamID32: steamData.steamID});
 
   //Add raw statisctics from openDotaApi & calculated value
   //Data should be fetched onPress for now
@@ -67,107 +74,112 @@ const HomeScreen = () => {
         loadingText={'Fetching data...'}
         isLoading={userData.status === 'pending' ? true : false}
       />
-
-      <KeyboardAwareScrollView contentContainerStyle={styles.parentContainer}>
-        {steamData.status === 'fulfilled' && (
-          <View style={styles.idContainer}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{color: 'white'}}>{points}</Text>
-              <Image
-                source={require('../../assets/bad1.png')}
-                style={{width: 20, height: 20}}
-                resizeMode="contain"
-              />
-              <Text style={{color: 'white', marginLeft: 8}}>{relicPoints}</Text>
-              <Image
-                source={require('../../assets/good2.png')}
-                style={{width: 20, height: 20}}
-                resizeMode="contain"
-              />
+      {steamLinkSuccess ? (
+        <KeyboardAwareScrollView contentContainerStyle={styles.parentContainer}>
+          {steamData.status === 'fulfilled' && (
+            <View style={styles.idContainer}>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{color: 'white'}}>{points}</Text>
+                <Image
+                  source={require('../../assets/bad1.png')}
+                  style={{width: 20, height: 20}}
+                  resizeMode="contain"
+                />
+                <Text style={{color: 'white', marginLeft: 8}}>
+                  {relicPoints}
+                </Text>
+                <Image
+                  source={require('../../assets/good2.png')}
+                  style={{width: 20, height: 20}}
+                  resizeMode="contain"
+                />
+              </View>
+              <Text style={{color: 'black', backgroundColor: 'green'}}>
+                ID: {steamData.steamID}
+              </Text>
             </View>
-            <Text style={{color: 'black', backgroundColor: 'green'}}>
-              ID: {steamData.steamID}
-            </Text>
+          )}
+          <View style={styles.welcomeContainer}>
+            <Text style={{color: 'white'}}>{t('appName')}</Text>
           </View>
-        )}
-        <View style={styles.welcomeContainer}>
-          <Text style={{color: 'white'}}>{t('appName')}</Text>
-        </View>
-        <>
-          {isSuccess ? (
-            <LeagueCard leagueData={currentLeaguesData} userPoints={points} />
+          <>
+            {isSuccess ? (
+              <LeagueCard leagueData={currentLeaguesData} userPoints={points} />
+            ) : null}
+            {isError ? (
+              <Text style={{textAlign: 'center', color: 'white'}}>
+                Failed fethcing leagues
+              </Text>
+            ) : null}
+          </>
+          {userData.status === 'fulfilled' ? (
+            <View>
+              <Text style={{textAlign: 'center', color: 'white'}}>
+                Your stats will be counted starting from this match ID:
+                {firstEverGameID}
+              </Text>
+              <Text
+                style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
+                and from this epochTime: {firstEverGameTime}
+              </Text>
+              <Text
+                style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
+                Kajdiy match parsitsya 240 sekund.
+              </Text>
+            </View>
           ) : null}
-          {isError ? (
-            <Text style={{textAlign: 'center', color: 'white'}}>
-              Failed fethcing leagues
-            </Text>
-          ) : null}
-        </>
-        {userData.status === 'fulfilled' ? (
           <View>
-            <Text style={{textAlign: 'center', color: 'white'}}>
-              Your stats will be counted starting from this match ID:
-              {firstEverGameID}
-            </Text>
-            <Text style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
-              and from this epochTime: {firstEverGameTime}
-            </Text>
-            <Text style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
-              Kajdiy match parsitsya 240 sekund.
-            </Text>
+            <Text style={{color: 'white'}}>Current points: {points}</Text>
+            <Text style={{color: 'white'}}>Last Game ID: {startingGameID}</Text>
           </View>
-        ) : null}
-        <View>
-          <Text style={{color: 'white'}}>Current points: {points}</Text>
-          <Text style={{color: 'white'}}>Last Game ID: {startingGameID}</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.refreshButton}
-          onPress={() => {
-            dispatch(
-              fetchRecentGamesData({
-                steamID32: steamData.steamID,
-                fromThisTime: startingGameTime.toString(),
-              }),
-            );
-          }}>
-          <Text style={{color: 'black'}}>REFRESH</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.resetButton}
-          onPress={() => {
-            Alert.alert(
-              'Tebe kaef udalit vse ochki?',
-              'Vse ochki naxuy sletyat na 0',
-              [
-                {
-                  text: 'DA',
-                  onPress: () => dispatch(resetPointsDev()),
-                },
-                {
-                  text: 'NET',
-                  onPress: () => {},
-                },
-              ],
-            );
-          }}>
-          <Text style={{color: 'black'}}>RESET POINTS</Text>
-        </TouchableOpacity>
-        <View style={styles.recalContainer}>
-          <TextInput
-            placeholder="from this gameID"
-            style={{backgroundColor: 'white', color: 'black'}}
-            onChangeText={text => setCustomMatchId(text)}
-          />
           <TouchableOpacity
-            style={styles.recalcButton}
-            onPress={() =>
-              dispatch(fetchCustomMatchData({matchID: customMatchId}))
-            }>
-            <Text style={{color: 'white'}}>Recalculate</Text>
+            style={styles.refreshButton}
+            onPress={() => {
+              dispatch(
+                fetchRecentGamesData({
+                  steamID32: steamData.steamID,
+                  fromThisTime: startingGameTime.toString(),
+                }),
+              );
+            }}>
+            <Text style={{color: 'black'}}>REFRESH</Text>
           </TouchableOpacity>
-        </View>
-      </KeyboardAwareScrollView>
+          <TouchableOpacity
+            style={styles.resetButton}
+            onPress={() => {
+              Alert.alert(
+                'Tebe kaef udalit vse ochki?',
+                'Vse ochki naxuy sletyat na 0',
+                [
+                  {
+                    text: 'DA',
+                    onPress: () => dispatch(resetPointsDev()),
+                  },
+                  {
+                    text: 'NET',
+                    onPress: () => {},
+                  },
+                ],
+              );
+            }}>
+            <Text style={{color: 'black'}}>RESET POINTS</Text>
+          </TouchableOpacity>
+          <View style={styles.recalContainer}>
+            <TextInput
+              placeholder="from this gameID"
+              style={{backgroundColor: 'white', color: 'black'}}
+              onChangeText={text => setCustomMatchId(text)}
+            />
+            <TouchableOpacity
+              style={styles.recalcButton}
+              onPress={() =>
+                dispatch(fetchCustomMatchData({matchID: customMatchId}))
+              }>
+              <Text style={{color: 'white'}}>Recalculate</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAwareScrollView>
+      ) : null}
     </SafeAreaView>
   );
 };

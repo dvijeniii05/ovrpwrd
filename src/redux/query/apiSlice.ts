@@ -10,9 +10,18 @@ export interface LeagueData {
   sponsorInformation: string;
 }
 
-export interface UserDataArgProps {
+export interface UserRegisterDataArgProps {
   email: string;
   displayName: string;
+}
+
+export interface UserSteamLinkProps {
+  email: string;
+  steamID32: string;
+}
+
+export interface ResponseProps {
+  message: string;
 }
 
 export const apiSlice = createApi({
@@ -22,10 +31,17 @@ export const apiSlice = createApi({
     getCurentLeagues: builder.query<LeagueData, void>({
       query: () => `/currentLeagues`,
     }),
-    registerUser: builder.query<ResponseType, UserDataArgProps>({
+    registerUser: builder.query<ResponseProps, UserRegisterDataArgProps>({
       query: args => `/userAuth/registerUser/${args.email}/${args.displayName}`,
+    }),
+    linkSteamID: builder.query<ResponseProps, UserSteamLinkProps>({
+      query: args => `/userAuth/linkSteam/${args.email}/${args.steamID32}`,
     }),
   }),
 });
 
-export const {useGetCurentLeaguesQuery, useRegisterUserQuery} = apiSlice;
+export const {
+  useGetCurentLeaguesQuery,
+  useRegisterUserQuery,
+  useLinkSteamIDQuery,
+} = apiSlice;

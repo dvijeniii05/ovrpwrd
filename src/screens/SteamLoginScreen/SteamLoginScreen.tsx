@@ -15,6 +15,7 @@ const SteamLoginScreen = ({navigation, route}: ScreenProps) => {
     email,
     displayName,
   });
+
   return (
     <SafeAreaView
       style={{
@@ -32,7 +33,7 @@ const SteamLoginScreen = ({navigation, route}: ScreenProps) => {
         }}>
         {isSuccess ? (
           <View style={{alignItems: 'center'}}>
-            <Text style={{color: 'white'}}>
+            <Text style={{color: 'white', textAlign: 'center'}}>
               User registered with following email and display name: {email}{' '}
               {displayName}
             </Text>
