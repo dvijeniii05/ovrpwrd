@@ -1,0 +1,15 @@
+export const dummyData = {
+  userName: 'Morskoy Turok',
+  email: 'morskoy@gmail.com',
+  perks: '7290',
+  relics: '7.29',
+  dailyP: '238',
+  dailyR: '0.24',
+  time: '12:48',
+  game: 'DOTA',
+  result: 'WIN',
+  k: '5',
+  d: '6',
+  a: '5',
+  nickName: 'Shtex',
+};

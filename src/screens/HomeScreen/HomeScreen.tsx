@@ -14,6 +14,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
   fetchCustomMatchData,
   fetchRecentGamesData,
+  fetchStartingPointData,
   resetPointsDev,
 } from '../../redux/slices/userDataSlice';
 import {
@@ -138,9 +139,10 @@ const HomeScreen = () => {
               dispatch(
                 fetchRecentGamesData({
                   steamID32: steamData.steamID,
-                  fromThisTime: startingGameTime.toString(),
+                  fromThisGame: startingGameID.toString(),
                 }),
               );
+              // dispatch(fetchStartingPointData(steamData.steamID));
             }}>
             <Text style={{color: 'black'}}>REFRESH</Text>
           </TouchableOpacity>

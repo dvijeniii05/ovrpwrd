@@ -4,8 +4,8 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {StackParamList} from '../../navigation/navigationTypes';
 import {StackScreenName} from '../../../ScreenNames';
-import {useRegisterUserQuery} from '../../redux/query/apiSlice';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
+import {useRegisterUserQuery} from '../../redux/query/endpoints/userApi';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.steamLogin>;
 
