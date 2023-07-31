@@ -86,14 +86,7 @@ const DailyStatCard = (props: Props) => {
   };
 
   return (
-    <CardWrapper style={styles.wrapperContainer}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Today's stats</Text>
-        <TouchableOpacity style={{ justifyContent: 'center' }}>
-          <ArrowRight width={16} height={16} />
-        </TouchableOpacity>
-      </View>
-
+    <CardWrapper style={styles.wrapperContainer} headingText="Today's stats">
       <CustomCarousel
         data={lastThreeMatches}
         renderItem={newRenderItem}

@@ -1,19 +1,17 @@
 import React from 'react';
 import CardWrapper from '../CardWrapper/CardWrapper';
 import GiftCard from '../GiftCard/GiftCard';
+import { View } from 'react-native';
+import { styles } from './DailyRewards.styles';
 
 const DailyRewards = () => {
   return (
-    <CardWrapper
-      style={{
-        flexDirection: 'row',
-        gap: 5,
-        justifyContent: 'space-evenly',
-        overflow: 'hidden',
-      }}>
-      <GiftCard />
-      <GiftCard />
-      <GiftCard />
+    <CardWrapper headingText="Daily rewards">
+      <View style={styles.container}>
+        <GiftCard />
+        <GiftCard />
+        <GiftCard />
+      </View>
     </CardWrapper>
   );
 };

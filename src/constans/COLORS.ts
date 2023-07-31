@@ -7,4 +7,5 @@ export const COLORS = {
   blue: '#2F2FEA',
   red: '#FF392A',
   white: '#FFFFFF',
+  purple: '#C92CCC',
 };

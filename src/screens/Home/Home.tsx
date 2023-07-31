@@ -4,13 +4,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import UserInfo from '../../components/UserInfo/UserInfo';
 import DailyStatCard from '../../components/DailyStatCard/DailyStatCard';
 import { COLORS } from '../../constans/COLORS';
-import GiftCard from '../../components/GiftCard/GiftCard';
-import CardWrapper from '../../components/CardWrapper/CardWrapper';
 import { HEIGHT } from '../../utils/dimension';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/mainStore';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import { useGetUserStatsQuery } from '../../redux/query/endpoints/userApi';
+import DailyRewards from '../../components/DailyRewards/DailyRewards';
+import LeagueProgress from '../../components/LeagueProgress/LeagueProgress';
 
 const Home = () => {
   const { email, steamID } = useSelector(
@@ -43,16 +43,8 @@ const Home = () => {
           <>
             <UserInfo totalPoints={userStats.currentPoints} />
             <DailyStatCard lastTenMatches={userStats.lastTenMatches} />
-            <CardWrapper
-              style={{
-                flexDirection: 'row',
-                gap: 5,
-                justifyContent: 'space-evenly',
-              }}>
-              <GiftCard />
-              <GiftCard />
-              <GiftCard />
-            </CardWrapper>
+            <DailyRewards />
+            <LeagueProgress />
           </>
         ) : null}
       </ScrollView>
