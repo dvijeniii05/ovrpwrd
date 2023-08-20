@@ -1,5 +1,5 @@
 import { ParsedMatch } from '../../../constans/interfaces';
-import { updateAuthStatus } from '../../slices/userDataSlice';
+import { updateAuthStatus, updateToken } from '../../slices/userDataSlice';
 import { apiSlice } from '../apiSlice';
 import { startListening } from '../listenerMiddleware';
 
@@ -9,7 +9,6 @@ export interface ResponseProps {
 
 export interface UserRegisterArgProps {
   email: string;
-  displayName: string;
 }
 
 export interface UserRequestProps {
@@ -31,8 +30,17 @@ export interface UserSteamLinkProps {
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
-    registerUser: builder.query<ResponseProps, UserRegisterArgProps>({
-      query: args => `/userAuth/registerUser/${args.email}/${args.displayName}`,
+    registerUser: builder.mutation<ResponseProps, UserRegisterArgProps>({
+      query: userDetails => ({
+        url: '/userAuth/registerUser',
+        method: 'POST',
+        body: userDetails,
+      }),
+      onQueryStarted: async (args, { queryFulfilled, dispatch }) => {
+        const { data } = await queryFulfilled; //SAVA response JWT to redux persisted store or AsyncStorage
+        console.log(data);
+        dispatch(updateToken(data));
+      },
     }),
     getUserStats: builder.query<UserStatsResponseProps, UserRequestProps>({
       query: args => `/userAuth/getUserStats/${args.email}`,
@@ -44,7 +52,7 @@ export const userApi = apiSlice.injectEndpoints({
 });
 
 export const {
-  useRegisterUserQuery,
+  useRegisterUserMutation,
   useGetUserStatsQuery,
   useLinkSteamIDQuery,
 } = userApi;

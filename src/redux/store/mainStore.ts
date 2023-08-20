@@ -1,6 +1,6 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import userData from '../slices/userDataSlice';
-import {apiSlice} from '../query/apiSlice';
+import { apiSlice } from '../query/apiSlice';
 import {
   persistStore,
   persistReducer,
@@ -12,7 +12,7 @@ import {
   REGISTER,
 } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {listenerMiddleware} from '../query/listenerMiddleware';
+import { listenerMiddleware } from '../query/listenerMiddleware';
 
 const persistConfig = {
   key: 'root',

@@ -1,6 +1,9 @@
 {
     "translation": {
         "welcome": "Welcome to:",
-        "appName": "OVRPWRD.app"
+        "appName": "OVRPWRD.app",
+        "singUp.text": "You can sign up with",
+        "registration.details.heading": "Fill in your details",
+        "nextStep.button": "Next step"
     }
 }

@@ -1,12 +1,12 @@
-import {StackNavigationProp} from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export type StackParamList = {
   // SplashScreen: undefined;
   Landing: undefined;
-  SteamLogin: {
+  Registration: {
     email: string;
-    displayName: string;
   };
+  SteamLogin: undefined;
   SteamModal: undefined;
   SteamLink: {
     steamID32: string;

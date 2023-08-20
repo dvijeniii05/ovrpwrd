@@ -1,11 +1,10 @@
 export const COLORS = {
-  transparentGrey: '#10121380',
-  blackPrimary: '#030303',
-  blackTertiary: '#101213',
-  transparentWhite: 'rgba(255, 255, 255, 0.4)',
-  green: '#C1F54D',
-  blue: '#2F2FEA',
-  red: '#FF392A',
+  darkBlue: '#050516',
+  sweepGradientDark: '#100F11',
+  sweepgradientLight: '#3820E2',
   white: '#FFFFFF',
-  purple: '#C92CCC',
+  mainBlue: '#2F2FEA',
+  neutral: '#52565B',
+  darkGrey: '#101213',
+  modalBackground: 'rgba(0, 0, 0, 0.90)',
 };
