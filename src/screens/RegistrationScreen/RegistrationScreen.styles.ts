@@ -8,17 +8,17 @@ const scroll: ViewStyle = {
 };
 
 const scrollContentContainer: ViewStyle = {
-  justifyContent: 'center',
   flex: 1,
   paddingHorizontal: 16,
   alignItems: 'center',
 };
 
-const headingContainer: ViewStyle = {
+const headingContainer = (headerHeight: number): ViewStyle => ({
+  marginTop: headerHeight,
   flexDirection: 'row',
   gap: 8,
   width: '100%',
-};
+});
 
 const headingText = (color: string): TextStyle => ({
   color: color,

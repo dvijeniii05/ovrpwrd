@@ -1,9 +1,12 @@
 import { TextStyle, ViewStyle } from 'react-native';
 import { COLORS } from '../../../constans/COLORS';
 
-const buttonContainer = (isDisabled?: boolean): ViewStyle => ({
+const buttonContainer = (
+  isDisabled?: boolean,
+  hasIcon?: string,
+): ViewStyle => ({
   backgroundColor: isDisabled ? COLORS.neutral : COLORS.mainBlue,
-  flexDirection: 'row',
+  flexDirection: hasIcon ? 'row' : 'column',
   paddingVertical: 16,
   paddingHorizontal: 24,
   justifyContent: 'center',

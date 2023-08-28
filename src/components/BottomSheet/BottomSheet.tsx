@@ -4,13 +4,14 @@ import {
   useBottomSheetDynamicSnapPoints,
 } from '@gorhom/bottom-sheet';
 import { useEffect, useMemo, useRef } from 'react';
-import { View, Text, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/mainStore';
 import { closeBottomSheet } from '../../redux/slices/userDataSlice';
-import { dobModal } from '../../screens/Modals/dobModal/dobModal';
+import DobModal from '../../screens/Modals/DobModal/DobModal';
 import { COLORS } from '../../constans/COLORS';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import GenderModal from '../../screens/Modals/GenderModal/GenderModal';
+import CountryModal from '../../screens/Modals/CountryModal/CountryModal';
 
 const BottomSheet = () => {
   const dispatch = useDispatch();
@@ -25,17 +26,33 @@ const BottomSheet = () => {
     handleContentLayout,
   } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
-  const isBottomSheetOpen = useSelector(
-    (state: RootState) => state.userData.data.isBottomSheetOpen,
+  const bottomSheetState = useSelector(
+    (state: RootState) => state.userData.data.bottomSheetState,
   );
 
   useEffect(() => {
-    if (isBottomSheetOpen) {
+    if (bottomSheetState?.isOpen) {
       bottomSheetModalRef.current?.present();
     } else {
       bottomSheetModalRef.current?.dismiss();
     }
-  }, [isBottomSheetOpen]);
+  }, [bottomSheetState?.isOpen]);
+
+  const modalPicker = () => {
+    if (bottomSheetState?.type) {
+      switch (bottomSheetState.type) {
+        case 'DOB':
+          return <DobModal />;
+        case 'Gender':
+          return <GenderModal />;
+        case 'Country':
+          return <CountryModal />;
+        default:
+          return null;
+      }
+    }
+    return null;
+  };
 
   return (
     <>
@@ -58,7 +75,7 @@ const BottomSheet = () => {
         <BottomSheetView
           onLayout={handleContentLayout}
           style={{ paddingBottom: useSafeAreaInsets().bottom }}>
-          {dobModal()}
+          {modalPicker()}
         </BottomSheetView>
       </BottomSheetModal>
     </>

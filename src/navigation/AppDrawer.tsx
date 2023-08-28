@@ -13,6 +13,8 @@ import SplashScreen from '../screens/SplashScreen/SplashScreen';
 import RegistrationScreen from '../screens/RegistrationScreen/RegistrationScreen';
 import { Pressable, Text, View } from 'react-native';
 import ArrowLeft from '../assets/icons/arrow-left.svg';
+import AvatarScreen from '../screens/AvatarScreen/AvatarScreen';
+import LinkGame from '../screens/LinkGameScreen/LinkGameScreen';
 
 const Stack = createStackNavigator<StackParamList>();
 
@@ -30,14 +32,12 @@ const AppDrawer = () => {
         <Stack.Screen name={StackScreenName.home} component={Home} />
       ) : (
         <>
-          {/* <Stack.Screen
+          <Stack.Screen
             name={StackScreenName.landing}
             component={LandingScreen}
-          /> */}
-          <Stack.Screen
-            name={StackScreenName.registration}
-            component={RegistrationScreen}
-            options={({ navigation }) => ({
+          />
+          <Stack.Group
+            screenOptions={({ navigation }) => ({
               headerShown: true,
               headerTransparent: true,
               headerTitle: '',
@@ -46,8 +46,20 @@ const AppDrawer = () => {
                   <ArrowLeft style={{ left: 16 }} />
                 </Pressable>
               ),
-            })}
-          />
+            })}>
+            <Stack.Screen
+              name={StackScreenName.registration}
+              component={RegistrationScreen}
+            />
+            <Stack.Screen
+              name={StackScreenName.avatar}
+              component={AvatarScreen}
+            />
+            <Stack.Screen
+              name={StackScreenName.linkGame}
+              component={LinkGame}
+            />
+          </Stack.Group>
           <Stack.Screen
             name={StackScreenName.steamLogin}
             component={SteamLoginScreen}

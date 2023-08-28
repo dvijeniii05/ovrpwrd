@@ -18,11 +18,13 @@ const StandardButton = ({ isDisabled = false, ...props }: Props) => {
         return <Apple />;
       case 'google':
         return <Google />;
+      default:
+        return null;
     }
   };
   return (
     <TouchableOpacity
-      style={[styles.buttonContainer(isDisabled), props.style]}
+      style={[styles.buttonContainer(isDisabled, props.iconName), props.style]}
       disabled={isDisabled}
       onPress={props.onPress}>
       {iconPicker()}

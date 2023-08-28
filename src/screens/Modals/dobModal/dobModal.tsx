@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { styles } from './dobModal.styles';
+import { styles } from './DobModal.styles';
 import StandardButton from '../../../components/Buttons/StandardButton/StandardButton';
 import { useDispatch } from 'react-redux';
-import { addDOB } from '../../../redux/slices/userDataSlice';
+import {
+  closeBottomSheet,
+  updateUserDetails,
+} from '../../../redux/slices/userDataSlice';
+import { useTranslation } from 'react-i18next';
 
-export const dobModal = () => {
+export const DobModal = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const maxYear = new Date().getFullYear() - 5;
   const yearRange = maxYear - 100;
   let years: number[] = [];
@@ -123,15 +128,16 @@ export const dobModal = () => {
     const splitter = dob.toUTCString().split(', ')[1].split(' ');
     const convertedDob = `${splitter[0]}-${splitter[1]}-${splitter[2]}`;
     console.log(convertedDob);
-    dispatch(addDOB(convertedDob));
+    dispatch(updateUserDetails({ dob: convertedDob }));
+    dispatch(closeBottomSheet());
   };
 
   return (
     <View>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>{t('dob.header')}</Text>
+      </View>
       <View style={{ paddingLeft: 16 }}>
-        <View>
-          <Text style={styles.headerText}>Date of birth</Text>
-        </View>
         <FlatList
           data={years}
           horizontal
@@ -178,9 +184,10 @@ export const dobModal = () => {
           </View>
         ))}
       </View>
-      <View style={{ paddingHorizontal: 16 }}>
+      <View style={styles.selectButtonContainer}>
         <StandardButton
-          buttonText="Select"
+          isDisabled={!selectedDay}
+          buttonText={t('button.select')}
           onPress={onPress}
           style={{ marginTop: 40 }}
         />
@@ -188,3 +195,5 @@ export const dobModal = () => {
     </View>
   );
 };
+
+export default DobModal;

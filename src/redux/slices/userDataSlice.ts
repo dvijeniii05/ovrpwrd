@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { MatchStatsProps } from '../../staticTypes';
 import { calculatePoints } from '../../utils/pointCalculation/pointCalculation';
 import { devBaseUrl } from '../../constans/urls';
@@ -10,8 +9,13 @@ interface StartingPointDataProps {
   displayName: string;
   steamID: string;
   token: string;
-  isBottomSheetOpen: boolean;
+  bottomSheetState: {
+    isOpen: boolean;
+    type: string;
+  };
   dob: string;
+  gender: string;
+  country: string;
   // matchData: MatchStatsProps[];
 }
 
@@ -28,8 +32,13 @@ const userDataState: userDataStateProps = {
     displayName: '',
     steamID: '',
     token: '',
-    isBottomSheetOpen: false,
+    bottomSheetState: {
+      isOpen: false,
+      type: '',
+    },
     dob: '',
+    gender: '',
+    country: '',
     // matchData: [],
   },
   status: 'idle',
@@ -60,14 +69,20 @@ const userDataSlice = createSlice({
     updateToken: (state, action) => {
       state.data.token = action.payload.token;
     },
-    openBottomSheet: state => {
-      state.data.isBottomSheetOpen = true;
+    openBottomSheet: (state, action) => {
+      state.data.bottomSheetState = {
+        ...action.payload,
+      };
     },
     closeBottomSheet: state => {
-      state.data.isBottomSheetOpen = false;
+      state.data.bottomSheetState.isOpen = false;
     },
-    addDOB: (state, action) => {
-      state.data.dob = action.payload;
+    updateUserDetails: (state, action) => {
+      const payloadDetails = action.payload;
+      state.data = {
+        ...state.data,
+        ...payloadDetails,
+      };
     },
   },
 });
@@ -80,6 +95,6 @@ export const {
   updateToken,
   openBottomSheet,
   closeBottomSheet,
-  addDOB,
+  updateUserDetails,
 } = userDataSlice.actions;
 export default userDataSlice.reducer;

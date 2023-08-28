@@ -6,6 +6,8 @@ export type StackParamList = {
   Registration: {
     email: string;
   };
+  Avatar: undefined;
+  LinkGame: undefined;
   SteamLogin: undefined;
   SteamModal: undefined;
   SteamLink: {

@@ -1,6 +1,10 @@
 import { TextStyle, ViewStyle } from 'react-native';
 import { COLORS } from '../../../constans/COLORS';
 
+const headerContainer: ViewStyle = {
+  alignItems: 'center',
+};
+
 const headerText: TextStyle = {
   fontSize: 28,
   fontFamily: 'Jost-Regular',
@@ -8,7 +12,7 @@ const headerText: TextStyle = {
 };
 
 const yearsContainer: ViewStyle = {
-  marginTop: 40,
+  marginTop: 24,
 };
 
 const yearsContentContainer: ViewStyle = {
@@ -59,7 +63,12 @@ const dayText: TextStyle = {
   color: COLORS.white,
 };
 
+const selectButtonContainer: ViewStyle = {
+  paddingHorizontal: 16,
+};
+
 export const styles = {
+  headerContainer,
   headerText,
   yearsContainer,
   yearsContentContainer,
@@ -71,4 +80,5 @@ export const styles = {
   daysContainer,
   dayButton,
   dayText,
+  selectButtonContainer,
 };
