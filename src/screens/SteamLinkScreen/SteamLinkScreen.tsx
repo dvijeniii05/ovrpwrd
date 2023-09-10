@@ -1,60 +1,78 @@
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, Text, TouchableOpacity} from 'react-native';
-import {StackScreenProps} from '@react-navigation/stack';
-import {StackParamList} from '../../navigation/navigationTypes';
-import {StackScreenName} from '../../../ScreenNames';
+import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackParamList } from '../../navigation/navigationTypes';
+import { StackScreenName } from '../../../ScreenNames';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../redux/store/mainStore';
-import {
-  useGetUserDetailsQuery,
-  useLinkSteamIDQuery,
-} from '../../redux/query/endpoints/userApi';
+
+import { useLinkSteamIDQuery } from '../../redux/query/endpoints/userApi';
+import StandardButton from '../../components/Buttons/StandardButton/StandardButton';
+import { styles } from './SteamLinkScreen.styles';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.steamLink>;
 
-const SteamLinkScreen = ({navigation, route}: ScreenProps) => {
-  const {steamID32} = route.params;
-  const email = useSelector((state: RootState) => state.userData.data.email);
+const SteamLinkScreen = ({ navigation, route }: ScreenProps) => {
+  // const { steamID32 } = route.params;
+  const steamID32 = '367396390';
 
-  const {isSuccess, isError, isLoading} = useLinkSteamIDQuery({
-    email,
-    steamID32,
-  });
+  const { data, isSuccess, isError, isFetching, refetch } = useLinkSteamIDQuery(
+    {
+      steamID32,
+    },
+  );
+
+  const descriptionContent = () => {
+    if (isSuccess) {
+      return (
+        <View style={styles.descriptionWrapper}>
+          <Text style={styles.descriptionHeading}>
+            You steam account is now linked to your OVRPWRD account.
+          </Text>
+          <Text style={styles.descriptionText}>
+            {` We are going to gather and proccess your statics starting from a match with the following match ID: ${data?.startingGameID}`}
+          </Text>
+        </View>
+      );
+    }
+    return (
+      <View style={styles.descriptionWrapper}>
+        <Text style={styles.descriptionHeading}>Something went wrong</Text>
+        <Text style={styles.descriptionText}>
+          There was a problem linking your Steam account. Please press a 'Retry'
+          button to try it again.
+        </Text>
+      </View>
+    );
+  };
+
+  const handleOnPress = () => {
+    console.log('press');
+  };
+
+  const handleRefetch = () => {
+    console.log('press 222');
+    refetch();
+  };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: 'black',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <LoadingComponent isLoading={isLoading} loadingText="Creating user" />
-      <View
-        style={{
-          height: 500,
-          justifyContent: 'space-around',
-          alignItems: 'center',
-        }}>
-        {isSuccess ? (
-          <View style={{alignItems: 'center'}}>
-            <Text style={{color: 'white', textAlign: 'center'}}>
-              Your Steam ID succesfully linked to your account
-            </Text>
-          </View>
-        ) : null}
-        {isError ? (
-          <Text style={{color: 'white'}}>Error during Linking</Text>
-        ) : null}
-        <Text style={{color: 'white'}}>Steam Linking</Text>
-        {isSuccess ? (
-          <TouchableOpacity onPress={() => {}}>
-            <Text style={{color: 'white'}}>Continue</Text>
-          </TouchableOpacity>
-        ) : null}
-      </View>
+    <SafeAreaView style={styles.parentContainer} edges={['bottom']}>
+      <LoadingComponent isLoading={isFetching} />
+      <View style={styles.descriptionContainer}>{descriptionContent()}</View>
+      {isSuccess ? (
+        <StandardButton
+          buttonText="Continue"
+          onPress={handleOnPress}
+          style={styles.button}
+        />
+      ) : null}
+      {isError ? (
+        <StandardButton
+          buttonText="Retry"
+          onPress={handleRefetch}
+          style={styles.button}
+        />
+      ) : null}
     </SafeAreaView>
   );
 };

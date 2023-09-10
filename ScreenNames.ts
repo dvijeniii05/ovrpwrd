@@ -1,6 +1,7 @@
 export enum StackScreenName {
   // splashScreen = 'SplashScreen',
   landing = 'Landing',
+  welcome = 'Welcome',
   registration = 'Registration',
   avatar = 'Avatar',
   linkGame = 'LinkGame',

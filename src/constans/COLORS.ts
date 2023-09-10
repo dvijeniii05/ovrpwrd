@@ -5,6 +5,7 @@ export const COLORS = {
   white: '#FFFFFF',
   black: '#050517',
   mainBlue: '#2F2FEA',
+  semiDarkBlue: '#0E0E41',
   neutral: '#52565B',
   darkGrey: '#101213',
   modalBackground: 'rgba(0, 0, 0, 0.90)',

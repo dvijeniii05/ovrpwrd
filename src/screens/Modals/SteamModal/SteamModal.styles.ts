@@ -1,8 +1,8 @@
 import { ViewStyle } from 'react-native';
-import { HEIGHT, WIDTH } from '../../utils/dimension';
-import { COLORS } from '../../constans/COLORS';
+import { COLORS } from '../../../constans/COLORS';
+import { WIDTH, HEIGHT } from '../../../utils/dimension';
 
-const parentContainer: ViewStyle = {
+const loaderWrapper: ViewStyle = {
   width: WIDTH,
   height: HEIGHT,
   position: 'absolute',
@@ -14,5 +14,5 @@ const parentContainer: ViewStyle = {
 };
 
 export const styles = {
-  parentContainer,
+  loaderWrapper,
 };

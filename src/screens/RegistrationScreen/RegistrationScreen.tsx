@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { openBottomSheet } from '../../redux/slices/userDataSlice';
 import { RootState } from '../../redux/store/mainStore';
 import { useHeaderHeight } from '@react-navigation/elements';
+import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
+import InformationModal from '../Modals/InformationModal/InformationModal';
 
 type ScreenProps = StackScreenProps<
   StackParamList,
@@ -28,25 +30,53 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
   const topMargin = headerHeight + 56;
 
   const { email } = route.params ?? 'not ready yet';
-  const [registerUser, { isSuccess, isLoading, isError }] =
-    useRegisterUserMutation();
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
   const { dob, gender, country } = useSelector(
     (state: RootState) => state.userData.data,
   );
 
   const [fullName, setFullName] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
+  const [isInformationModalVisible, setIsInformationModalVisible] =
+    useState<boolean>(false);
+  const [informationModalText, setInformationModalText] = useState<string>('');
 
   console.log(fullName);
 
   // TODO: to be rewoerked with nickname confirmation logic
   const isFormComplete = dob && gender && country && fullName && nickname;
 
+  const handleOnpress = () => {
+    registerUser({ nickname, email, fullName, dob, gender, country })
+      .unwrap()
+      .then(response => {
+        console.log('RESPONSE', response);
+        if (response.token) {
+          navigation.navigate(StackScreenName.avatar);
+        } else {
+          setInformationModalText(response.message!);
+          setIsInformationModalVisible(true);
+        }
+      })
+      .catch(error => {
+        setInformationModalText(error.data?.message ?? JSON.stringify(error));
+        setIsInformationModalVisible(true);
+      });
+  };
+
   return (
     <KeyboardAwareScrollView
       style={styles.scroll}
       contentContainerStyle={styles.scrollContentContainer}>
       <Gradient type="shaded" style={{ position: 'absolute', top: 0 }} />
+      <LoadingComponent isLoading={isLoading} />
+      <InformationModal
+        isVisible={isInformationModalVisible}
+        headerText="Oops, something went wrong"
+        informationText={informationModalText}
+        onPress={() => setIsInformationModalVisible(false)}
+        buttonText="Okay"
+      />
       <View style={styles.headingContainer(topMargin)}>
         <Text style={styles.headingText(COLORS.mainBlue)}>1.</Text>
         <Text style={styles.headingText(COLORS.white)}>
@@ -102,7 +132,7 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
       <StandardButton
         buttonText={t('nextStep.button')}
         style={{ top: 40 }}
-        onPress={() => navigation.navigate(StackScreenName.avatar)}
+        onPress={handleOnpress}
         isDisabled={!isFormComplete}
       />
     </KeyboardAwareScrollView>

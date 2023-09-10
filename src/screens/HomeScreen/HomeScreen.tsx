@@ -1,189 +1,133 @@
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, Text, Alert, TextInput, Image} from 'react-native';
-import {useTranslation} from 'react-i18next';
-import {styles} from './HomeScreen.style';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../../redux/store/mainStore';
+import React from 'react';
 import {
-  useGetCurentLeaguesQuery,
-  useLinkSteamIDQuery,
-} from '../../redux/query/apiSlice';
+  Image,
+  RefreshControl,
+  ScrollView,
+  StatusBar,
+  View,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import UserInfo from '../../components/UserInfo/UserInfo';
+import DailyStatCard from '../../components/DailyStatCard/DailyStatCard';
+import { COLORS } from '../../constans/COLORS';
+import { HEIGHT } from '../../utils/dimension';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store/mainStore';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {
-  fetchCustomMatchData,
-  fetchRecentGamesData,
-  fetchStartingPointData,
-  resetPointsDev,
-} from '../../redux/slices/userDataSlice';
-import {
-  ASHRAF_MATCH_DATA,
-  DUMMY_MATCH_DATA,
-} from '../../constans/gameStatsDummy';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {LeagueCard} from '../../components/LeagueCard/LeagueCard';
+import { useGetUserStatsQuery } from '../../redux/query/endpoints/userApi';
+import DailyRewards from '../../components/DailyRewards/DailyRewards';
+import LeagueProgress from '../../components/LeagueProgress/LeagueProgress';
+import CardWrapper from '../../components/CardWrapper/CardWrapper';
+import LeaderboardCard from '../../components/LeaderboardCard/LeaderboardCard';
+import Gradient from '../../components/Gradient/Gradient';
+import { styles } from './HomeScreen.styles';
+import DetailInput from '../../components/DetailsInput/DetailsInput';
 
-const HomeScreen = () => {
-  const {t} = useTranslation();
-  const dispatch = useDispatch<AppDispatch>();
-  const steamData = useSelector((state: RootState) => state.steamAuth);
-  const userData = useSelector((state: RootState) => state.userData);
-  const {
-    startingGameID,
-    startingGameTime,
-    matchData,
-    firstEverGameID,
-    firstEverGameTime,
-    points,
-    email,
-  } = userData.data;
+const Home = () => {
+  const { email, steamID } = useSelector(
+    (state: RootState) => state.userData.data,
+  );
+  // const {
+  //   data: userStats,
+  //   isSuccess,
+  //   isFetching,
+  //   refetch,
+  // } = useGetUserStatsQuery({
+  //   email: 'adikbsw@gmail.com',
+  // });
+  // const { refetch } = useGetRecentMatchesQuery({
+  //   steamID32: steamID,
+  //   fromThisGame: 'asdad',
+  // });
 
-  const matchDataDummy = DUMMY_MATCH_DATA;
-  const ashrafDataDummy = ASHRAF_MATCH_DATA;
+  const dummyData = {
+    userName: 'Morskoy Turok',
+    email: 'morskoy@gmail.com',
+    perks: 7290,
+    relics: 7.29,
+    dailyP: '238',
+    dailyR: '0.24',
+    time: '12:48',
+    game: 'DOTA',
+    result: 'WIN',
+    k: '5',
+    d: '6',
+    a: '5',
+    nickName: 'Shtex',
+  };
 
-  const [customMatchId, setCustomMatchId] = useState<string>('');
-
-  const {
-    data: currentLeaguesData,
-    isFetching,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useGetCurentLeaguesQuery();
-
-  const {isFetching: steamLinkFetching, isSuccess: steamLinkSuccess} =
-    useLinkSteamIDQuery({email, steamID32: steamData.steamID});
-
-  //Add raw statisctics from openDotaApi & calculated value
-  //Data should be fetched onPress for now
-  //Save start_time of the most recent game and update that value on each fetch
-  //Filter is required to fetch only new matches, excluding the ones that were already counted in
-  //Fetch using RTKQuery with a key for cache expiry process
-  // role: 1 or 2 = supports
-  //gameMode: 23 = turbo, 2 = all_draft
-  //lobbyType: 5,6,7 = ranking
-  console.log('isSuccess', isSuccess);
-  console.log('isFetching', isFetching);
-  console.log('isError', isError);
-
-  const relicPoints = (points / 1000).toFixed(2);
+  const lastTenMatches = [
+    {
+      isWin: true,
+      hero: 67,
+      time: 1694274541,
+      points: 232,
+      heroUrl:
+        'https://cdn.dota2.com/apps/dota2/images/heroes/spectre_full.png',
+      kills: 13,
+      deaths: 6,
+      assists: 27,
+    },
+    {
+      isWin: false,
+      hero: 123,
+      time: 1694216426,
+      points: 95,
+      heroUrl:
+        'https://cdn.dota2.com/apps/dota2/images/heroes/hoodwink_full.png',
+      kills: 5,
+      deaths: 9,
+      assists: 21,
+    },
+    {
+      isWin: true,
+      hero: 35,
+      time: 1694214144,
+      points: 221,
+      heroUrl: 'https://cdn.dota2.com/apps/dota2/images/heroes/sniper_full.png',
+      kills: 11,
+      deaths: 8,
+      assists: 20,
+    },
+    {
+      isWin: true,
+      hero: 120,
+      time: 1694212814,
+      points: 126,
+      heroUrl:
+        'https://cdn.dota2.com/apps/dota2/images/heroes/pangolier_full.png',
+      kills: 4,
+      deaths: 4,
+      assists: 11,
+    },
+  ];
 
   return (
-    <SafeAreaView style={styles.parentContainer}>
-      <LoadingComponent
-        loadingText={'Fetching data...'}
-        isLoading={userData.status === 'pending' ? true : false}
-      />
-      {steamLinkSuccess ? (
-        <KeyboardAwareScrollView contentContainerStyle={styles.parentContainer}>
-          {steamData.status === 'fulfilled' && (
-            <View style={styles.idContainer}>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={{color: 'white'}}>{points}</Text>
-                <Image
-                  source={require('../../assets/bad1.png')}
-                  style={{width: 20, height: 20}}
-                  resizeMode="contain"
-                />
-                <Text style={{color: 'white', marginLeft: 8}}>
-                  {relicPoints}
-                </Text>
-                <Image
-                  source={require('../../assets/good2.png')}
-                  style={{width: 20, height: 20}}
-                  resizeMode="contain"
-                />
-              </View>
-              <Text style={{color: 'black', backgroundColor: 'green'}}>
-                ID: {steamData.steamID}
-              </Text>
-            </View>
-          )}
-          <View style={styles.welcomeContainer}>
-            <Text style={{color: 'white'}}>{t('appName')}</Text>
-          </View>
-          <>
-            {isSuccess ? (
-              <LeagueCard leagueData={currentLeaguesData} userPoints={points} />
-            ) : null}
-            {isError ? (
-              <Text style={{textAlign: 'center', color: 'white'}}>
-                Failed fethcing leagues
-              </Text>
-            ) : null}
-          </>
-          {userData.status === 'fulfilled' ? (
-            <View>
-              <Text style={{textAlign: 'center', color: 'white'}}>
-                Your stats will be counted starting from this match ID:
-                {firstEverGameID}
-              </Text>
-              <Text
-                style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
-                and from this epochTime: {firstEverGameTime}
-              </Text>
-              <Text
-                style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
-                Kajdiy match parsitsya 240 sekund.
-              </Text>
-            </View>
-          ) : null}
-          <View>
-            <Text style={{color: 'white'}}>Current points: {points}</Text>
-            <Text style={{color: 'white'}}>Last Game ID: {startingGameID}</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.refreshButton}
-            onPress={() => {
-              dispatch(
-                fetchRecentGamesData({
-                  steamID32: steamData.steamID,
-                  fromThisGame: startingGameID.toString(),
-                }),
-              );
-              // dispatch(fetchStartingPointData(steamData.steamID));
-            }}>
-            <Text style={{color: 'black'}}>REFRESH</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.resetButton}
-            onPress={() => {
-              Alert.alert(
-                'Tebe kaef udalit vse ochki?',
-                'Vse ochki naxuy sletyat na 0',
-                [
-                  {
-                    text: 'DA',
-                    onPress: () => dispatch(resetPointsDev()),
-                  },
-                  {
-                    text: 'NET',
-                    onPress: () => {},
-                  },
-                ],
-              );
-            }}>
-            <Text style={{color: 'black'}}>RESET POINTS</Text>
-          </TouchableOpacity>
-          <View style={styles.recalContainer}>
-            <TextInput
-              placeholder="from this gameID"
-              style={{backgroundColor: 'white', color: 'black'}}
-              onChangeText={text => setCustomMatchId(text)}
-            />
-            <TouchableOpacity
-              style={styles.recalcButton}
-              onPress={() =>
-                dispatch(fetchCustomMatchData({matchID: customMatchId}))
-              }>
-              <Text style={{color: 'white'}}>Recalculate</Text>
-            </TouchableOpacity>
-          </View>
-        </KeyboardAwareScrollView>
-      ) : null}
+    <SafeAreaView edges={['bottom']}>
+      <StatusBar barStyle={'light-content'} />
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContentContainer}>
+        <Gradient type="conical" style={{ position: 'absolute' }} />
+
+        <UserInfo
+          totalPoints={{
+            currentPerks: dummyData.perks,
+            currentRelics: dummyData.relics,
+          }}
+          userName={dummyData.userName}
+          nickName={dummyData.nickName}
+        />
+        <DailyStatCard lastTenMatches={lastTenMatches} />
+        {/* <DailyRewards /> */}
+        {/* <LeagueProgress />
+          <CardWrapper style={{ paddingTop: 0 }}>
+            <Image source={require('../../assets/dummyAssets/Elf.png')} />
+          </CardWrapper> */}
+        {/* <LeaderboardCard /> */}
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default HomeScreen;
+export default Home;

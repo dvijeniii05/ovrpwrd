@@ -31,7 +31,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 const createDebugger = require('redux-flipper').default;
 
 export const mainStore = configureStore({
-  reducer: persistedReducer,
+  reducer: persistedReducer, //replace with persistedReducer when cache driven development needed
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {

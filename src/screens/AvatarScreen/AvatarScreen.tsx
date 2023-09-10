@@ -18,6 +18,9 @@ import StandardButton from '../../components/Buttons/StandardButton/StandardButt
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
+import { useUpdateUserDetailsMutation } from '../../redux/query/endpoints/userApi';
+import InformationModal from '../Modals/InformationModal/InformationModal';
+import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.avatar>;
 
@@ -26,6 +29,11 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
   const headerHeight = useHeaderHeight();
   const topMargin = headerHeight + 56;
   const [selectedAvatar, setSelectedAvatar] = useState<string>('');
+  const [isInformationModalVisible, setIsInformationModalVisible] =
+    useState<boolean>(false);
+  const [informationModalText, setInformationModalText] = useState<string>('');
+
+  const [addAvatar, { isLoading }] = useUpdateUserDetailsMutation();
 
   const avatars = [
     {
@@ -57,9 +65,29 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
     </TouchableOpacity>
   );
 
+  const handleOnPress = () => {
+    addAvatar({ avatar: selectedAvatar })
+      .unwrap()
+      .then(response => {
+        navigation.navigate(StackScreenName.linkGame);
+      })
+      .catch(error => {
+        setInformationModalText(error.data?.message ?? JSON.stringify(error));
+        setIsInformationModalVisible(true);
+      });
+  };
+
   return (
     <SafeAreaView style={styles.parentContainer} edges={['bottom']}>
       <Gradient type="shaded" style={{ position: 'absolute', top: 0 }} />
+      <LoadingComponent isLoading={isLoading} />
+      <InformationModal
+        isVisible={isInformationModalVisible}
+        headerText="Oops, something went wrong"
+        informationText={informationModalText}
+        onPress={() => setIsInformationModalVisible(false)}
+        buttonText="Okay"
+      />
       <View style={styles.headingContainer(topMargin)}>
         <Text style={styles.headingText(COLORS.mainBlue)}>2.</Text>
         <Text style={styles.headingText(COLORS.white)}>
@@ -76,7 +104,7 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
       />
       <StandardButton
         buttonText={t('nextStep.button')}
-        onPress={() => navigation.navigate(StackScreenName.linkGame)}
+        onPress={handleOnPress}
         isDisabled={!selectedAvatar}
       />
     </SafeAreaView>

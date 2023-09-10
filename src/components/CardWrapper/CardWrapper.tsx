@@ -11,24 +11,7 @@ interface Props {
 }
 
 const CardWrapper = (props: Props) => {
-  return (
-    <View style={[styles.container, props.style]}>
-      {props.headingText ? (
-        <View style={styles.headingContainer}>
-          <Text style={styles.headingText}>{props.headingText}</Text>
-          <TouchableOpacity style={{ justifyContent: 'center' }}>
-            <ArrowRight width={16} height={16} />
-          </TouchableOpacity>
-        </View>
-      ) : null}
-      {props.leagueEndsIn ? (
-        <View style={styles.leagueEndsContainer}>
-          <Text style={styles.leagueEndsText}>{props.leagueEndsIn}</Text>
-        </View>
-      ) : null}
-      {props.children}
-    </View>
-  );
+  return <View style={[styles.container, props.style]}>{props.children}</View>;
 };
 
 export default CardWrapper;

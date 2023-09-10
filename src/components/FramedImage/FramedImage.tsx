@@ -1,6 +1,7 @@
 import { View, Image } from 'react-native';
 import GreenFrame from '../../assets/GreenFrame.svg';
 import BlueFrame from '../../assets/BlueFrame.svg';
+import WhiteFrame from '../../assets/WhiteFrame.svg';
 
 interface Props {
   avatar: string;
@@ -31,6 +32,8 @@ const FramedImage = (props: Props) => {
         return <GreenFrame />;
       case 'blue':
         return <BlueFrame />;
+      case 'white':
+        return <WhiteFrame />;
     }
   };
 

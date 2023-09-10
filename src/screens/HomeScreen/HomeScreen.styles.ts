@@ -2,17 +2,25 @@ import { ViewStyle } from 'react-native';
 import { HEIGHT, WIDTH } from '../../utils/dimension';
 import { COLORS } from '../../constans/COLORS';
 
-const parentContainer: ViewStyle = {
-  width: WIDTH,
-  height: HEIGHT,
-  position: 'absolute',
-  backgroundColor: COLORS.darkBlue,
-  opacity: 0.9,
+const generalCard: ViewStyle = {
   justifyContent: 'center',
   alignItems: 'center',
-  zIndex: 5,
+  width: WIDTH,
+  backgroundColor: 'yellow',
+  height: 150,
+};
+
+const scroll: ViewStyle = {
+  height: HEIGHT,
+  backgroundColor: COLORS.darkBlue,
+};
+
+const scrollContentContainer: ViewStyle = {
+  alignItems: 'center',
 };
 
 export const styles = {
-  parentContainer,
+  generalCard,
+  scroll,
+  scrollContentContainer,
 };

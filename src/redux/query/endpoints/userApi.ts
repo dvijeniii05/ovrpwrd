@@ -1,14 +1,28 @@
+import { FetchBaseQueryMeta } from '@reduxjs/toolkit/dist/query';
 import { ParsedMatch } from '../../../constans/interfaces';
-import { updateAuthStatus, updateToken } from '../../slices/userDataSlice';
+import { updateUserDetails, updateToken } from '../../slices/userDataSlice';
 import { apiSlice } from '../apiSlice';
 import { startListening } from '../listenerMiddleware';
 
-export interface ResponseProps {
-  message: string;
+export interface AuthResponseProps {
+  token: string | undefined;
+  message?: string;
+  startingGameID?: number;
+}
+
+export interface UserLoginResponseProps {
+  token: string | undefined;
+  isFullyOnboarded: boolean;
 }
 
 export interface UserRegisterArgProps {
   email: string;
+  fullName: string;
+  nickname: string;
+  dob: string;
+  gender: string;
+  country: string;
+  avatar: string;
 }
 
 export interface UserRequestProps {
@@ -24,35 +38,55 @@ export interface UserStatsResponseProps {
 }
 
 export interface UserSteamLinkProps {
-  email: string;
   steamID32: string;
 }
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
-    registerUser: builder.mutation<ResponseProps, UserRegisterArgProps>({
+    registerUser: builder.mutation<
+      AuthResponseProps,
+      Partial<UserRegisterArgProps>
+    >({
       query: userDetails => ({
         url: '/userAuth/registerUser',
         method: 'POST',
         body: userDetails,
+        validateStatus: response =>
+          (response.status >= 200 && response.status <= 299) ||
+          response.status === 422,
       }),
-      onQueryStarted: async (args, { queryFulfilled, dispatch }) => {
-        const { data } = await queryFulfilled; //SAVA response JWT to redux persisted store or AsyncStorage
-        console.log(data);
-        dispatch(updateToken(data));
-      },
+    }),
+    loginUser: builder.query<UserLoginResponseProps, { email: string }>({
+      query: args => ({
+        url: `/userAuth/loginUser/${args.email}`,
+        validateStatus: response =>
+          (response.status >= 200 && response.status <= 299) ||
+          response.status === 404,
+      }),
+    }),
+    updateUserDetails: builder.mutation<
+      Partial<AuthResponseProps>,
+      Partial<UserRegisterArgProps>
+    >({
+      query: args => ({
+        url: `/userAuth/updateUserDetails`,
+        method: 'PATCH',
+        body: args,
+      }),
+    }),
+    linkSteamID: builder.query<AuthResponseProps, UserSteamLinkProps>({
+      query: args => `/userAuth/linkSteam/${args.steamID32}`,
     }),
     getUserStats: builder.query<UserStatsResponseProps, UserRequestProps>({
       query: args => `/userAuth/getUserStats/${args.email}`,
-    }),
-    linkSteamID: builder.query<ResponseProps, UserSteamLinkProps>({
-      query: args => `/userAuth/linkSteam/${args.email}/${args.steamID32}`,
     }),
   }),
 });
 
 export const {
   useRegisterUserMutation,
+  useLoginUserQuery,
+  useUpdateUserDetailsMutation,
   useGetUserStatsQuery,
   useLinkSteamIDQuery,
 } = userApi;
@@ -60,7 +94,7 @@ export const {
 startListening({
   matcher: userApi.endpoints.linkSteamID.matchFulfilled,
   effect: async (action, listenerApi) => {
-    listenerApi.dispatch(updateAuthStatus(true));
+    listenerApi.dispatch(updateUserDetails({ isGameLinked: true }));
     //listener triggered too often
   },
 });

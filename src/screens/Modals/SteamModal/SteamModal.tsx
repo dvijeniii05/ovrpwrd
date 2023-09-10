@@ -3,6 +3,12 @@ import React from 'react';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import { StackProps } from '../../../navigation/navigationTypes';
 import { StackScreenName } from '../../../../ScreenNames';
+import { View } from 'react-native';
+import LottieView from 'lottie-react-native';
+import { HEIGHT, WIDTH } from '../../../utils/dimension';
+import { COLORS } from '../../../constans/COLORS';
+import { styles } from './SteamModal.styles';
+import { devBaseUrl } from '../../../constans/urls';
 
 const SteamModal = () => {
   const navigation = useNavigation<StackProps>();
@@ -19,8 +25,19 @@ const SteamModal = () => {
 
   return (
     <WebView
-      source={{ uri: 'https://ovrpwrd-backend.herokuapp.com/auth/steam' }}
+      source={{ uri: `${devBaseUrl}/auth/steam` }}
       onNavigationStateChange={stateChanged}
+      startInLoadingState={true}
+      renderLoading={() => (
+        <View style={styles.loaderWrapper}>
+          <LottieView
+            source={require('../../../assets/lottie/greenLoader.json')}
+            style={{ width: 50, height: 50 }}
+            autoPlay
+            loop
+          />
+        </View>
+      )}
     />
   );
 };

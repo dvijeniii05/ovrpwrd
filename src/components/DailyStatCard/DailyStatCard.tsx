@@ -32,14 +32,12 @@ const DailyStatCard = (props: Props) => {
             <CurrencyWrapper
               value={item.points.toString()}
               isPerks
-              style={{ backgroundColor: COLORS.blackPrimary }}
               staticWidth
             />
 
             <CurrencyWrapper
               value={(item.points * 0.001).toFixed(2)}
               isPerks={false}
-              style={{ backgroundColor: COLORS.blackPrimary }}
               staticWidth
             />
           </View>

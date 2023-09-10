@@ -1,10 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { MatchStatsProps } from '../../staticTypes';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { calculatePoints } from '../../utils/pointCalculation/pointCalculation';
-import { devBaseUrl } from '../../constans/urls';
+import { userApi } from '../query/endpoints/userApi';
 
 interface StartingPointDataProps {
-  isAuthed: boolean;
+  isGameLinked: boolean;
   email: string;
   displayName: string;
   steamID: string;
@@ -16,6 +15,9 @@ interface StartingPointDataProps {
   dob: string;
   gender: string;
   country: string;
+  isAnonymousUser: boolean;
+  isNewUser: boolean;
+  isAuthed: boolean;
   // matchData: MatchStatsProps[];
 }
 
@@ -27,7 +29,7 @@ export interface userDataStateProps {
 
 const userDataState: userDataStateProps = {
   data: {
-    isAuthed: false,
+    isGameLinked: false,
     email: '',
     displayName: '',
     steamID: '',
@@ -39,6 +41,9 @@ const userDataState: userDataStateProps = {
     dob: '',
     gender: '',
     country: '',
+    isAnonymousUser: true,
+    isNewUser: false,
+    isAuthed: false,
     // matchData: [],
   },
   status: 'idle',
@@ -49,25 +54,10 @@ const userDataSlice = createSlice({
   name: 'userData',
   initialState: userDataState,
   reducers: {
-    updateUserInfo: (state, action) => {
-      console.log('UPDATE_USERINFO_REDUCER_CALLED', action.payload);
-      const { email, displayName } = action.payload;
-      state.data.email = email;
-      state.data.displayName = displayName;
-    },
-    addSteamID: (state, action) => {
-      state.data.steamID = action.payload;
-    },
     addPoints: (state, action) => {
       console.log('ADD_POINTS_REDUCER_CALLED', action.payload);
       const points = calculatePoints(action.payload);
       // state.data.points += points;
-    },
-    updateAuthStatus: (state, action: { payload: boolean; type: string }) => {
-      state.data.isAuthed = action.payload;
-    },
-    updateToken: (state, action) => {
-      state.data.token = action.payload.token;
     },
     openBottomSheet: (state, action) => {
       state.data.bottomSheetState = {
@@ -77,7 +67,13 @@ const userDataSlice = createSlice({
     closeBottomSheet: state => {
       state.data.bottomSheetState.isOpen = false;
     },
-    updateUserDetails: (state, action) => {
+    updateToken: (state, action) => {
+      state.data.token = action.payload.token;
+    },
+    updateUserDetails: (
+      state,
+      action: { payload: Partial<StartingPointDataProps> },
+    ) => {
       const payloadDetails = action.payload;
       state.data = {
         ...state.data,
@@ -85,14 +81,26 @@ const userDataSlice = createSlice({
       };
     },
   },
+  extraReducers: builder => {
+    builder.addMatcher(
+      isAnyOf(
+        userApi.endpoints.registerUser.matchFulfilled,
+        userApi.endpoints.loginUser.matchFulfilled,
+      ),
+      (state, { payload }) => {
+        console.log('PAYLOAD_CHECK', payload);
+        if (payload !== null && payload.token) {
+          state.data.token = payload.token;
+        } else {
+          state.data.token = '';
+        }
+      },
+    );
+  },
 });
 
 export const {
-  updateUserInfo,
-  addSteamID,
   addPoints,
-  updateAuthStatus,
-  updateToken,
   openBottomSheet,
   closeBottomSheet,
   updateUserDetails,

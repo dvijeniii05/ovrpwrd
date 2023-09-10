@@ -1,6 +1,8 @@
 import React from 'react';
-import {StyleProp, View, Image, Text, ViewStyle} from 'react-native';
-import {styles} from './CurrencyWrapper.styles';
+import { StyleProp, View, Image, Text, ViewStyle } from 'react-native';
+import { styles } from './CurrencyWrapper.styles';
+import Perks from '../../assets/Perks.svg';
+import Relics from '../../assets/Relics.svg';
 
 interface Props {
   style?: ViewStyle;
@@ -9,26 +11,17 @@ interface Props {
   staticWidth?: boolean;
 }
 
-const CurrencyWrapper = ({staticWidth = false, ...props}: Props) => {
+const CurrencyWrapper = ({ staticWidth = false, ...props }: Props) => {
   return (
     <View style={[styles.currencyContainer(staticWidth), props.style]}>
       {props.isPerks ? (
         <>
-          <Image
-            source={require('../../assets/dummyAssets/perk.png')}
-            style={{width: 24, height: 24}}
-            resizeMode="cover"
-          />
-
+          <Perks width={24} height={24} />
           <Text style={styles.textContainer(staticWidth)}>{props.value}</Text>
         </>
       ) : (
         <>
-          <Image
-            source={require('../../assets/dummyAssets/relic.png')}
-            style={{width: 24, height: 24}}
-            resizeMode="cover"
-          />
+          <Relics width={24} height={24} />
           <Text style={styles.textContainer(staticWidth)}>{props.value}</Text>
         </>
       )}

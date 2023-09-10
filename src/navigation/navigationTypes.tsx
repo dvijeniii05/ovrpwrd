@@ -3,6 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 export type StackParamList = {
   // SplashScreen: undefined;
   Landing: undefined;
+  Welcome: { email: string };
   Registration: {
     email: string;
   };

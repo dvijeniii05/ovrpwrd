@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ResponseType } from 'axios';
 import { devBaseUrl } from '../../constans/urls';
-import { REHYDRATE } from 'redux-persist';
+import { getToken } from '../store/getTokenHelper';
 
 export interface LeagueData {
   leagueName: string;
@@ -14,7 +13,14 @@ export interface LeagueData {
 
 export const apiSlice = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: devBaseUrl }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: devBaseUrl,
+    prepareHeaders: async headers => {
+      const token = getToken();
+      headers.set('authorization', `${token}`);
+      return headers;
+    },
+  }),
   keepUnusedDataFor: 500,
   endpoints: builder => ({
     getCurentLeagues: builder.query<LeagueData, void>({

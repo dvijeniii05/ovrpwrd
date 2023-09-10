@@ -8,9 +8,6 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../redux/store/mainStore';
-import { updateUserInfo } from '../../redux/slices/userDataSlice';
 import { styles } from './LandingScreen.styles';
 import Logo from '../../assets/Logo.svg';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +17,6 @@ import Gradient from '../../components/Gradient/Gradient';
 type ScreenProps = StackScreenProps<StackParamList>;
 
 const LandingScreen = ({ navigation }: ScreenProps) => {
-  const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -38,10 +34,9 @@ const LandingScreen = ({ navigation }: ScreenProps) => {
       const userInfo = await GoogleSignin.signIn();
       console.log(userInfo);
       const { email, name } = userInfo.user;
-      dispatch(updateUserInfo({ email, displayName: name }));
-      navigation.navigate(StackScreenName.registration, {
-        email,
-      });
+      //TODO: add query to check userExistance with login/User endpoint and navigate to correct stack OR automate navigation in AppDrawer
+      // loginUser({ email });
+      navigation.navigate(StackScreenName.welcome, { email });
     } catch (error: any) {
       console.log('Message', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
