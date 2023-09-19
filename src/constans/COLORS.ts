@@ -11,4 +11,12 @@ export const COLORS = {
   modalBackground: 'rgba(0, 0, 0, 0.90)',
   green: '#C1F54D',
   darkNeutral: '#1D2127',
+  red: '#FF392A',
+};
+
+export const SPECIFIC_COLORS = {
+  tabButtonInactive: '#1C1C86',
+  leagueBarDarkBlue: '#2323FF',
+  leagueBarPurple: '#B23AEA',
+  leagueBarBackground: '#101112',
 };

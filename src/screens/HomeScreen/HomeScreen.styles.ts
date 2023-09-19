@@ -17,6 +17,7 @@ const scroll: ViewStyle = {
 
 const scrollContentContainer: ViewStyle = {
   alignItems: 'center',
+  paddingBottom: 80,
 };
 
 export const styles = {

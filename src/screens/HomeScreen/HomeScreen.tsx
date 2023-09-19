@@ -120,10 +120,11 @@ const Home = () => {
         />
         <DailyStatCard lastTenMatches={lastTenMatches} />
         {/* <DailyRewards /> */}
-        {/* <LeagueProgress />
-          <CardWrapper style={{ paddingTop: 0 }}>
-            <Image source={require('../../assets/dummyAssets/Elf.png')} />
-          </CardWrapper> */}
+        <LeagueProgress />
+
+        {/* <CardWrapper style={{ paddingTop: 0 }}>
+          <Image source={require('../../assets/dummyAssets/Elf.png')} />
+        </CardWrapper> */}
         {/* <LeaderboardCard /> */}
       </ScrollView>
     </SafeAreaView>

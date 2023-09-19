@@ -79,13 +79,13 @@ const LandingScreen = ({ navigation }: ScreenProps) => {
       <Text style={styles.heading}>{t('singUp.text')}</Text>
       <View style={styles.buttonsContainer}>
         <StandardButton
-          iconName="apple"
+          logoName="apple"
           buttonText="Apple"
           isDisabled
           onPress={() => {}}
         />
         <StandardButton
-          iconName="google"
+          logoName="google"
           buttonText="Google"
           onPress={signIn}
         />

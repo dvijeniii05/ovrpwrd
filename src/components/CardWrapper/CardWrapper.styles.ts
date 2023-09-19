@@ -3,11 +3,12 @@ import { WIDTH } from '../../utils/dimension';
 import { COLORS } from '../../constans/COLORS';
 
 const container: ViewStyle = {
-  width: WIDTH,
   borderRadius: 24,
   borderWidth: 2,
   borderColor: COLORS.semiDarkBlue,
-  padding: 8,
+  padding: 12,
+  marginHorizontal: 8,
+  backgroundColor: COLORS.darkBlue,
 };
 
 export const styles = {

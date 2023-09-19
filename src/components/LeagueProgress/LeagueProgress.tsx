@@ -3,67 +3,89 @@ import CardWrapper from '../CardWrapper/CardWrapper';
 import { View, Text } from 'react-native';
 import { styles } from './LeagueProgress.style';
 import {
+  BlurMask,
   Canvas,
-  Circle,
   LinearGradient,
-  RadialGradient,
   Rect,
   vec,
 } from '@shopify/react-native-skia';
-import { COLORS } from '../../constans/COLORS';
+import { COLORS, SPECIFIC_COLORS } from '../../constans/COLORS';
+import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
+import Perk from '../../assets/Perks.svg';
+import StandardButton from '../Buttons/StandardButton/StandardButton';
 
 const LeagueProgress = () => {
   const [outerBarWidth, setOuterBarWidth] = useState<number>(0);
-  const progressLineTotalWidth = outerBarWidth - 48 - 6;
-  const actualProgress = 0.5 * progressLineTotalWidth; // Should be dynamic and driven by perks progress of user per league
+  const actualProgress = 0.8 * outerBarWidth; // Should be dynamic and driven by perks progress of user per league
+
   return (
-    <CardWrapper
-      headingText="League progress"
-      style={styles.wrapperContainer}
-      leagueEndsIn="Ends in 12 days">
-      <View style={styles.progressContainer}>
-        <View style={styles.leagueNamesContainer}>
-          <Text style={{ color: 'white' }}>Legendary</Text>
-          <Text style={{ color: COLORS.transparentWhite }}>Immortal</Text>
+    <CardWrapper style={styles.wrapperContainer}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>League Progress</Text>
+        <Text style={styles.durationtext}>Ends in 12 days</Text>
+      </View>
+      <View style={{ alignItems: 'center' }}>
+        <View style={styles.progressContainer}>
+          <View style={styles.leagueNamesContainer}>
+            <View style={styles.leagueGoalContainer}>
+              <Text style={styles.leagueNameText}>Legendary</Text>
+              <CurrencyWrapper
+                isPerks
+                value="3000"
+                forLeagueProgression
+                style={{ marginTop: 4 }}
+              />
+            </View>
+            <View style={styles.currentPointsContainer}>
+              <Text style={styles.currentPointsText}>5000</Text>
+            </View>
+            <View
+              style={[styles.leagueGoalContainer, { alignItems: 'flex-end' }]}>
+              <Text style={styles.leagueNameText}>Immortal</Text>
+              <CurrencyWrapper
+                isPerks
+                value="9000"
+                forLeagueProgression
+                style={{ marginTop: 4 }}
+              />
+            </View>
+          </View>
+          <View
+            style={styles.barContainer}
+            onLayout={event => {
+              const width = event.nativeEvent.layout.width;
+              console.log('onLayout', event.nativeEvent.layout.width);
+              setOuterBarWidth(Number(width.toFixed(5)));
+            }}>
+            <Canvas style={styles.barCanvas(Math.round(outerBarWidth))}>
+              <Rect height={30} width={actualProgress} color={'black'}>
+                <BlurMask blur={4} respectCTM />
+                <LinearGradient
+                  start={vec(0, 15)}
+                  end={vec(actualProgress, 0)}
+                  colors={[
+                    SPECIFIC_COLORS.leagueBarDarkBlue,
+                    SPECIFIC_COLORS.leagueBarPurple,
+                  ]}
+                />
+              </Rect>
+            </Canvas>
+          </View>
         </View>
-        <View
-          style={styles.barContainer}
-          onLayout={event => {
-            const width = event.nativeEvent.layout.width;
-            console.log(event.nativeEvent.layout.width);
-            setOuterBarWidth(Number(width.toFixed(3)));
-          }}>
-          <Canvas style={styles.circlesCanvas(outerBarWidth)}>
-            <Circle cx={15} cy={12} r={12}>
-              <RadialGradient
-                c={vec(15, 12)}
-                r={12}
-                colors={[COLORS.blackPrimary, COLORS.blue]}
-              />
-            </Circle>
-            <Circle cx={outerBarWidth - 15} cy={12} r={12}>
-              <RadialGradient
-                c={vec(outerBarWidth - 15, 12)}
-                r={12}
-                colors={[COLORS.blackPrimary, COLORS.purple]}
-              />
-            </Circle>
+        <View style={styles.perkContainer}>
+          <Perk width={32} height={32} style={{ zIndex: 5 }} />
+          <Canvas style={styles.perkShadeCanvas}>
+            <Rect width={36} height={36} color={COLORS.darkBlue}></Rect>
           </Canvas>
-          <Canvas style={styles.barCanvas(outerBarWidth)}>
-            <Rect height={6} width={actualProgress} y={9}>
-              <LinearGradient
-                start={vec(0, 0)}
-                end={vec(actualProgress, 24)}
-                colors={[COLORS.blue, COLORS.purple]}
-              />
-            </Rect>
-          </Canvas>
-        </View>
-        <View style={styles.leagueGoalsContainer}>
-          <Text style={{ color: 'white' }}>2000</Text>
-          <Text style={{ color: COLORS.transparentWhite }}>4000</Text>
         </View>
       </View>
+      <StandardButton
+        buttonText="All leagues"
+        buttonTextStyle={{ fontSize: 14 }}
+        iconName="round-chevron-right"
+        onPress={() => {}}
+        style={styles.allLeaguesButton}
+      />
     </CardWrapper>
   );
 };

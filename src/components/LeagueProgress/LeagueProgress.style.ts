@@ -1,62 +1,116 @@
-import { ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { WIDTH } from '../../utils/dimension';
-import { COLORS } from '../../constans/COLORS';
+import { COLORS, SPECIFIC_COLORS } from '../../constans/COLORS';
 
 const wrapperContainer: ViewStyle = {
   justifyContent: 'center',
   alignItems: 'center',
+  marginTop: 8,
+  width: '97%',
+};
+
+const headerContainer: ViewStyle = {
+  paddingBottom: 8,
+};
+
+const headerText: TextStyle = {
+  fontSize: 20,
+  color: COLORS.white,
+  fontFamily: 'Jost-Regular',
+};
+
+const durationtext: TextStyle = {
+  fontSize: 12,
+  color: COLORS.neutral,
+  fontFamily: 'Jost-Regular',
+  textAlign: 'center',
 };
 
 const progressContainer: ViewStyle = {
   width: 0.9 * WIDTH,
-  backgroundColor: COLORS.blackTertiary,
-  padding: 16,
+  backgroundColor: COLORS.darkNeutral,
+  padding: 12,
   borderRadius: 16,
   overflow: 'hidden',
-  marginTop: 8,
+  marginTop: 16,
 };
 
 const leagueNamesContainer: ViewStyle = {
   flexDirection: 'row',
   width: '100%',
-  justifyContent: 'space-between',
 };
 
-const leagueGoalsContainer: ViewStyle = {
-  flexDirection: 'row',
-  width: '100%',
-  justifyContent: 'space-between',
-  marginTop: 4,
+const leagueGoalContainer: ViewStyle = {
+  flex: 1,
+};
+
+const leagueNameText: TextStyle = {
+  color: COLORS.white,
+  fontFamily: 'Jost-Regular',
+};
+
+const currentPointsContainer: ViewStyle = {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+};
+
+const currentPointsText: TextStyle = {
+  color: COLORS.white,
+  fontFamily: 'Jost-SemiBold',
+  fontSize: 20,
 };
 
 const barContainer: ViewStyle = {
-  backgroundColor: COLORS.blackPrimary,
-  height: 30,
+  backgroundColor: SPECIFIC_COLORS.leagueBarBackground,
   marginTop: 12,
   borderRadius: 30,
-  flexDirection: 'row',
-  alignItems: 'center',
+  overflow: 'hidden',
+  height: 30,
 };
-
-const circlesCanvas = (outerBarWidth: number): ViewStyle => ({
-  width: outerBarWidth,
-  height: 24,
-  zIndex: 2,
-});
 
 const barCanvas = (outerBarWidth: number): ViewStyle => ({
   width: outerBarWidth,
-  height: 24,
-  position: 'absolute',
-  zIndex: 1,
-  left: 26,
+  height: 30,
 });
+
+const perkContainer: ViewStyle = {
+  position: 'absolute',
+  zIndex: 3,
+  alignItems: 'center',
+};
+
+const perkShadeCanvas: ViewStyle = {
+  width: '100%',
+  height: '100%',
+  transform: [{ rotate: '45deg' }],
+  position: 'absolute',
+  zIndex: 4,
+};
+
+const allLeaguesButton: ViewStyle = {
+  paddingVertical: 8,
+  width: '100%',
+  marginTop: 16,
+  backgroundColor: 'transparent',
+  borderWidth: 1,
+  borderColor: COLORS.mainBlue,
+};
+
 export const styles = {
   wrapperContainer,
+  headerContainer,
+  headerText,
+  durationtext,
   progressContainer,
   leagueNamesContainer,
-  leagueGoalsContainer,
+  leagueGoalContainer,
+  leagueNameText,
+  currentPointsContainer,
+  currentPointsText,
   barContainer,
-  circlesCanvas,
   barCanvas,
+  perkContainer,
+  perkShadeCanvas,
+  allLeaguesButton,
 };

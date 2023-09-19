@@ -14,15 +14,28 @@ const currencyContainer = (staticWidth: boolean): ViewStyle => {
   };
 };
 
-const textContainer = (staticWidth: boolean): TextStyle => {
+const currencyContainerForLeagues: ViewStyle = {
+  flexDirection: 'row',
+  alignItems: 'center',
+};
+
+const text = (staticWidth: boolean): TextStyle => {
   return {
     color: 'white',
     marginLeft: staticWidth ? 0 : 8,
     fontFamily: 'Jost-SemiBold',
   };
 };
+const textForLeagues: TextStyle = {
+  color: COLORS.white,
+  fontSize: 12,
+  fontFamily: 'Jost-SemiBold',
+  marginLeft: 4,
+};
 
 export const styles = {
   currencyContainer,
-  textContainer,
+  currencyContainerForLeagues,
+  text,
+  textForLeagues,
 };
