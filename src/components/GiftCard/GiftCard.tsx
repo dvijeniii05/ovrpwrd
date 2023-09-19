@@ -1,20 +1,37 @@
 import React from 'react';
-import { View, Image, TouchableOpacity, Text } from 'react-native';
-import Light from '../../assets/dummyAssets/Light.svg';
+import { View } from 'react-native';
+import Light from '../../assets/Light.svg';
+import Gift from '../../assets/Gift.svg';
+import DisabledLight from '../../assets/Disabled-light.svg';
+import DisabledGift from '../../assets/Disabled-gift.svg';
 import { styles } from './GiftCard.styles';
+import StandardButton from '../Buttons/StandardButton/StandardButton';
 
-const GiftCard = () => {
+interface Props {
+  isDisabled?: boolean;
+}
+
+const GiftCard = (props: Props) => {
   return (
     <View style={styles.parentContainer}>
-      <Light style={{ position: 'absolute', top: -8 }} />
-      <Image
-        source={require('../../assets/dummyAssets/gift2.png')}
-        style={{ width: 64, height: 64 }}
-        resizeMode="contain"
+      {props.isDisabled ? (
+        <>
+          <DisabledLight style={{ position: 'absolute', top: -8 }} />
+          <DisabledGift width={72} />
+        </>
+      ) : (
+        <>
+          <Light style={{ position: 'absolute', top: -8 }} />
+          <Gift width={72} />
+        </>
+      )}
+      <StandardButton
+        onPress={() => {}}
+        buttonText="Claim"
+        style={{ paddingVertical: 8, width: '100%', marginTop: 16 }}
+        buttonTextStyle={{ fontSize: 14 }}
+        isDisabled={props.isDisabled}
       />
-      <TouchableOpacity style={styles.buttonContainer}>
-        <Text style={styles.buttonText}>Claim reward</Text>
-      </TouchableOpacity>
     </View>
   );
 };

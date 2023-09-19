@@ -15,7 +15,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/mainStore';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import { useGetUserStatsQuery } from '../../redux/query/endpoints/userApi';
-import DailyRewards from '../../components/DailyRewards/DailyRewards';
 import LeagueProgress from '../../components/LeagueProgress/LeagueProgress';
 import CardWrapper from '../../components/CardWrapper/CardWrapper';
 import LeaderboardCard from '../../components/LeaderboardCard/LeaderboardCard';
@@ -119,7 +118,6 @@ const Home = () => {
           nickName={dummyData.nickName}
         />
         <DailyStatCard lastTenMatches={lastTenMatches} />
-        {/* <DailyRewards /> */}
         <LeagueProgress />
 
         {/* <CardWrapper style={{ paddingTop: 0 }}>

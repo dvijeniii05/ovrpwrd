@@ -19,6 +19,9 @@ import CustomCarousel from 'carousel-with-pagination-rn';
 import { WIDTH } from '../../utils/dimension';
 import FramedImage from '../FramedImage/FramedImage';
 import StandardButton from '../Buttons/StandardButton/StandardButton';
+import GiftCard from '../GiftCard/GiftCard';
+import { Canvas } from '@shopify/react-native-skia';
+import { Rect } from 'react-native-svg';
 
 interface Props {
   lastTenMatches: ParsedMatch[];
@@ -122,23 +125,39 @@ const DailyStatCard = (props: Props) => {
           <Text style={styles.tabsButtonText}>Daily rewards</Text>
         </Pressable>
       </View>
-      <CustomCarousel
-        data={lastThreeMatches}
-        renderItem={newRenderItem}
-        widthBoundaryForPagination={WIDTH * 0.9 + 8}
-        carouselContainerStyle={styles.listViewPort}
-        indicatorWidth={[6, 6, 6]}
-        indicatorHeight={[6, 6, 6]}
-        indicatorColor={[COLORS.neutral, COLORS.white, COLORS.neutral]}
-        indicatorHorizontalPadding={2}
-      />
-      <StandardButton
-        buttonText="Match history"
-        buttonTextStyle={{ fontSize: 14 }}
-        iconName="round-chevron-right"
-        onPress={() => {}}
-        style={{ paddingVertical: 8, width: '100%', marginTop: 16 }}
-      />
+      {isTodaysStatsCard ? (
+        <>
+          <CustomCarousel
+            data={lastThreeMatches}
+            renderItem={newRenderItem}
+            widthBoundaryForPagination={WIDTH * 0.9 + 8}
+            carouselContainerStyle={styles.listViewPort}
+            indicatorWidth={[6, 6, 6]}
+            indicatorHeight={[6, 6, 6]}
+            indicatorColor={[COLORS.neutral, COLORS.white, COLORS.neutral]}
+            indicatorHorizontalPadding={2}
+          />
+          <StandardButton
+            buttonText="Match history"
+            buttonTextStyle={{ fontSize: 14 }}
+            iconName="round-chevron-right"
+            onPress={() => {}}
+            style={{ paddingVertical: 8, width: '100%', marginTop: 16 }}
+          />
+        </>
+      ) : (
+        <View
+          style={{
+            flexDirection: 'row',
+            gap: 4,
+            justifyContent: 'space-evenly',
+            marginTop: 16,
+          }}>
+          <GiftCard />
+          <GiftCard />
+          <GiftCard isDisabled />
+        </View>
+      )}
     </CardWrapper>
   );
 };
