@@ -12,6 +12,8 @@
         "gender.female": "Female",
         "gender.preferNotToSay": "Prefer not to say",
         "avatar.pick.heading": "Choose your avatar",
-        "steam.public.account.information": "Make sure that your steam account privacy is set to 'Public'. This is required to allow us collect your match statistics and use it during point calculation process."
+        "steam.public.account.information": "Make sure that your steam account privacy is set to 'Public'. This is required to allow us collect your match statistics and use it during point calculation process.",
+        "premium.banner.header": "Power-up with premium",
+        "premium.banner.description": "Learn how to get more points and level up with the best players of the month. It's all in your hands"
     }
 }

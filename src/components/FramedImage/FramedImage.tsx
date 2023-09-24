@@ -6,6 +6,10 @@ import WhiteFrame from '../../assets/WhiteFrame.svg';
 interface Props {
   avatar: string;
   frameColor: string;
+  frameSize?: {
+    width: number;
+    height: number;
+  };
 }
 
 const FramedImage = (props: Props) => {
@@ -31,7 +35,12 @@ const FramedImage = (props: Props) => {
       case 'green':
         return <GreenFrame />;
       case 'blue':
-        return <BlueFrame />;
+        return (
+          <BlueFrame
+            width={props.frameSize?.width ?? 95}
+            height={props.frameSize?.height ?? 100}
+          />
+        );
       case 'white':
         return <WhiteFrame />;
     }

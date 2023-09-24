@@ -1,27 +1,14 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  FlatList,
-  ListRenderItemInfo,
-  Pressable,
-} from 'react-native';
+import { View, Text, Image, ListRenderItemInfo, Pressable } from 'react-native';
 import CardWrapper from '../CardWrapper/CardWrapper';
-import ArrowRight from '../../assets/dummyAssets/arrow-right.svg';
 import { styles } from './DailyStatCard.styles';
 import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
-import { dummyData } from '../../constans/dummyData';
 import { COLORS } from '../../constans/COLORS';
 import { ParsedMatch } from '../../constans/interfaces';
 import CustomCarousel from 'carousel-with-pagination-rn';
 import { WIDTH } from '../../utils/dimension';
-import FramedImage from '../FramedImage/FramedImage';
 import StandardButton from '../Buttons/StandardButton/StandardButton';
 import GiftCard from '../GiftCard/GiftCard';
-import { Canvas } from '@shopify/react-native-skia';
-import { Rect } from 'react-native-svg';
 
 interface Props {
   lastTenMatches: ParsedMatch[];
@@ -101,11 +88,6 @@ const DailyStatCard = (props: Props) => {
             }}
             resizeMode="stretch"
           />
-          {/* <FramedImage
-            avatar="2"
-            frameColor="blue"
-            customImage={item.heroUrl}
-          /> */}
         </View>
       </View>
     );
@@ -142,17 +124,11 @@ const DailyStatCard = (props: Props) => {
             buttonTextStyle={{ fontSize: 14 }}
             iconName="round-chevron-right"
             onPress={() => {}}
-            style={{ paddingVertical: 8, width: '100%', marginTop: 16 }}
+            style={styles.matchHistoryButton}
           />
         </>
       ) : (
-        <View
-          style={{
-            flexDirection: 'row',
-            gap: 4,
-            justifyContent: 'space-evenly',
-            marginTop: 16,
-          }}>
+        <View style={styles.giftsContainer}>
           <GiftCard />
           <GiftCard />
           <GiftCard isDisabled />

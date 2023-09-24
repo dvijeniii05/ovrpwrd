@@ -1,31 +1,21 @@
 import React from 'react';
-import {
-  Image,
-  RefreshControl,
-  ScrollView,
-  StatusBar,
-  View,
-} from 'react-native';
+import { ScrollView, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UserInfo from '../../components/UserInfo/UserInfo';
 import DailyStatCard from '../../components/DailyStatCard/DailyStatCard';
-import { COLORS } from '../../constans/COLORS';
-import { HEIGHT } from '../../utils/dimension';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/mainStore';
-import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
-import { useGetUserStatsQuery } from '../../redux/query/endpoints/userApi';
 import LeagueProgress from '../../components/LeagueProgress/LeagueProgress';
-import CardWrapper from '../../components/CardWrapper/CardWrapper';
-import LeaderboardCard from '../../components/LeaderboardCard/LeaderboardCard';
+import Leaderboard from '../../components/Leaderboard/Leaderboard';
 import Gradient from '../../components/Gradient/Gradient';
 import { styles } from './HomeScreen.styles';
-import DetailInput from '../../components/DetailsInput/DetailsInput';
+import PremiumBanner from '../../components/PremiumBanner/PremiumBanner';
 
 const Home = () => {
   const { email, steamID } = useSelector(
     (state: RootState) => state.userData.data,
   );
+
   // const {
   //   data: userStats,
   //   isSuccess,
@@ -106,7 +96,8 @@ const Home = () => {
       <StatusBar barStyle={'light-content'} />
       <ScrollView
         style={styles.scroll}
-        contentContainerStyle={styles.scrollContentContainer}>
+        contentContainerStyle={styles.scrollContentContainer}
+        showsVerticalScrollIndicator={false}>
         <Gradient type="conical" style={{ position: 'absolute' }} />
 
         <UserInfo
@@ -119,11 +110,8 @@ const Home = () => {
         />
         <DailyStatCard lastTenMatches={lastTenMatches} />
         <LeagueProgress />
-
-        {/* <CardWrapper style={{ paddingTop: 0 }}>
-          <Image source={require('../../assets/dummyAssets/Elf.png')} />
-        </CardWrapper> */}
-        {/* <LeaderboardCard /> */}
+        <PremiumBanner />
+        <Leaderboard />
       </ScrollView>
     </SafeAreaView>
   );

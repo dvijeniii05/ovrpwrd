@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator='iPhone 14 Pro'",
+    "ios": "react-native run-ios --simulator='iPhone 15 Pro'",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
@@ -28,7 +28,7 @@
     "luxon": "^3.3.0",
     "react": "18.2.0",
     "react-i18next": "^12.2.2",
-    "react-native": "0.71.7",
+    "react-native": "0.71.11",
     "react-native-country-picker-modal": "^2.0.0",
     "react-native-flipper": "0.163.0",
     "react-native-gesture-handler": "^2.9.0",

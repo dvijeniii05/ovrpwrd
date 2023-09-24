@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, View, Image, Text, ViewStyle } from 'react-native';
+import { View, Text, ViewStyle } from 'react-native';
 import { styles } from './CurrencyWrapper.styles';
 import Perks from '../../assets/Perks.svg';
 import Relics from '../../assets/Relics.svg';
@@ -9,6 +9,8 @@ interface Props {
   value: string;
   staticWidth?: boolean;
   forLeagueProgression?: boolean;
+  perkWidth?: number;
+  perkHeight?: number;
 }
 
 const CurrencyWrapper = ({ staticWidth = false, ...props }: Props) => {
@@ -17,7 +19,10 @@ const CurrencyWrapper = ({ staticWidth = false, ...props }: Props) => {
       <View style={[styles.currencyContainerForLeagues, props.style]}>
         {props.isPerks ? (
           <>
-            <Perks width={12} height={12} />
+            <Perks
+              width={props.perkWidth ?? 12}
+              height={props.perkHeight ?? 12}
+            />
             <Text style={styles.textForLeagues}>{props.value}</Text>
           </>
         ) : (

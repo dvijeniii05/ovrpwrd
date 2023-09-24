@@ -134,6 +134,19 @@ const imageContainer: ViewStyle = {
   height: 70,
 };
 
+const matchHistoryButton: ViewStyle = {
+  paddingVertical: 8,
+  width: '100%',
+  marginTop: 16,
+};
+
+const giftsContainer: ViewStyle = {
+  flexDirection: 'row',
+  gap: 4,
+  justifyContent: 'space-evenly',
+  marginTop: 16,
+};
+
 export const styles = {
   wrapperContainer,
   tabsContainer,
@@ -153,4 +166,6 @@ export const styles = {
   kdaNumberText,
   kdaText,
   imageContainer,
+  matchHistoryButton,
+  giftsContainer,
 };
