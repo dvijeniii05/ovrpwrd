@@ -3,93 +3,50 @@ import { ScrollView, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UserInfo from '../../components/UserInfo/UserInfo';
 import DailyStatCard from '../../components/DailyStatCard/DailyStatCard';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store/mainStore';
 import LeagueProgress from '../../components/LeagueProgress/LeagueProgress';
 import Leaderboard from '../../components/Leaderboard/Leaderboard';
 import Gradient from '../../components/Gradient/Gradient';
 import { styles } from './HomeScreen.styles';
 import PremiumBanner from '../../components/PremiumBanner/PremiumBanner';
+import {
+  useGetUserDetailsQuery,
+  useGetUserStatsQuery,
+} from '../../redux/query/endpoints/userApi';
+import { Loader } from '../../components/Loaders/Loader';
+import { SkeletonLoader } from '../../components/Loaders/SkeletonLoader';
+import { Circle, Rect } from 'react-content-loader/native';
 
-const Home = () => {
-  const { email, steamID } = useSelector(
-    (state: RootState) => state.userData.data,
+const Home: React.FC = () => {
+  const {
+    data: userStats,
+    isSuccess,
+    isFetching,
+    isError,
+    refetch, // should be used in 'pull to refresh' logic
+  } = useGetUserStatsQuery();
+
+  const {
+    data: userDetails,
+    isSuccess: isUserDetailsSuccess,
+    isFetching: isUserDetailsFetching,
+    isError: isUserDetailsError,
+  } = useGetUserDetailsQuery();
+
+  const userDetailsLoader = (
+    <SkeletonLoader viewBox="0,0,300,200">
+      <Circle x="150" y="85" r={30} />
+      <Rect x="100" y="120" width="100" height="25" />
+      <Rect x="110" y="150" width="80" height="10" />
+      <Rect x="95" y="170" rx="12" width="50" height="25" />
+      <Rect x="155" y="170" rx="12" width="50" height="25" />
+    </SkeletonLoader>
   );
 
-  // const {
-  //   data: userStats,
-  //   isSuccess,
-  //   isFetching,
-  //   refetch,
-  // } = useGetUserStatsQuery({
-  //   email: 'adikbsw@gmail.com',
-  // });
-  // const { refetch } = useGetRecentMatchesQuery({
-  //   steamID32: steamID,
-  //   fromThisGame: 'asdad',
-  // });
-
-  const dummyData = {
-    userName: 'Morskoy Turok',
-    email: 'morskoy@gmail.com',
-    perks: 7290,
-    relics: 7.29,
-    dailyP: '238',
-    dailyR: '0.24',
-    time: '12:48',
-    game: 'DOTA',
-    result: 'WIN',
-    k: '5',
-    d: '6',
-    a: '5',
-    nickName: 'Shtex',
-  };
-
-  const lastTenMatches = [
-    {
-      isWin: true,
-      hero: 67,
-      time: 1694274541,
-      points: 232,
-      heroUrl:
-        'https://cdn.dota2.com/apps/dota2/images/heroes/spectre_full.png',
-      kills: 13,
-      deaths: 6,
-      assists: 27,
-    },
-    {
-      isWin: false,
-      hero: 123,
-      time: 1694216426,
-      points: 95,
-      heroUrl:
-        'https://cdn.dota2.com/apps/dota2/images/heroes/hoodwink_full.png',
-      kills: 5,
-      deaths: 9,
-      assists: 21,
-    },
-    {
-      isWin: true,
-      hero: 35,
-      time: 1694214144,
-      points: 221,
-      heroUrl: 'https://cdn.dota2.com/apps/dota2/images/heroes/sniper_full.png',
-      kills: 11,
-      deaths: 8,
-      assists: 20,
-    },
-    {
-      isWin: true,
-      hero: 120,
-      time: 1694212814,
-      points: 126,
-      heroUrl:
-        'https://cdn.dota2.com/apps/dota2/images/heroes/pangolier_full.png',
-      kills: 4,
-      deaths: 4,
-      assists: 11,
-    },
-  ];
+  const dailyStatsLoader = (
+    <SkeletonLoader viewBox="0,0,370,380">
+      <Rect x="10" y="20" rx="20" width="350" height="350" />
+    </SkeletonLoader>
+  );
 
   return (
     <SafeAreaView edges={['bottom']}>
@@ -99,19 +56,31 @@ const Home = () => {
         contentContainerStyle={styles.scrollContentContainer}
         showsVerticalScrollIndicator={false}>
         <Gradient type="conical" style={{ position: 'absolute' }} />
-
-        <UserInfo
-          totalPoints={{
-            currentPerks: dummyData.perks,
-            currentRelics: dummyData.relics,
-          }}
-          userName={dummyData.userName}
-          nickName={dummyData.nickName}
-        />
-        <DailyStatCard lastTenMatches={lastTenMatches} />
-        <LeagueProgress />
+        <Loader
+          isFetching={isUserDetailsFetching || isFetching}
+          isSuccess={isUserDetailsSuccess}
+          isError={isUserDetailsError}
+          fetchFallback={userDetailsLoader}>
+          <UserInfo
+            currentPerks={userStats?.currentPoints.currentPerks}
+            currentRelics={userStats?.currentPoints.currentRelics}
+            userName={userDetails?.fullName}
+            nickName={userDetails?.nickname}
+          />
+        </Loader>
+        <Loader
+          isFetching={isFetching}
+          isSuccess={isSuccess}
+          isError={isError}
+          fetchFallback={dailyStatsLoader}>
+          <DailyStatCard
+            lastTenMatches={userStats?.significantMatches}
+            firstGameId={userDetails?.latestGameId}
+          />
+        </Loader>
+        <LeagueProgress currentPerks={userStats?.currentPoints.currentPerks} />
         <PremiumBanner />
-        <Leaderboard />
+        <Leaderboard nickname={userDetails?.nickname} />
       </ScrollView>
     </SafeAreaView>
   );

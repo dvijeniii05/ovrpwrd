@@ -6,7 +6,7 @@ import Relics from '../../assets/Relics.svg';
 interface Props {
   style?: ViewStyle;
   isPerks: boolean;
-  value: string;
+  value: number;
   staticWidth?: boolean;
   forLeagueProgression?: boolean;
   perkWidth?: number;

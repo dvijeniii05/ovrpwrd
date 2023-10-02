@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Image, ListRenderItemInfo, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ListRenderItemInfo,
+  Pressable,
+  Linking,
+} from 'react-native';
 import CardWrapper from '../CardWrapper/CardWrapper';
 import { styles } from './DailyStatCard.styles';
 import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
@@ -9,14 +16,19 @@ import CustomCarousel from 'carousel-with-pagination-rn';
 import { WIDTH } from '../../utils/dimension';
 import StandardButton from '../Buttons/StandardButton/StandardButton';
 import GiftCard from '../GiftCard/GiftCard';
+import FramedImage from '../FramedImage/FramedImage';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
-  lastTenMatches: ParsedMatch[];
+  lastTenMatches?: ParsedMatch[];
+  firstGameId?: number;
 }
 
 const DailyStatCard = (props: Props) => {
   const [isTodaysStatsCard, setIsTodaysStatsCard] = useState<boolean>(true);
-  const lastThreeMatches = props.lastTenMatches.slice(0, 3);
+  const lastThreeMatches = props.lastTenMatches?.slice(0, 3);
+
+  const { t } = useTranslation();
 
   const newRenderItem = ({ item }: ListRenderItemInfo<ParsedMatch>) => {
     return (
@@ -24,14 +36,14 @@ const DailyStatCard = (props: Props) => {
         <View style={styles.itemContainer}>
           <View style={styles.currencyContainer}>
             <CurrencyWrapper
-              value={item.points.toString()}
+              value={item.points}
               isPerks
               staticWidth
               style={{ backgroundColor: COLORS.darkGrey }}
             />
 
             <CurrencyWrapper
-              value={(item.points * 0.001).toFixed(2)}
+              value={+(item.points * 0.001).toFixed(2)} // "+" is used to convert string into number
               isPerks={false}
               staticWidth
               style={{ backgroundColor: COLORS.darkGrey }}
@@ -93,6 +105,72 @@ const DailyStatCard = (props: Props) => {
     );
   };
 
+  const noGamesCard = () => {
+    return (
+      <View style={styles.itemWrapper}>
+        <View style={styles.itemContainer}>
+          <View style={styles.currencyContainer}>
+            <CurrencyWrapper
+              value={0}
+              isPerks
+              staticWidth
+              style={{ backgroundColor: COLORS.darkGrey }}
+            />
+            <CurrencyWrapper
+              value={0} // "+" is used to convert string into number
+              isPerks={false}
+              staticWidth
+              style={{ backgroundColor: COLORS.darkGrey }}
+            />
+          </View>
+          <View style={styles.noGameContainer}>
+            <Text style={styles.noGameText}>
+              {`${t('dailyStats.noGame.card.text')}`}{' '}
+              <Text
+                style={{
+                  color: COLORS.green,
+                  textDecorationLine: 'underline',
+                }}
+                onPress={() => {
+                  Linking.openURL(
+                    `https://www.opendota.com/matches/${props.firstGameId}`,
+                  );
+                }}>
+                {props.firstGameId}
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const carouselContent = () => {
+    if (!lastThreeMatches?.length) return noGamesCard();
+
+    return (
+      <>
+        <CustomCarousel
+          data={lastThreeMatches}
+          renderItem={newRenderItem}
+          widthBoundaryForPagination={WIDTH * 0.9 + 8}
+          carouselContainerStyle={styles.listViewPort}
+          indicatorWidth={[6, 6, 6]}
+          indicatorHeight={[6, 6, 6]}
+          indicatorColor={[COLORS.neutral, COLORS.white, COLORS.neutral]}
+          indicatorHorizontalPadding={2}
+        />
+        <StandardButton
+          buttonText="Match history"
+          buttonTextStyle={{ fontSize: 14 }}
+          iconName="round-chevron-right"
+          onPress={() => {}}
+          style={styles.matchHistoryButton}
+        />
+      </>
+    );
+  };
+
   return (
     <CardWrapper style={styles.wrapperContainer}>
       <View style={styles.tabsContainer}>
@@ -108,25 +186,7 @@ const DailyStatCard = (props: Props) => {
         </Pressable>
       </View>
       {isTodaysStatsCard ? (
-        <>
-          <CustomCarousel
-            data={lastThreeMatches}
-            renderItem={newRenderItem}
-            widthBoundaryForPagination={WIDTH * 0.9 + 8}
-            carouselContainerStyle={styles.listViewPort}
-            indicatorWidth={[6, 6, 6]}
-            indicatorHeight={[6, 6, 6]}
-            indicatorColor={[COLORS.neutral, COLORS.white, COLORS.neutral]}
-            indicatorHorizontalPadding={2}
-          />
-          <StandardButton
-            buttonText="Match history"
-            buttonTextStyle={{ fontSize: 14 }}
-            iconName="round-chevron-right"
-            onPress={() => {}}
-            style={styles.matchHistoryButton}
-          />
-        </>
+        carouselContent()
       ) : (
         <View style={styles.giftsContainer}>
           <GiftCard />

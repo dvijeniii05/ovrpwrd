@@ -14,7 +14,6 @@ const PremiumBanner = () => {
       style={styles.parentContainer}
       onLayout={event => {
         const width = event.nativeEvent.layout.height;
-        console.log('onLayout', event.nativeEvent.layout.width);
         setBannerHeight(Number(width.toFixed(3)));
       }}>
       <Image

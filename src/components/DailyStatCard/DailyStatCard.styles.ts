@@ -147,6 +147,19 @@ const giftsContainer: ViewStyle = {
   marginTop: 16,
 };
 
+const noGameContainer: ViewStyle = {
+  padding: 8,
+  alignItems: 'center',
+  marginTop: 16,
+};
+
+const noGameText: TextStyle = {
+  color: COLORS.white,
+  fontFamily: 'Jost-Regular',
+  fontSize: 16,
+  textAlign: 'center',
+};
+
 export const styles = {
   wrapperContainer,
   tabsContainer,
@@ -168,4 +181,6 @@ export const styles = {
   imageContainer,
   matchHistoryButton,
   giftsContainer,
+  noGameContainer,
+  noGameText,
 };

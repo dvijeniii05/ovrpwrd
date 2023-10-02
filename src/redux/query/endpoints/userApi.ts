@@ -1,6 +1,5 @@
-import { FetchBaseQueryMeta } from '@reduxjs/toolkit/dist/query';
 import { ParsedMatch } from '../../../constans/interfaces';
-import { updateUserDetails, updateToken } from '../../slices/userDataSlice';
+import { updateUserDetails } from '../../slices/userDataSlice';
 import { apiSlice } from '../apiSlice';
 import { startListening } from '../listenerMiddleware';
 
@@ -25,8 +24,10 @@ export interface UserRegisterArgProps {
   avatar: string;
 }
 
-export interface UserRequestProps {
-  email: string;
+export interface UserDetailsResponseProps
+  extends Omit<UserRegisterArgProps, 'gender' | 'country'> {
+  steamID32: string;
+  latestGameId: number;
 }
 
 export interface UserStatsResponseProps {
@@ -34,7 +35,7 @@ export interface UserStatsResponseProps {
     currentPerks: number;
     currentRelics: number;
   };
-  lastTenMatches: ParsedMatch[];
+  significantMatches: ParsedMatch[];
 }
 
 export interface UserSteamLinkProps {
@@ -77,8 +78,13 @@ export const userApi = apiSlice.injectEndpoints({
     linkSteamID: builder.query<AuthResponseProps, UserSteamLinkProps>({
       query: args => `/userAuth/linkSteam/${args.steamID32}`,
     }),
-    getUserStats: builder.query<UserStatsResponseProps, UserRequestProps>({
-      query: args => `/userAuth/getUserStats/${args.email}`,
+    getUserStats: builder.query<UserStatsResponseProps, void>({
+      query: () => `/userAuth/getUserStats`,
+    }),
+    getUserDetails: builder.query<UserDetailsResponseProps, void>({
+      query: () => ({
+        url: `/userAuth/getUserDetails`,
+      }),
     }),
   }),
 });
@@ -88,6 +94,7 @@ export const {
   useLoginUserQuery,
   useUpdateUserDetailsMutation,
   useGetUserStatsQuery,
+  useGetUserDetailsQuery,
   useLinkSteamIDQuery,
 } = userApi;
 
