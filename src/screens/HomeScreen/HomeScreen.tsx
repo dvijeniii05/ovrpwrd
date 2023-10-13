@@ -3,7 +3,7 @@ import { ScrollView, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UserInfo from '../../components/UserInfo/UserInfo';
 import DailyStatCard from '../../components/DailyStatCard/DailyStatCard';
-import LeagueProgress from '../../components/LeagueProgress/LeagueProgress';
+import LeagueProgress from '../../components/ActiveLeagueProgress/ActiveLeagueProgress';
 import Leaderboard from '../../components/Leaderboard/Leaderboard';
 import Gradient from '../../components/Gradient/Gradient';
 import { styles } from './HomeScreen.styles';
@@ -15,8 +15,13 @@ import {
 import { Loader } from '../../components/Loaders/Loader';
 import { SkeletonLoader } from '../../components/Loaders/SkeletonLoader';
 import { Circle, Rect } from 'react-content-loader/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackParamList } from '../../navigation/navigationTypes';
+import { StackScreenName } from '../../../ScreenNames';
 
-const Home: React.FC = () => {
+type ScreenProps = StackScreenProps<StackParamList, StackScreenName.home>;
+
+const Home = ({ navigation }: ScreenProps) => {
   const {
     data: userStats,
     isSuccess,
@@ -58,8 +63,6 @@ const Home: React.FC = () => {
         <Gradient type="conical" style={{ position: 'absolute' }} />
         <Loader
           isFetching={isUserDetailsFetching || isFetching}
-          isSuccess={isUserDetailsSuccess}
-          isError={isUserDetailsError}
           fetchFallback={userDetailsLoader}>
           <UserInfo
             currentPerks={userStats?.currentPoints.currentPerks}
@@ -68,17 +71,13 @@ const Home: React.FC = () => {
             nickName={userDetails?.nickname}
           />
         </Loader>
-        <Loader
-          isFetching={isFetching}
-          isSuccess={isSuccess}
-          isError={isError}
-          fetchFallback={dailyStatsLoader}>
+        <Loader isFetching={isFetching} fetchFallback={dailyStatsLoader}>
           <DailyStatCard
             lastTenMatches={userStats?.significantMatches}
             firstGameId={userDetails?.latestGameId}
           />
         </Loader>
-        <LeagueProgress currentPerks={userStats?.currentPoints.currentPerks} />
+        <LeagueProgress navigation={navigation} />
         <PremiumBanner />
         <Leaderboard nickname={userDetails?.nickname} />
       </ScrollView>

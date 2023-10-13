@@ -10,4 +10,6 @@ export enum StackScreenName {
   steamModal = 'SteamModal',
   steamLink = 'SteamLink',
   home = 'Home',
+  allLeagues = 'AllLeagues',
+  leagueInfo = 'LeagueInfo',
 }

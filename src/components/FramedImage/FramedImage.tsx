@@ -1,4 +1,4 @@
-import { View, Image } from 'react-native';
+import { View, Image, ViewStyle } from 'react-native';
 import GreenFrame from '../../assets/GreenFrame.svg';
 import BlueFrame from '../../assets/BlueFrame.svg';
 import WhiteFrame from '../../assets/WhiteFrame.svg';
@@ -10,6 +10,7 @@ interface Props {
     width: number;
     height: number;
   };
+  style?: ViewStyle;
 }
 
 const FramedImage = (props: Props) => {
@@ -48,10 +49,13 @@ const FramedImage = (props: Props) => {
 
   return (
     <View
-      style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+      style={[
+        {
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        props.style,
+      ]}>
       {frame()}
       <Image
         source={avatarLocation()}

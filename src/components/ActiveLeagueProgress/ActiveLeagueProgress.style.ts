@@ -2,11 +2,17 @@ import { TextStyle, ViewStyle } from 'react-native';
 import { WIDTH } from '../../utils/dimension';
 import { COLORS, SPECIFIC_COLORS } from '../../constans/COLORS';
 
+const parentContainer: ViewStyle = {
+  width: '100%',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
 const wrapperContainer: ViewStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   marginTop: 8,
-  width: '97%',
+  width: '100%',
 };
 
 const headerContainer: ViewStyle = {
@@ -98,6 +104,7 @@ const allLeaguesButton: ViewStyle = {
 };
 
 export const styles = {
+  parentContainer,
   wrapperContainer,
   headerContainer,
   headerText,

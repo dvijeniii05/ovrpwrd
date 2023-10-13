@@ -1,22 +1,40 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { devBaseUrl } from '../../constans/urls';
 import { getToken } from '../store/getTokenHelper';
+import { leaugeNames } from '../../constans/interfaces';
+
+export interface UserCountOnLeagues {
+  legendary: number;
+  mythical: number;
+  immortal: number;
+}
+
+export interface LastTimeWinner {
+  winnerName: string;
+  prizeName: string;
+  prizeValue: number;
+  prizeImageUrl: string;
+  season: string;
+}
+
+export interface LeaguePrize {
+  prizeBrand: string;
+  prizeName: string;
+  prizeDescription: string;
+  imageUrl: string;
+  isPremium: boolean;
+  linkToProduct: string;
+}
 
 export interface LeagueData {
   season: number;
-  leagueName: string;
+  leagueName: leaugeNames;
   endDate: number;
   pointsMin: number;
   pointsMax: number;
   prizes: LeaguePrize[];
   sponsorInformation?: string;
-  lastTimeWinner?: string;
-}
-
-export interface LeaguePrize {
-  prizeName: string;
-  prizeDescription: string;
-  imageUrl: string;
+  lastTimeWinner: LastTimeWinner;
 }
 
 export interface LeaderboardUser {
@@ -42,10 +60,17 @@ export const apiSlice = createApi({
     getCurentLeagues: builder.query<LeagueData[], void>({
       query: () => `/currentLeagues`,
     }),
+    getUserCountOnLeagues: builder.query<UserCountOnLeagues, void>({
+      query: () => `/currentLeagues/userCountOnLeagues`,
+    }),
     getLeaderboard: builder.query<LeaderboardUser[], void>({
       query: () => `/leaderboard`,
     }),
   }),
 });
 
-export const { useGetCurentLeaguesQuery, useGetLeaderboardQuery } = apiSlice;
+export const {
+  useGetCurentLeaguesQuery,
+  useGetUserCountOnLeaguesQuery,
+  useGetLeaderboardQuery,
+} = apiSlice;

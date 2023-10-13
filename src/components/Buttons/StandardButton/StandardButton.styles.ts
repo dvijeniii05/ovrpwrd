@@ -13,7 +13,7 @@ const buttonContainer = (
   alignItems: 'center',
   gap: 8,
   borderRadius: 12,
-  width: '100%',
+  maxWidth: '100%',
 });
 
 const buttonText: TextStyle = {

@@ -9,7 +9,7 @@ const wrapperContainer: ViewStyle = {
   alignItems: 'center',
   marginTop: 24,
   backgroundColor: COLORS.darkBlue,
-  width: '97%',
+  width: '100%',
 };
 
 const tabsContainer: ViewStyle = {

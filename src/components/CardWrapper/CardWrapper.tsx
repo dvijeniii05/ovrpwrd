@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, ViewStyle } from 'react-native';
+import { TouchableOpacity, View, ViewStyle } from 'react-native';
 import { styles } from './CardWrapper.styles';
 
 interface Props {
   children: React.ReactNode;
   style?: ViewStyle;
+  onPress?: () => void;
 }
 
 const CardWrapper = (props: Props) => {
@@ -15,7 +16,17 @@ const CardWrapper = (props: Props) => {
     //   blurType="dark">
     //   {props.children}
     // </BlurView>
-    <View style={[styles.container, props.style]}>{props.children}</View>
+    <>
+      {props.onPress ? (
+        <TouchableOpacity
+          style={[styles.container, props.style]}
+          onPress={props.onPress}>
+          {props.children}
+        </TouchableOpacity>
+      ) : (
+        <View style={[styles.container, props.style]}>{props.children}</View>
+      )}
+    </>
   );
 };
 

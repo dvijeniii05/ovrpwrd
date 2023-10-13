@@ -20,6 +20,8 @@ import AvatarScreen from '../screens/AvatarScreen/AvatarScreen';
 import LinkGame from '../screens/LinkGameScreen/LinkGameScreen';
 import { withBackButton } from './ScreenOptions';
 import WelcomeScreen from '../screens/WelcomeScreen/WelcomeScreen';
+import LeagueScreen from '../screens/LeagueInfoScreen/LeagueInfoScreen';
+import AllLeaguesScreen from '../screens/AllLeaguesScreen/AllLeaguesScreen';
 
 const Stack = createStackNavigator<StackParamList>();
 
@@ -65,6 +67,16 @@ const AppDrawer = () => {
       /> */}
       {/* {isAuthed && ( */}
       <Stack.Screen name={StackScreenName.home} component={Home} />
+      <Stack.Screen
+        name={StackScreenName.allLeagues}
+        component={AllLeaguesScreen}
+        options={withBackButton}
+      />
+      <Stack.Screen
+        name={StackScreenName.leagueInfo}
+        component={LeagueScreen}
+        options={withBackButton}
+      />
       {/* )} */}
     </Stack.Navigator>
   );

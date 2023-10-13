@@ -1,4 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack';
+import { leaugeNames } from '../constans/interfaces';
 
 export type StackParamList = {
   // SplashScreen: undefined;
@@ -15,6 +16,11 @@ export type StackParamList = {
     steamID32: string;
   };
   Home: undefined;
+  AllLeagues: undefined;
+  LeagueInfo: {
+    leagueName: leaugeNames;
+    userPerks: number;
+  };
 };
 
 export type StackProps = StackNavigationProp<StackParamList>;

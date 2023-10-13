@@ -18,8 +18,14 @@ const UserInfo = (props: Props) => {
       <Text style={styles.nameText}>{props.userName}</Text>
       <Text style={styles.nickNameText}>{`@${props.nickName}`}</Text>
       <View style={styles.currencyContainer}>
-        <CurrencyWrapper value={props.currentPerks ?? 0} isPerks />
-        <CurrencyWrapper value={props.currentRelics ?? 0} isPerks={false} />
+        <CurrencyWrapper
+          value={Number(props.currentPerks).toFixed(0) ?? 0}
+          isPerks
+        />
+        <CurrencyWrapper
+          value={Number(props.currentRelics).toFixed(2) ?? '0'}
+          isPerks={false}
+        />
       </View>
     </View>
   );
