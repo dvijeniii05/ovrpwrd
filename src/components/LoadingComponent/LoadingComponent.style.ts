@@ -1,30 +1,18 @@
-import {TextStyle, ViewStyle} from 'react-native';
-import {HEIGHT, WIDTH} from '../../utils/dimension';
+import { ViewStyle } from 'react-native';
+import { HEIGHT, WIDTH } from '../../utils/dimension';
+import { COLORS } from '../../constans/COLORS';
 
 const parentContainer: ViewStyle = {
-  position: 'absolute',
-  backgroundColor: 'black',
   width: WIDTH,
   height: HEIGHT,
-  zIndex: 1,
+  position: 'absolute',
+  backgroundColor: COLORS.darkBlue,
+  opacity: 0.9,
   justifyContent: 'center',
   alignItems: 'center',
-  opacity: 0.95,
-};
-
-const indicatorContainer: ViewStyle = {
-  justifyContent: 'center',
-  alignItems: 'center',
-};
-
-const textContainer: TextStyle = {
-  marginTop: 10,
-  fontSize: 16,
-  color: 'green',
+  zIndex: 5,
 };
 
 export const styles = {
   parentContainer,
-  indicatorContainer,
-  textContainer,
 };

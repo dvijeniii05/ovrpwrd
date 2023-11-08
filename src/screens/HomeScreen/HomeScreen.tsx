@@ -1,166 +1,123 @@
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {View, Text, Alert, TextInput, Image} from 'react-native';
-import {useTranslation} from 'react-i18next';
-import {styles} from './HomeScreen.style';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../../redux/store/mainStore';
-import {useGetCurentLeaguesQuery} from '../../redux/query/apiSlice';
-import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import React from 'react';
+import { ScrollView, StatusBar, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import UserInfo from '../../components/UserInfo/UserInfo';
+import DailyStatCard from '../../components/DailyStatCard/DailyStatCard';
+import ActiveLeagueProgress from '../../components/ActiveLeagueProgress/ActiveLeagueProgress';
+import Leaderboard from '../../components/Leaderboard/Leaderboard';
+import Gradient from '../../components/Gradient/Gradient';
+import { styles } from './HomeScreen.styles';
+import PremiumBanner from '../../components/PremiumBanner/PremiumBanner';
 import {
-  fetchCustomMatchData,
-  fetchRecentGamesData,
-  resetPointsDev,
-} from '../../redux/slices/userDataSlice';
+  useGetUserDetailsQuery,
+  useGetUserStatsQuery,
+} from '../../redux/query/endpoints/userApi';
+import { Loader } from '../../components/Loaders/Loader';
+import { SkeletonLoader } from '../../components/Loaders/SkeletonLoader';
+import { Circle, Rect } from 'react-content-loader/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { StackParamList } from '../../navigation/navigationTypes';
+import { StackScreenName } from '../../../ScreenNames';
+import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
+import { HEIGHT } from '../../utils/dimension';
 
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {LeagueCard} from '../../components/LeagueCard/LeagueCard';
+type ScreenProps = StackScreenProps<StackParamList, StackScreenName.home>;
 
-const HomeScreen = () => {
-  const {t} = useTranslation();
-  const dispatch = useDispatch<AppDispatch>();
-  const steamData = useSelector((state: RootState) => state.steamAuth);
-  const userData = useSelector((state: RootState) => state.userData);
+const Home = ({ navigation }: ScreenProps) => {
   const {
-    startingGameID,
-    startingGameTime,
-    matchData,
-    firstEverGameID,
-    firstEverGameTime,
-    points,
-  } = userData.data;
-
-  const [customMatchId, setCustomMatchId] = useState<string>('');
-
-  const {
-    data: currentLeaguesData,
-    isFetching,
-    isLoading,
-    isError,
+    data: userStats,
     isSuccess,
-  } = useGetCurentLeaguesQuery();
+    isFetching,
+    isError,
+    refetch, // should be used in 'pull to refresh' logic
+  } = useGetUserStatsQuery();
 
-  //Add raw statisctics from openDotaApi & calculated value
-  //Data should be fetched onPress for now
-  //Save start_time of the most recent game and update that value on each fetch
-  //Filter is required to fetch only new matches, excluding the ones that were already counted in
-  //Fetch using RTKQuery with a key for cache expiry process
-  // role: 1 or 2 = supports
-  //gameMode: 23 = turbo, 2 = all_draft
-  //lobbyType: 5,6,7 = ranking
+  const {
+    data: userDetails,
+    isFetching: isUserDetailsFetching,
+    isError: isUserDetailsError,
+    refetch: refetchUserDetails,
+  } = useGetUserDetailsQuery();
 
-  const relicPoints = (points / 1000).toFixed(2);
+  const userDetailsLoader = (
+    <SkeletonLoader viewBox="0,0,300,200">
+      <Circle x="150" y="85" r={30} />
+      <Rect x="100" y="120" width="100" height="25" />
+      <Rect x="110" y="150" width="80" height="10" />
+      <Rect x="95" y="170" rx="12" width="50" height="25" />
+      <Rect x="155" y="170" rx="12" width="50" height="25" />
+    </SkeletonLoader>
+  );
+
+  const dailyStatsLoader = (
+    <SkeletonLoader viewBox="0,0,370,380">
+      <Rect x="10" y="20" rx="20" width="350" height="350" />
+    </SkeletonLoader>
+  );
 
   return (
-    <SafeAreaView style={styles.parentContainer}>
-      <LoadingComponent
-        loadingText={'Fetching data...'}
-        isLoading={userData.status === 'pending' ? true : false}
-      />
-
-      <KeyboardAwareScrollView contentContainerStyle={styles.parentContainer}>
-        {steamData.status === 'fulfilled' && (
-          <View style={styles.idContainer}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{color: 'white'}}>{points}</Text>
-              <Image
-                source={require('../../assets/bad1.png')}
-                style={{width: 20, height: 20}}
-                resizeMode="contain"
-              />
-              <Text style={{color: 'white', marginLeft: 8}}>{relicPoints}</Text>
-              <Image
-                source={require('../../assets/good2.png')}
-                style={{width: 20, height: 20}}
-                resizeMode="contain"
-              />
-            </View>
-            <Text style={{color: 'black', backgroundColor: 'green'}}>
-              ID: {steamData.steamID}
-            </Text>
+    <SafeAreaView edges={['bottom']}>
+      <StatusBar barStyle={'light-content'} />
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContentContainer}
+        showsVerticalScrollIndicator={false}>
+        <Gradient type="conical" style={{ position: 'absolute' }} />
+        {isError || isUserDetailsError ? (
+          <View
+            style={{
+              justifyContent: 'center',
+              height: HEIGHT,
+            }}>
+            <GeneralErrorComponent
+              refetchFunction={() => {
+                refetch();
+                refetchUserDetails();
+              }}
+              isExtraLargeComponent
+              customErrorMessage="Something went wrong"
+            />
           </View>
+        ) : (
+          <>
+            <Loader
+              isFetching={isUserDetailsFetching || isFetching}
+              fetchFallback={userDetailsLoader}>
+              <UserInfo
+                currentPerks={userStats?.currentPoints.currentPerks}
+                currentRelics={userStats?.currentPoints.currentRelics}
+                userName={userDetails?.fullName}
+                nickName={userDetails?.nickname}
+                onAvatarPress={() =>
+                  navigation.navigate(StackScreenName.account)
+                }
+                avatar={userDetails?.avatar}
+              />
+            </Loader>
+            <Loader
+              isFetching={isFetching || isUserDetailsFetching}
+              fetchFallback={dailyStatsLoader}>
+              <DailyStatCard
+                lastTenMatches={userStats?.significantMatches}
+                firstGameId={userDetails?.dota.latestGameId}
+              />
+            </Loader>
+            <ActiveLeagueProgress
+              navigation={navigation}
+              isUserFetching={isFetching}
+              isUserSuccess={isSuccess}
+              currentPerks={userStats?.currentPoints.currentPerks}
+            />
+            <PremiumBanner />
+            <Leaderboard
+              isUserFethcing={isUserDetailsFetching}
+              nickname={userDetails?.nickname}
+            />
+          </>
         )}
-        <View style={styles.welcomeContainer}>
-          <Text style={{color: 'white'}}>{t('appName')}</Text>
-        </View>
-        <>
-          {isSuccess ? (
-            <LeagueCard leagueData={currentLeaguesData} userPoints={points} />
-          ) : null}
-          {isError ? (
-            <Text style={{textAlign: 'center', color: 'white'}}>
-              Failed fethcing leagues
-            </Text>
-          ) : null}
-        </>
-        {userData.status === 'fulfilled' ? (
-          <View>
-            <Text style={{textAlign: 'center', color: 'white'}}>
-              Your stats will be counted starting from this match ID:
-              {firstEverGameID}
-            </Text>
-            <Text style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
-              and from this epochTime: {firstEverGameTime}
-            </Text>
-            <Text style={{textAlign: 'center', marginTop: 10, color: 'white'}}>
-              Kajdiy match parsitsya 240 sekund.
-            </Text>
-          </View>
-        ) : null}
-        <View>
-          <Text style={{color: 'white'}}>Current points: {points}</Text>
-          <Text style={{color: 'white'}}>Last Game ID: {startingGameID}</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.refreshButton}
-          onPress={() => {
-            dispatch(
-              fetchRecentGamesData({
-                steamID32: steamData.steamID,
-                fromThisTime: startingGameTime.toString(),
-              }),
-            );
-          }}>
-          <Text style={{color: 'black'}}>REFRESH</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.resetButton}
-          onPress={() => {
-            Alert.alert(
-              'Tebe kaef udalit vse ochki?',
-              'Vse ochki naxuy sletyat na 0',
-              [
-                {
-                  text: 'DA',
-                  onPress: () => dispatch(resetPointsDev()),
-                },
-                {
-                  text: 'NET',
-                  onPress: () => {},
-                },
-              ],
-            );
-          }}>
-          <Text style={{color: 'black'}}>RESET POINTS</Text>
-        </TouchableOpacity>
-        <View style={styles.recalContainer}>
-          <TextInput
-            placeholder="from this gameID"
-            style={{backgroundColor: 'white', color: 'black'}}
-            onChangeText={text => setCustomMatchId(text)}
-          />
-          <TouchableOpacity
-            style={styles.recalcButton}
-            onPress={() =>
-              dispatch(fetchCustomMatchData({matchID: customMatchId}))
-            }>
-            <Text style={{color: 'white'}}>Recalculate</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAwareScrollView>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default HomeScreen;
+export default Home;

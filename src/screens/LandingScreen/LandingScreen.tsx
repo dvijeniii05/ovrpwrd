@@ -1,21 +1,23 @@
-import React, {useEffect} from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {StackParamList} from '../../navigation/navigationTypes';
-import {StackScreenName} from '../../../ScreenNames';
-import {StackScreenProps} from '@react-navigation/stack';
+import React, { useEffect } from 'react';
+import { Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StackParamList } from '../../navigation/navigationTypes';
+import { StackScreenName } from '../../../ScreenNames';
+import { StackScreenProps } from '@react-navigation/stack';
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {useDispatch} from 'react-redux';
-import {AppDispatch} from '../../redux/store/mainStore';
-import {updateUserInfo} from '../../redux/slices/userDataSlice';
+import { styles } from './LandingScreen.styles';
+import Logo from '../../assets/Logo.svg';
+import { useTranslation } from 'react-i18next';
+import StandardButton from '../../components/Buttons/StandardButton/StandardButton';
+import Gradient from '../../components/Gradient/Gradient';
 
 type ScreenProps = StackScreenProps<StackParamList>;
 
-const LandingScreen = ({navigation}: ScreenProps) => {
-  const dispatch = useDispatch<AppDispatch>();
+const LandingScreen = ({ navigation }: ScreenProps) => {
+  const { t } = useTranslation();
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -31,12 +33,10 @@ const LandingScreen = ({navigation}: ScreenProps) => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log(userInfo);
-      const {email, name} = userInfo.user;
-      dispatch(updateUserInfo({email, displayName: name}));
-      navigation.navigate(StackScreenName.steamLogin, {
-        email,
-        displayName: name ?? 'noName',
-      });
+      const { email, name } = userInfo.user;
+      //TODO: add query to check userExistance with login/User endpoint and navigate to correct stack OR automate navigation in AppDrawer
+      // loginUser({ email });
+      navigation.navigate(StackScreenName.welcome, { email });
     } catch (error: any) {
       console.log('Message', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -73,24 +73,22 @@ const LandingScreen = ({navigation}: ScreenProps) => {
     }
   };
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: 'black',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <View style={{height: 500, justifyContent: 'space-around'}}>
-        <Text style={{color: 'white', textAlign: 'center'}}>
-          Register/Login
-        </Text>
-        <TouchableOpacity onPress={signIn}>
-          <Image
-            source={require('../../assets/google/googleButton.png')}
-            resizeMode="contain"
-            style={{width: 200, height: 50}}
-          />
-        </TouchableOpacity>
+    <SafeAreaView style={styles.parentContainer} edges={['bottom']}>
+      <Gradient type="conical" />
+      <Logo style={styles.logo} />
+      <Text style={styles.heading}>{t('singUp.text')}</Text>
+      <View style={styles.buttonsContainer}>
+        <StandardButton
+          logoName="apple"
+          buttonText="Apple"
+          isDisabled
+          onPress={() => {}}
+        />
+        <StandardButton
+          logoName="google"
+          buttonText="Google"
+          onPress={signIn}
+        />
       </View>
     </SafeAreaView>
   );

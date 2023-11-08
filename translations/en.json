@@ -1,6 +1,20 @@
 {
     "translation": {
         "welcome": "Welcome to:",
-        "appName": "OVRPWRD.app"
+        "appName": "OVRPWRD.app",
+        "singUp.text": "You can sign up with",
+        "registration.details.heading": "Fill in your details",
+        "nextStep.button": "Next step",
+        "dob.header": "Date of birth",
+        "button.select": "Select",
+        "genderAtBirth.header": "Gender at birth",
+        "gender.male": "Male",
+        "gender.female": "Female",
+        "gender.preferNotToSay": "Prefer not to say",
+        "avatar.pick.heading": "Choose your avatar",
+        "steam.public.account.information": "Make sure that your steam account privacy is set to 'Public'. This is required to allow us collect your match statistics and use it during point calculation process.",
+        "premium.banner.header": "Power-up with premium",
+        "premium.banner.description": "Learn how to get more points and level up with the best players of the month. It's all in your hands",
+        "dailyStats.noGame.card.text": "We will start counting from the match with the following 'Game ID': "
     }
 }

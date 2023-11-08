@@ -1,16 +1,17 @@
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import WebView, {WebViewNavigation} from 'react-native-webview';
-import {StackProps} from '../../../navigation/navigationTypes';
-import {StackScreenName} from '../../../../ScreenNames';
-import {useDispatch} from 'react-redux';
-import {AppDispatch} from '../../../redux/store/mainStore';
-import {setSteamID} from '../../../redux/slices/steamAuthSlice';
-import {fetchStartingPointData} from '../../../redux/slices/userDataSlice';
+import WebView, { WebViewNavigation } from 'react-native-webview';
+import { StackProps } from '../../../navigation/navigationTypes';
+import { StackScreenName } from '../../../../ScreenNames';
+import { View } from 'react-native';
+import LottieView from 'lottie-react-native';
+import { HEIGHT, WIDTH } from '../../../utils/dimension';
+import { COLORS } from '../../../constans/COLORS';
+import { styles } from './SteamModal.styles';
+import { devBaseUrl } from '../../../constans/urls';
 
 const SteamModal = () => {
   const navigation = useNavigation<StackProps>();
-  const dispatch = useDispatch<AppDispatch>();
 
   const stateChanged = (navState: WebViewNavigation) => {
     console.log('STATE_CHANGED', navState);
@@ -18,16 +19,25 @@ const SteamModal = () => {
     if (navState.url.includes('steamid/?id=')) {
       const steamID32 = navState.url.split('id=')[1];
       console.log('steamID32', steamID32);
-      dispatch(setSteamID(steamID32));
-      dispatch(fetchStartingPointData(steamID32));
-      // navigation.navigate(StackScreenName.home);
+      navigation.navigate(StackScreenName.steamLink, { steamID32 });
     }
   };
 
   return (
     <WebView
-      source={{uri: 'https://ovrpwrd-backend.herokuapp.com/auth/steam'}}
+      source={{ uri: `${devBaseUrl}/auth/steam` }}
       onNavigationStateChange={stateChanged}
+      startInLoadingState={true}
+      renderLoading={() => (
+        <View style={styles.loaderWrapper}>
+          <LottieView
+            source={require('../../../assets/lottie/greenLoader.json')}
+            style={{ width: 50, height: 50 }}
+            autoPlay
+            loop
+          />
+        </View>
+      )}
     />
   );
 };

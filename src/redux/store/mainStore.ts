@@ -1,7 +1,6 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit';
-import steamAuth from '../slices/steamAuthSlice';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import userData from '../slices/userDataSlice';
-import {apiSlice} from '../query/apiSlice';
+import { apiSlice } from '../query/apiSlice';
 import {
   persistStore,
   persistReducer,
@@ -13,6 +12,7 @@ import {
   REGISTER,
 } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { listenerMiddleware } from '../query/listenerMiddleware';
 
 const persistConfig = {
   key: 'root',
@@ -22,7 +22,6 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  steamAuth,
   userData,
   [apiSlice.reducerPath]: apiSlice.reducer,
 });
@@ -32,13 +31,15 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 const createDebugger = require('redux-flipper').default;
 
 export const mainStore = configureStore({
-  reducer: persistedReducer,
+  reducer: persistedReducer, //replace with persistedReducer when cache driven development needed
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(createDebugger(), apiSlice.middleware),
+    })
+      .prepend(listenerMiddleware.middleware)
+      .concat(createDebugger(), apiSlice.middleware),
 });
 
 export const persistor = persistStore(mainStore);

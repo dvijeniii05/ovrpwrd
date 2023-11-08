@@ -38,13 +38,15 @@ export interface UserStatsProps {
 }
 
 export interface MatchStatsProps {
-  id: number;
-  didRadiantWin: boolean;
-  startDateTime: number;
-  lobbyType: number;
-  gameMode: number; // 22 is mmr 23 is turbo
-  isStats: boolean; //is it a fake match?
-  parsedDateTime: number;
-  endDateTime: number;
-  players: Array<UserStatsProps>;
+  match_id: number;
+  player_slot: number;
+  radiant_win: boolean;
+  duration: number; // in Seconds
+  game_mode: number;
+  hero_damage: number;
+  hero_healing: number;
+  kills: number;
+  deaths: number;
+  assists: number;
+  start_time: number;
 }
