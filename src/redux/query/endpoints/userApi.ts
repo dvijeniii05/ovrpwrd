@@ -6,7 +6,7 @@ import { startListening } from '../listenerMiddleware';
 export interface AuthResponseProps {
   token: string | undefined;
   message?: string;
-  startingGameID?: number;
+  latestGameId?: number;
 }
 
 export interface UserLoginResponseProps {
@@ -22,12 +22,28 @@ export interface UserRegisterArgProps {
   gender: string;
   country: string;
   avatar: string;
+  isFullyOnboarded?: boolean;
+}
+
+export interface PurchasedProduct {
+  productThumbnailUrl: string;
+  productBrand: string;
+  productName: string;
+  price: number;
+  isPriceInPerks: boolean;
+  uniqueId: string;
+  promoCode: string;
+  date: string;
+  productLink: string;
 }
 
 export interface UserDetailsResponseProps
   extends Omit<UserRegisterArgProps, 'gender' | 'country'> {
   steamID32: string;
-  latestGameId: number;
+  dota: {
+    latestGameId: number;
+  };
+  purchases: PurchasedProduct[];
 }
 
 export interface UserStatsResponseProps {
@@ -80,11 +96,11 @@ export const userApi = apiSlice.injectEndpoints({
     }),
     getUserStats: builder.query<UserStatsResponseProps, void>({
       query: () => `/userAuth/getUserStats`,
+      providesTags: ['userStats'],
     }),
     getUserDetails: builder.query<UserDetailsResponseProps, void>({
-      query: () => ({
-        url: `/userAuth/getUserDetails`,
-      }),
+      query: () => `/userAuth/getUserDetails`,
+      providesTags: ['userDetails'],
     }),
   }),
 });

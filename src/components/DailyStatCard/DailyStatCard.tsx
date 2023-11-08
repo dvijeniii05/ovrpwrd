@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  Image,
   ListRenderItemInfo,
   Pressable,
   Linking,
@@ -18,6 +17,11 @@ import StandardButton from '../Buttons/StandardButton/StandardButton';
 import GiftCard from '../GiftCard/GiftCard';
 import FramedImage from '../FramedImage/FramedImage';
 import { useTranslation } from 'react-i18next';
+import { Canvas, Circle } from '@shopify/react-native-skia';
+import { useNavigation } from '@react-navigation/native';
+import { StackProps } from '../../navigation/navigationTypes';
+import { StackScreenName } from '../../../ScreenNames';
+import GeneralErrorComponent from '../GeneralErrorComponent/GeneralErrorComponent';
 
 interface Props {
   lastTenMatches?: ParsedMatch[];
@@ -25,6 +29,7 @@ interface Props {
 }
 
 const DailyStatCard = (props: Props) => {
+  const navigation = useNavigation<StackProps>();
   const [isTodaysStatsCard, setIsTodaysStatsCard] = useState<boolean>(true);
   const lastThreeMatches = props.lastTenMatches?.slice(0, 3);
 
@@ -68,7 +73,9 @@ const DailyStatCard = (props: Props) => {
                   backgroundColor: COLORS.red,
                   borderRadius: 6,
                 }}>
-                <Text style={styles.infoText}>LOSS</Text>
+                <Text style={[styles.infoText, { color: COLORS.white }]}>
+                  LOSS
+                </Text>
               </View>
             )}
           </View>
@@ -91,14 +98,20 @@ const DailyStatCard = (props: Props) => {
           </View>
         </View>
         <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: `${item.heroUrl}` }}
+          <Canvas
             style={{
+              position: 'absolute',
+              zIndex: 6,
               width: '100%',
               height: '100%',
-              borderRadius: 16,
-            }}
-            resizeMode="stretch"
+            }}>
+            <Circle cx={50} cy={50} r={45} color={COLORS.darkBlue} />
+          </Canvas>
+          <FramedImage
+            frameSize={{ width: 80, height: 80 }}
+            style={{ zIndex: 10 }}
+            avatar="auto"
+            frameColor="blue"
           />
         </View>
       </View>
@@ -164,7 +177,7 @@ const DailyStatCard = (props: Props) => {
           buttonText="Match history"
           buttonTextStyle={{ fontSize: 14 }}
           iconName="round-chevron-right"
-          onPress={() => {}}
+          onPress={() => navigation.navigate(StackScreenName.matchHistory)}
           style={styles.matchHistoryButton}
         />
       </>

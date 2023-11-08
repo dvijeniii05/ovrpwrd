@@ -4,9 +4,6 @@ import { userApi } from '../query/endpoints/userApi';
 
 interface StartingPointDataProps {
   isGameLinked: boolean;
-  email: string;
-  displayName: string;
-  steamID: string;
   token: string;
   bottomSheetState: {
     isOpen: boolean;
@@ -30,9 +27,6 @@ export interface userDataStateProps {
 const userDataState: userDataStateProps = {
   data: {
     isGameLinked: false,
-    email: '',
-    displayName: '',
-    steamID: '',
     token: '',
     bottomSheetState: {
       isOpen: false,
@@ -66,9 +60,6 @@ const userDataSlice = createSlice({
     },
     closeBottomSheet: state => {
       state.data.bottomSheetState.isOpen = false;
-    },
-    updateToken: (state, action) => {
-      state.data.token = action.payload.token;
     },
     updateUserDetails: (
       state,

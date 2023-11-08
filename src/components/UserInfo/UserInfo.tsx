@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { styles } from './UserInfo.styles';
 import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
 import FramedImage from '../FramedImage/FramedImage';
@@ -9,12 +9,20 @@ interface Props {
   currentRelics?: number;
   userName?: string;
   nickName?: string;
+  avatar?: string;
+  onAvatarPress?: () => void;
 }
 
 const UserInfo = (props: Props) => {
   return (
     <View style={styles.parentContainer}>
-      <FramedImage avatar={'1'} frameColor="white" />
+      <TouchableOpacity
+        disabled={props.onAvatarPress === undefined}
+        onPress={() =>
+          props.onAvatarPress ? props.onAvatarPress() : undefined
+        }>
+        <FramedImage avatar={props.avatar ?? '1'} frameColor="white" />
+      </TouchableOpacity>
       <Text style={styles.nameText}>{props.userName}</Text>
       <Text style={styles.nickNameText}>{`@${props.nickName}`}</Text>
       <View style={styles.currencyContainer}>

@@ -18,13 +18,17 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import BottomSheet from './src/components/BottomSheet/BottomSheet';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import BootSplash from 'react-native-bootsplash';
 
 const App = () => {
   return (
     <Provider store={mainStore}>
       <PersistGate loading={null} persistor={persistor}>
         <SafeAreaProvider>
-          <NavigationContainer>
+          <NavigationContainer
+            onReady={() => {
+              BootSplash.hide();
+            }}>
             <AppDrawer />
           </NavigationContainer>
           <BottomSheetModalProvider>

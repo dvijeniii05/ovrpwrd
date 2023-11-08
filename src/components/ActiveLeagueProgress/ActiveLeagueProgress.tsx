@@ -25,31 +25,18 @@ import { SkeletonLoader } from '../Loaders/SkeletonLoader';
 import { Rect as LoaderRect } from 'react-content-loader/native';
 import { StackProps } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
-import { useGetUserStatsQuery } from '../../redux/query/endpoints/userApi';
 import GeneralErrorComponent from '../GeneralErrorComponent/GeneralErrorComponent';
 
 interface Props {
   navigation?: StackProps;
   hideAllLeaguesButton?: boolean;
   style?: ViewStyle;
+  isUserFetching: boolean;
+  isUserSuccess: boolean;
+  currentPerks: number | undefined;
 }
 
 const ActiveLeagueProgress = (props: Props) => {
-  const {
-    currentPerks,
-    isPerksFetching,
-    isPerksSuccess,
-    isPerksError,
-    refetch: refetchPerks,
-  } = useGetUserStatsQuery(undefined, {
-    selectFromResult: ({ data, isFetching, isSuccess, isError }) => ({
-      currentPerks: data?.currentPoints.currentPerks,
-      isPerksFetching: isFetching,
-      isPerksSuccess: isSuccess,
-      isPerksError: isError,
-    }),
-  });
-
   const {
     league,
     isLeagueFetching,
@@ -59,24 +46,24 @@ const ActiveLeagueProgress = (props: Props) => {
   } = useGetCurentLeaguesQuery(undefined, {
     selectFromResult: ({ data, isSuccess, isFetching, isError }) => {
       return {
-        league: activeLeague(data, currentPerks),
+        league: activeLeague(data, props.currentPerks),
         isLeagueSuccess: isSuccess,
         isLeagueFetching: isFetching,
         isLeagueError: isError,
       };
     },
-    skip: !isPerksSuccess,
+    skip: !props.isUserSuccess,
   });
 
   const leagueProgress = useMemo(() => {
-    if (currentPerks && league !== undefined) {
+    if (props.currentPerks && league !== undefined) {
       return (
-        (currentPerks - league?.pointsMin) /
+        (props.currentPerks - league?.pointsMin) /
         (league?.pointsMax - league?.pointsMin)
       );
     }
     return 0;
-  }, [league, currentPerks]);
+  }, [league, props.currentPerks]);
 
   const [outerBarWidth, setOuterBarWidth] = useState<number>(0);
   const barLength = leagueProgress * outerBarWidth;
@@ -93,7 +80,7 @@ const ActiveLeagueProgress = (props: Props) => {
       <CardWrapper style={styles.wrapperContainer}>
         <Text style={styles.headerText}>{league?.leagueName}</Text>
         <Loader
-          isFetching={isLeagueFetching || isPerksFetching}
+          isFetching={props.isUserFetching || isLeagueFetching}
           fetchFallback={loader}>
           {isLeagueSuccess && league ? (
             <>
@@ -119,7 +106,7 @@ const ActiveLeagueProgress = (props: Props) => {
                     </View>
                     <View style={styles.currentPointsContainer}>
                       <Text style={styles.currentPointsText}>
-                        {currentPerks}
+                        {props.currentPerks}
                       </Text>
                     </View>
                     <View
@@ -179,13 +166,13 @@ const ActiveLeagueProgress = (props: Props) => {
               )}
             </>
           ) : null}
-          {isPerksError || isLeagueError ? (
+          {isLeagueError ? (
             <GeneralErrorComponent
               refetchFunction={() => {
                 refetchLeague();
-                refetchPerks();
               }}
               style={{ marginTop: 8 }}
+              customErrorMessage="Error loading leagues"
             />
           ) : null}
         </Loader>

@@ -22,6 +22,8 @@ const Gradient = (props: Props) => {
         return require('../../assets/ImmortalLeague.png');
       case 'allLeagues':
         return require('../../assets/AllLeagues.png');
+      case 'noise':
+        return require('../../assets/Noise.png');
     }
   };
 

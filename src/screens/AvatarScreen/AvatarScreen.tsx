@@ -106,6 +106,7 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
         buttonText={t('nextStep.button')}
         onPress={handleOnPress}
         isDisabled={!selectedAvatar}
+        style={{ width: '100%' }}
       />
     </SafeAreaView>
   );

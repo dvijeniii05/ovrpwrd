@@ -102,10 +102,7 @@ const LinkGame = ({ navigation }: ScreenProps) => {
         </Canvas>
         <Image source={imagePicker().publisher} style={styles.publisherImage} />
         <View style={styles.publisherIcon}>{imagePicker().icon}</View>
-        <View
-          style={{
-            alignItems: 'center',
-          }}>
+        <View>
           <View
             style={{
               flexDirection: 'row',

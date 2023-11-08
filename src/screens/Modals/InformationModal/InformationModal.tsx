@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Modal, Text } from 'react-native';
 import StandardButton from '../../../components/Buttons/StandardButton/StandardButton';
 import { styles } from './InformationModal.style';
+import Clipboard from '../../../components/Clipboard/Clipboard';
 
 interface Props {
   isVisible: boolean;
@@ -9,6 +10,7 @@ interface Props {
   headerText: string;
   informationText: string;
   buttonText: string;
+  promoCode?: string;
 }
 
 const InformationModal = (props: Props) => {
@@ -25,6 +27,19 @@ const InformationModal = (props: Props) => {
                     {props.informationText}
                   </Text>
                 </View>
+                {props.promoCode ? (
+                  <View style={{ alignItems: 'center', marginTop: 8 }}>
+                    <Text style={styles.information}>
+                      You can now use the Code below to activate your purchase
+                      on the product's website:
+                    </Text>
+                    <Clipboard
+                      style={{ marginTop: 24 }}
+                      promoCode={props.promoCode}
+                    />
+                  </View>
+                ) : null}
+
                 <View style={{ marginTop: 40 }}>
                   <StandardButton
                     buttonText={props.buttonText}

@@ -1,5 +1,5 @@
 export enum StackScreenName {
-  // splashScreen = 'SplashScreen',
+  splashScreen = 'SplashScreen',
   landing = 'Landing',
   welcome = 'Welcome',
   registration = 'Registration',
@@ -12,4 +12,10 @@ export enum StackScreenName {
   home = 'Home',
   allLeagues = 'AllLeagues',
   leagueInfo = 'LeagueInfo',
+  marketplace = 'Marketplace',
+  allProducts = 'AllProducts',
+  prodcutInfo = 'ProductInfo',
+  account = 'Account',
+  matchHistory = 'MatchHistory',
+  leaderboardScreen = 'LeaderboardScreen',
 }

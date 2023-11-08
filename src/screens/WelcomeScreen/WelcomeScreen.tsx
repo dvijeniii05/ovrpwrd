@@ -7,12 +7,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import StandardButton from '../../components/Buttons/StandardButton/StandardButton';
 import { useLoginUserQuery } from '../../redux/query/endpoints/userApi';
 import { StackScreenName } from '../../../ScreenNames';
+import { useDispatch } from 'react-redux';
+import { updateUserDetails } from '../../redux/slices/userDataSlice';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.welcome>;
 
 const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
   // const { email } = { email: 'some2@gmail.com' };
   const { email } = route.params ?? '';
+  const dispatch = useDispatch();
 
   const { data: userInfo, isSuccess } = useLoginUserQuery(
     { email },
@@ -20,7 +23,6 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
       skip: email === undefined,
     },
   );
-  console.log('QUERY', userInfo);
 
   const descriptionContent = () => {
     if (userInfo) {
@@ -61,7 +63,8 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
   const handleOnPress = useCallback(() => {
     if (userInfo) {
       if (userInfo.isFullyOnboarded) {
-        navigation.navigate(StackScreenName.home);
+        dispatch(updateUserDetails({ isGameLinked: true }));
+        // navigation.navigate(StackScreenName.home);
       } else {
         navigation.navigate(StackScreenName.avatar);
       }

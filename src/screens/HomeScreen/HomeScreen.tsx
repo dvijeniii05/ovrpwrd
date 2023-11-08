@@ -1,9 +1,9 @@
 import React from 'react';
-import { ScrollView, StatusBar } from 'react-native';
+import { ScrollView, StatusBar, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UserInfo from '../../components/UserInfo/UserInfo';
 import DailyStatCard from '../../components/DailyStatCard/DailyStatCard';
-import LeagueProgress from '../../components/ActiveLeagueProgress/ActiveLeagueProgress';
+import ActiveLeagueProgress from '../../components/ActiveLeagueProgress/ActiveLeagueProgress';
 import Leaderboard from '../../components/Leaderboard/Leaderboard';
 import Gradient from '../../components/Gradient/Gradient';
 import { styles } from './HomeScreen.styles';
@@ -18,6 +18,8 @@ import { Circle, Rect } from 'react-content-loader/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
+import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
+import { HEIGHT } from '../../utils/dimension';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.home>;
 
@@ -32,9 +34,9 @@ const Home = ({ navigation }: ScreenProps) => {
 
   const {
     data: userDetails,
-    isSuccess: isUserDetailsSuccess,
     isFetching: isUserDetailsFetching,
     isError: isUserDetailsError,
+    refetch: refetchUserDetails,
   } = useGetUserDetailsQuery();
 
   const userDetailsLoader = (
@@ -61,25 +63,58 @@ const Home = ({ navigation }: ScreenProps) => {
         contentContainerStyle={styles.scrollContentContainer}
         showsVerticalScrollIndicator={false}>
         <Gradient type="conical" style={{ position: 'absolute' }} />
-        <Loader
-          isFetching={isUserDetailsFetching || isFetching}
-          fetchFallback={userDetailsLoader}>
-          <UserInfo
-            currentPerks={userStats?.currentPoints.currentPerks}
-            currentRelics={userStats?.currentPoints.currentRelics}
-            userName={userDetails?.fullName}
-            nickName={userDetails?.nickname}
-          />
-        </Loader>
-        <Loader isFetching={isFetching} fetchFallback={dailyStatsLoader}>
-          <DailyStatCard
-            lastTenMatches={userStats?.significantMatches}
-            firstGameId={userDetails?.latestGameId}
-          />
-        </Loader>
-        <LeagueProgress navigation={navigation} />
-        <PremiumBanner />
-        <Leaderboard nickname={userDetails?.nickname} />
+        {isError || isUserDetailsError ? (
+          <View
+            style={{
+              justifyContent: 'center',
+              height: HEIGHT,
+            }}>
+            <GeneralErrorComponent
+              refetchFunction={() => {
+                refetch();
+                refetchUserDetails();
+              }}
+              isExtraLargeComponent
+              customErrorMessage="Something went wrong"
+            />
+          </View>
+        ) : (
+          <>
+            <Loader
+              isFetching={isUserDetailsFetching || isFetching}
+              fetchFallback={userDetailsLoader}>
+              <UserInfo
+                currentPerks={userStats?.currentPoints.currentPerks}
+                currentRelics={userStats?.currentPoints.currentRelics}
+                userName={userDetails?.fullName}
+                nickName={userDetails?.nickname}
+                onAvatarPress={() =>
+                  navigation.navigate(StackScreenName.account)
+                }
+                avatar={userDetails?.avatar}
+              />
+            </Loader>
+            <Loader
+              isFetching={isFetching || isUserDetailsFetching}
+              fetchFallback={dailyStatsLoader}>
+              <DailyStatCard
+                lastTenMatches={userStats?.significantMatches}
+                firstGameId={userDetails?.dota.latestGameId}
+              />
+            </Loader>
+            <ActiveLeagueProgress
+              navigation={navigation}
+              isUserFetching={isFetching}
+              isUserSuccess={isSuccess}
+              currentPerks={userStats?.currentPoints.currentPerks}
+            />
+            <PremiumBanner />
+            <Leaderboard
+              isUserFethcing={isUserDetailsFetching}
+              nickname={userDetails?.nickname}
+            />
+          </>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

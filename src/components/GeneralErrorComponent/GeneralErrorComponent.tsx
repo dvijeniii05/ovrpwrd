@@ -6,6 +6,7 @@ interface Props {
   isSmallComponent?: boolean;
   style?: ViewStyle;
   isExtraLargeComponent?: boolean;
+  customErrorMessage?: string;
 }
 
 const GeneralErrorComponent = ({
@@ -18,7 +19,9 @@ const GeneralErrorComponent = ({
       <View style={[styles.parentContainer, props.style]}>
         {isExtraLargeComponent ? (
           <>
-            <Text style={styles.extraLargeText}>Error getting data</Text>
+            <Text style={styles.extraLargeText}>
+              {props.customErrorMessage ?? 'Error getting data'}
+            </Text>
             <TouchableOpacity
               onPress={props.refetchFunction}
               style={styles.largeButton}>
@@ -28,7 +31,7 @@ const GeneralErrorComponent = ({
         ) : (
           <>
             <Text style={styles.titleText(isSmallComponent)}>
-              Error getting data
+              {props.customErrorMessage ?? 'Error getting data'}
             </Text>
             <TouchableOpacity
               onPress={props.refetchFunction}

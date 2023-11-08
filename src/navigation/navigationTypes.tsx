@@ -1,8 +1,8 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { leaugeNames } from '../constans/interfaces';
+import { Product } from '../redux/query/endpoints/productsApi';
 
 export type StackParamList = {
-  // SplashScreen: undefined;
   Landing: undefined;
   Welcome: { email: string };
   Registration: {
@@ -20,6 +20,19 @@ export type StackParamList = {
   LeagueInfo: {
     leagueName: leaugeNames;
     userPerks: number;
+  };
+  Marketplace: undefined;
+  AllProducts: {
+    products: Product[];
+    productType: string;
+  };
+  ProductInfo: {
+    product: Product;
+  };
+  Account: undefined;
+  MatchHistory: undefined;
+  LeaderboardScreen: {
+    userNickname: string;
   };
 };
 

@@ -3,10 +3,14 @@ import { styles } from './StandardButton.styles';
 import Apple from '../../../assets/icons/apple.svg';
 import Google from '../../../assets/icons/google.svg';
 import RoundChevronRight from '../../../assets/icons/round-chevron-right.svg';
+import WebIcon from '../../../assets/icons/web.svg';
+import LockIcon from '../../../assets/icons/lock.svg';
+
+import LottieView from 'lottie-react-native';
 
 type LogoNames = 'apple' | 'google';
 
-type IconNames = 'round-chevron-right';
+type IconNames = 'round-chevron-right' | 'web' | 'lock';
 interface Props {
   buttonText: string;
   buttonTextStyle?: TextStyle;
@@ -15,7 +19,7 @@ interface Props {
   iconName?: IconNames;
   style?: ViewStyle;
   isDisabled?: boolean;
-  isSecondary?: boolean;
+  isVerifying?: boolean;
 }
 
 const StandardButton = ({ isDisabled = false, ...props }: Props) => {
@@ -34,6 +38,11 @@ const StandardButton = ({ isDisabled = false, ...props }: Props) => {
     switch (props.iconName) {
       case 'round-chevron-right':
         return <RoundChevronRight height={16} width={16} />;
+      case 'web':
+        return <WebIcon width={24} height={24} />;
+      case 'lock':
+        return <LockIcon width={16} height={16} fill={'white'} />;
+
       default:
         return null;
     }
@@ -47,11 +56,22 @@ const StandardButton = ({ isDisabled = false, ...props }: Props) => {
       ]}
       disabled={isDisabled}
       onPress={props.onPress}>
-      {logoPicker()}
-      <Text style={[styles.buttonText, props.buttonTextStyle]}>
-        {props.buttonText}
-      </Text>
-      {iconPicker()}
+      {props.isVerifying ? (
+        <LottieView
+          source={require('../../../assets/lottie/greenLoader.json')}
+          style={{ width: 24, height: 24 }}
+          autoPlay
+          loop
+        />
+      ) : (
+        <>
+          {logoPicker()}
+          <Text style={[styles.buttonText, props.buttonTextStyle]}>
+            {props.buttonText}
+          </Text>
+          {iconPicker()}
+        </>
+      )}
     </TouchableOpacity>
   );
 };

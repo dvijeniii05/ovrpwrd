@@ -28,6 +28,8 @@ const FramedImage = (props: Props) => {
         return require('../../assets/icons/Avatar5.png');
       case '6':
         return require('../../assets/icons/Avatar6.png');
+      case 'auto':
+        return require('../../assets/images/circle.png');
     }
   };
 

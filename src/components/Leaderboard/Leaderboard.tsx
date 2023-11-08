@@ -12,13 +12,20 @@ import { Loader } from '../Loaders/Loader';
 import { SkeletonLoader } from '../Loaders/SkeletonLoader';
 import { Rect } from 'react-content-loader/native';
 import { parsedLeaderboardData } from '../../utils/leagueHelpers/leagueHelpers';
+import { useNavigation } from '@react-navigation/native';
+import { StackProps } from '../../navigation/navigationTypes';
+import { StackScreenName } from '../../../ScreenNames';
+import GeneralErrorComponent from '../GeneralErrorComponent/GeneralErrorComponent';
 
 interface Props {
-  nickname?: string;
+  isUserFethcing: boolean;
+  nickname: string | undefined;
 }
 
 const Leaderboard = (props: Props) => {
-  const { data, isSuccess, isFetching } = useGetLeaderboardQuery();
+  const navigation = useNavigation<StackProps>();
+  const { data, isSuccess, isFetching, isError, refetch } =
+    useGetLeaderboardQuery();
 
   const leaderBoard = useMemo(() => {
     return parsedLeaderboardData(data, props.nickname);
@@ -70,25 +77,40 @@ const Leaderboard = (props: Props) => {
         </View>
       </View>
       <Loader
-        isFetching={isFetching || props.nickname === undefined}
-        isSuccess={isSuccess}
+        isFetching={isFetching || props.isUserFethcing}
         fetchFallback={leaderboardLoader}>
-        {data ? (
-          <FlatList
-            data={leaderBoard?.alteredLeaderboard}
-            renderItem={renderItem}
-            scrollEnabled={false}
-            style={styles.boardParentContainer}
-            contentContainerStyle={{ gap: 2 }}
+        {isSuccess && props.nickname ? (
+          <>
+            <FlatList
+              data={leaderBoard?.alteredLeaderboard}
+              renderItem={renderItem}
+              scrollEnabled={false}
+              style={styles.boardParentContainer}
+              contentContainerStyle={{ gap: 2 }}
+            />
+            <StandardButton
+              buttonText="See more"
+              iconName="round-chevron-right"
+              onPress={() =>
+                props.nickname
+                  ? navigation.navigate(StackScreenName.leaderboardScreen, {
+                      userNickname: props.nickname,
+                    })
+                  : undefined
+              }
+              style={styles.seeMoreButton}
+              buttonTextStyle={{ fontSize: 14 }}
+            />
+          </>
+        ) : null}
+        {isError ? (
+          <GeneralErrorComponent
+            refetchFunction={() => {
+              refetch();
+            }}
+            customErrorMessage="Error loading leaderboard"
           />
         ) : null}
-        <StandardButton
-          buttonText="See more"
-          iconName="round-chevron-right"
-          onPress={() => {}}
-          style={styles.seeMoreButton}
-          buttonTextStyle={{ fontSize: 14 }}
-        />
       </Loader>
     </View>
   );

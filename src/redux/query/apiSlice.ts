@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { devBaseUrl } from '../../constans/urls';
+import { devBaseUrl, prodBaseUrl } from '../../constans/urls';
 import { getToken } from '../store/getTokenHelper';
 import { leaugeNames } from '../../constans/interfaces';
+import { Product } from './endpoints/productsApi';
 
 export interface UserCountOnLeagues {
   legendary: number;
@@ -48,14 +49,15 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: devBaseUrl,
     prepareHeaders: async headers => {
-      // const token = getToken();
-      const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZGlrYnN3QGdtYWlsLmNvbSIsImlhdCI6MTY5NTc1MDY3M30.ZLtkz2ZAGWXPnugqHjGZppecpSesOwyTjZlXnB974uI`;
+      const token = getToken();
+      // const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZGlrYnN3QGdtYWlsLmNvbSIsImlhdCI6MTY5NTc1MDY3M30.ZLtkz2ZAGWXPnugqHjGZppecpSesOwyTjZlXnB974uI`;
       console.log('TOKEN', token);
       headers.set('authorization', `${token}`);
       return headers;
     },
   }),
-  keepUnusedDataFor: 500,
+  tagTypes: ['allProducts', 'userStats', 'userDetails'],
+  keepUnusedDataFor: 6000,
   endpoints: builder => ({
     getCurentLeagues: builder.query<LeagueData[], void>({
       query: () => `/currentLeagues`,

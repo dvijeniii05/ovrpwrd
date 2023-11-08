@@ -4,7 +4,6 @@ import { COLORS } from '../../constans/COLORS';
 const parentContainer: ViewStyle = {
   flex: 1,
   backgroundColor: COLORS.darkBlue,
-  alignItems: 'center',
   justifyContent: 'space-between',
   paddingHorizontal: 16,
 };

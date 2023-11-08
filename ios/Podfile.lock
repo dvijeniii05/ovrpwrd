@@ -449,7 +449,11 @@ PODS:
     - React-jsi (= 0.71.11)
     - React-logger (= 0.71.11)
     - React-perflogger (= 0.71.11)
+  - RNBootSplash (5.1.0):
+    - React-Core
   - RNCAsyncStorage (1.18.2):
+    - React-Core
+  - RNCClipboard (1.12.1):
     - React-Core
   - RNFlashList (1.5.0):
     - React-Core
@@ -563,7 +567,9 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
@@ -676,8 +682,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNBootSplash:
+    :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNCClipboard:
+    :path: "../node_modules/@react-native-clipboard/clipboard"
   RNFlashList:
     :path: "../node_modules/@shopify/flash-list"
   RNGestureHandler:
@@ -752,7 +762,9 @@ SPEC CHECKSUMS:
   React-RCTVibration: f09f08de63e4122deb32506e20ca4cae6e4e14c1
   React-runtimeexecutor: 4817d63dbc9d658f8dc0ec56bd9b83ce531129f0
   ReactCommon: 08723d2ed328c5cbcb0de168f231bc7bae7f8aa1
+  RNBootSplash: e71ad597c05273b6185b3448517003bd2a92c37a
   RNCAsyncStorage: ddc4ee162bfd41b0d2c68bf2d95acd81dd7f1f93
+  RNCClipboard: d77213bfa269013bf4b857b7a9ca37ee062d8ef1
   RNFlashList: 25b0e092b4470c84db0386d4f5316dc34123bb6d
   RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
   RNGoogleSignin: ccaa4a81582cf713eea562c5dd9dc1961a715fd0
@@ -765,4 +777,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 0c25f2de5f60ff5ea6bb302dc181df037b68089f
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.13.0

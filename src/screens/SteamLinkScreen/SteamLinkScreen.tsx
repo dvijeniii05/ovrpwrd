@@ -6,21 +6,29 @@ import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 
-import { useLinkSteamIDQuery } from '../../redux/query/endpoints/userApi';
+import {
+  useLinkSteamIDQuery,
+  useUpdateUserDetailsMutation,
+} from '../../redux/query/endpoints/userApi';
 import StandardButton from '../../components/Buttons/StandardButton/StandardButton';
 import { styles } from './SteamLinkScreen.styles';
+import { useDispatch } from 'react-redux';
+import { updateUserDetails } from '../../redux/slices/userDataSlice';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.steamLink>;
 
 const SteamLinkScreen = ({ navigation, route }: ScreenProps) => {
-  // const { steamID32 } = route.params;
-  const steamID32 = '367396390';
+  const { steamID32 } = route.params;
+
+  const dispatch = useDispatch();
 
   const { data, isSuccess, isError, isFetching, refetch } = useLinkSteamIDQuery(
     {
       steamID32,
     },
   );
+
+  const [trigger, { isLoading }] = useUpdateUserDetailsMutation();
 
   const descriptionContent = () => {
     if (isSuccess) {
@@ -30,7 +38,7 @@ const SteamLinkScreen = ({ navigation, route }: ScreenProps) => {
             You steam account is now linked to your OVRPWRD account.
           </Text>
           <Text style={styles.descriptionText}>
-            {` We are going to gather and proccess your statics starting from a match with the following match ID: ${data?.startingGameID}`}
+            {` We are going to gather and proccess your statics starting from a match with the following match ID: ${data?.latestGameId}`}
           </Text>
         </View>
       );
@@ -47,11 +55,17 @@ const SteamLinkScreen = ({ navigation, route }: ScreenProps) => {
   };
 
   const handleOnPress = () => {
-    console.log('press');
+    trigger({ isFullyOnboarded: true })
+      .unwrap()
+      .then(response => {
+        dispatch(updateUserDetails({ isGameLinked: true }));
+      })
+      .catch(error => {
+        console.log('ERROE', error);
+      });
   };
 
   const handleRefetch = () => {
-    console.log('press 222');
     refetch();
   };
 

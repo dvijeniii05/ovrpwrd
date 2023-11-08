@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import ActiveLeagueProgress from '../../components/ActiveLeagueProgress/ActiveLeagueProgress';
 import Gradient from '../../components/Gradient/Gradient';
 import { SkeletonLoader } from '../../components/Loaders/SkeletonLoader';
 import { Rect } from 'react-content-loader/native';
@@ -30,7 +29,6 @@ import { leagueDaysCountdown } from '../../utils/leagueHelpers/leagueHelpers';
 type NavProps = StackScreenProps<StackParamList, StackScreenName.leagueInfo>;
 
 const LeagueInfoScreen = ({ route }: NavProps) => {
-  const requiredLeague = leaugeNames.legendaryLeague; // Will be substituted by value coming from route params
   const { leagueName, userPerks } = route.params;
   console.log('LEAGUE', userPerks);
   const [participantsMarginTop, setParticipantsMargintop] = useState<number>(0);
@@ -81,8 +79,6 @@ const LeagueInfoScreen = ({ route }: NavProps) => {
     </SkeletonLoader>
   );
 
-  // If user is not in this league then dont display LeagueProgress card and isntead disaply some informational text inside a card
-
   return (
     <SafeAreaView edges={['bottom']}>
       <StatusBar barStyle={'light-content'} />
@@ -121,10 +117,6 @@ const LeagueInfoScreen = ({ route }: NavProps) => {
             ) : null}
           </BlurView>
         </Loader>
-        {/* <ActiveLeagueProgress
-          hideAllLeaguesButton
-          style={{ marginTop: 24, paddingHorizontal: 8 }}
-        /> */}
         {relevantLeague ? (
           <GeneralLeagueProgress
             leagueName={relevantLeague.leagueName}
@@ -145,11 +137,8 @@ const LeagueInfoScreen = ({ route }: NavProps) => {
                 {relevantLeague?.prizes.map(prize => (
                   <ProductCard
                     key={prize.imageUrl}
-                    prizeImageUrl={prize.imageUrl}
-                    prizeBrand={prize.prizeBrand}
-                    prizeName={prize.prizeName}
-                    isPremium={prize.isPremium}
-                    linkToPrize={prize.linkToProduct}
+                    product={prize}
+                    isPurchasable={false}
                   />
                 ))}
                 {isLeagueError ? (

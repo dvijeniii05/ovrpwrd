@@ -41,8 +41,6 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
     useState<boolean>(false);
   const [informationModalText, setInformationModalText] = useState<string>('');
 
-  console.log(fullName);
-
   // TODO: to be rewoerked with nickname confirmation logic
   const isFormComplete = dob && gender && country && fullName && nickname;
 
@@ -50,7 +48,6 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
     registerUser({ nickname, email, fullName, dob, gender, country })
       .unwrap()
       .then(response => {
-        console.log('RESPONSE', response);
         if (response.token) {
           navigation.navigate(StackScreenName.avatar);
         } else {
@@ -131,7 +128,7 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
       </View>
       <StandardButton
         buttonText={t('nextStep.button')}
-        style={{ top: 40 }}
+        style={{ top: 40, width: '100%' }}
         onPress={handleOnpress}
         isDisabled={!isFormComplete}
       />

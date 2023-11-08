@@ -13,6 +13,7 @@
   "dependencies": {
     "@gorhom/bottom-sheet": "^4",
     "@react-native-async-storage/async-storage": "1.18.2",
+    "@react-native-clipboard/clipboard": "^1.12.1",
     "@react-native-community/blur": "^4.3.2",
     "@react-native-google-signin/google-signin": "^10.0.1",
     "@react-navigation/native": "^6.1.6",
@@ -30,6 +31,7 @@
     "react-content-loader": "^6.2.1",
     "react-i18next": "^12.2.2",
     "react-native": "0.71.11",
+    "react-native-bootsplash": "^5.1.0",
     "react-native-country-picker-modal": "^2.0.0",
     "react-native-flipper": "0.163.0",
     "react-native-gesture-handler": "^2.9.0",

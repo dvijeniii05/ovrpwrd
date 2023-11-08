@@ -57,7 +57,7 @@ const itemWrapper: ViewStyle = {
   width: '100%',
   flex: 1,
   alignItems: 'center',
-  marginTop: 16,
+  marginTop: 24,
   paddingVertical: 8,
   paddingHorizontal: gapBetweenListItems * 0.5,
 };
@@ -123,15 +123,12 @@ const kdaText: TextStyle = {
 
 const imageContainer: ViewStyle = {
   position: 'absolute',
-  justifyContent: 'flex-end',
   alignItems: 'center',
-  marginTop: -4,
-  borderRadius: 16,
-  borderWidth: 10,
-  backgroundColor: COLORS.darkBlue,
-  borderColor: COLORS.darkBlue,
-  width: 90,
-  height: 70,
+  justifyContent: 'center',
+  marginTop: -20,
+  borderRadius: 45,
+  width: 100,
+  height: 100,
 };
 
 const matchHistoryButton: ViewStyle = {

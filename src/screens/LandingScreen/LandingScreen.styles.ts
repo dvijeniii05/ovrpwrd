@@ -23,7 +23,6 @@ const buttonsContainer: ViewStyle = {
   paddingHorizontal: 16,
   flex: 1,
   width: '100%',
-  alignItems: 'center',
   marginTop: 48,
   gap: 16,
 };
