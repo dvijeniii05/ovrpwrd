@@ -32,8 +32,7 @@ const Stack = createStackNavigator<StackParamList>();
 
 const AppDrawer = () => {
   const userLocalData = useSelector((state: RootState) => state.userData.data);
-  const isUserFullyOnboarded = getToken() && userLocalData.isGameLinked;
-
+  const isUserFullyOnboarded = getToken() && userLocalData.isGameLinked; // This needs to be fixed as Uath desont work for a returning onobarded user
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {!isUserFullyOnboarded ? (

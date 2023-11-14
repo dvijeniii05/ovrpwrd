@@ -8,7 +8,7 @@ const scroll: ViewStyle = {
 };
 
 const scrollContentContainer: ViewStyle = {
-  flex: 1,
+  flexGrow: 1,
   paddingHorizontal: 16,
   alignItems: 'center',
 };

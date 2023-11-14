@@ -1,4 +1,4 @@
-import { TextInput, View, ViewStyle } from 'react-native';
+import { Pressable, TextInput, View, ViewStyle } from 'react-native';
 import { COLORS } from '../../constans/COLORS';
 import { styles } from './DetailsInput.styles';
 import DividerLine from '../DividerLine/DividerLine';
@@ -24,18 +24,18 @@ const DetailInput = ({ editable = true, ...props }: Props) => {
   };
   return (
     <View style={[styles.parentContainer, props.containerStyle]}>
-      <View style={styles.inputContainer}>
+      <Pressable style={styles.inputContainer} onPress={props.onPress}>
         <TextInput
           placeholder={props.placeholderText}
           placeholderTextColor={COLORS.neutral}
           style={styles.textInput}
           editable={editable}
-          onPressIn={props.onPress}
           defaultValue={props.defaultValue}
           onChangeText={props.onChangeText}
+          onPressIn={props.onPress}
         />
         {dropdownIcon()}
-      </View>
+      </Pressable>
       <DividerLine style={props.dividerStyle} />
     </View>
   );

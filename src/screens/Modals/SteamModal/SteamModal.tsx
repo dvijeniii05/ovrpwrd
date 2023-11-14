@@ -5,10 +5,8 @@ import { StackProps } from '../../../navigation/navigationTypes';
 import { StackScreenName } from '../../../../ScreenNames';
 import { View } from 'react-native';
 import LottieView from 'lottie-react-native';
-import { HEIGHT, WIDTH } from '../../../utils/dimension';
-import { COLORS } from '../../../constans/COLORS';
 import { styles } from './SteamModal.styles';
-import { devBaseUrl } from '../../../constans/urls';
+import { devBaseUrl, prodBaseUrl } from '../../../constans/urls';
 
 const SteamModal = () => {
   const navigation = useNavigation<StackProps>();
@@ -25,7 +23,7 @@ const SteamModal = () => {
 
   return (
     <WebView
-      source={{ uri: `${devBaseUrl}/auth/steam` }}
+      source={{ uri: `${prodBaseUrl}/auth/steam` }}
       onNavigationStateChange={stateChanged}
       startInLoadingState={true}
       renderLoading={() => (

@@ -2,7 +2,9 @@ import React from 'react';
 import { View, Text, ViewStyle } from 'react-native';
 import { styles } from './CurrencyWrapper.styles';
 import Perks from '../../assets/Perks.svg';
-import Relics from '../../assets/Relics.svg';
+import Relics from '../../assets/zuzu.svg';
+import LottieView from 'lottie-react-native';
+
 interface Props {
   style?: ViewStyle;
   isPerks: boolean;
@@ -38,12 +40,18 @@ const CurrencyWrapper = ({ staticWidth = false, ...props }: Props) => {
     <View style={[styles.currencyContainer(staticWidth), props.style]}>
       {props.isPerks ? (
         <>
-          <Perks width={24} height={24} />
+          <Perks width={28} height={28} />
           <Text style={styles.text(staticWidth)}>{props.value}</Text>
         </>
       ) : (
         <>
-          <Relics width={24} height={24} />
+          {/* <LottieView
+            source={require('../../assets/lottie/animIcon.json')}
+            style={{ width: 28, height: 28 }}
+            autoPlay
+            loop
+          /> */}
+          <Relics width={28} height={28} />
           <Text style={styles.text(staticWidth)}>{props.value}</Text>
         </>
       )}

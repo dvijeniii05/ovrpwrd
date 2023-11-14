@@ -68,16 +68,14 @@ const currentPointsText: TextStyle = {
 };
 
 const barContainer: ViewStyle = {
-  backgroundColor: SPECIFIC_COLORS.leagueBarBackground,
+  backgroundColor: COLORS.darkNeutral,
+  height: 50,
   marginTop: 12,
-  borderRadius: 30,
-  overflow: 'hidden',
-  height: 30,
 };
 
 const barCanvas = (outerBarWidth: number): ViewStyle => ({
   width: outerBarWidth,
-  height: 30,
+  height: 50,
 });
 
 const perkContainer: ViewStyle = {

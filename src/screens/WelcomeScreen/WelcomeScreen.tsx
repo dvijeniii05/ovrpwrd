@@ -13,7 +13,6 @@ import { updateUserDetails } from '../../redux/slices/userDataSlice';
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.welcome>;
 
 const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
-  // const { email } = { email: 'some2@gmail.com' };
   const { email } = route.params ?? '';
   const dispatch = useDispatch();
 
