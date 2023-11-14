@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { styles } from './DobModal.styles';
 import StandardButton from '../../../components/Buttons/StandardButton/StandardButton';
 import { useDispatch } from 'react-redux';
@@ -8,6 +8,7 @@ import {
   updateUserDetails,
 } from '../../../redux/slices/userDataSlice';
 import { useTranslation } from 'react-i18next';
+import { FlatList } from 'react-native-gesture-handler';
 
 export const DobModal = () => {
   const dispatch = useDispatch();

@@ -64,6 +64,7 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
   return (
     <KeyboardAwareScrollView
       style={styles.scroll}
+      enableOnAndroid
       contentContainerStyle={styles.scrollContentContainer}>
       <Gradient type="shaded" style={{ position: 'absolute', top: 0 }} />
       <LoadingComponent isLoading={isLoading} />

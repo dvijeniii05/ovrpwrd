@@ -1,10 +1,4 @@
-import {
-  ImageBackground,
-  ScrollView,
-  StatusBar,
-  View,
-  Text,
-} from 'react-native';
+import { ImageBackground, StatusBar, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './AllLeaguesScreen.styles';
 import { useState } from 'react';
@@ -25,6 +19,7 @@ import GeneralErrorComponent from '../../components/GeneralErrorComponent/Genera
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
+import { ScrollView } from 'react-native-gesture-handler';
 
 type NavProps = StackScreenProps<StackParamList, StackScreenName.allLeagues>;
 
@@ -100,7 +95,7 @@ const AllLeaguesScreen = ({ navigation }: NavProps) => {
             <Loader
               isFetching={isPerksFetching || isLeaguesFetching}
               fetchFallback={loader}>
-              {isLeaguesSuccess && userPerks
+              {isLeaguesSuccess && userPerks !== undefined
                 ? leaguesData.map(singleLeague => {
                     const parsedLeagueName = singleLeague.leagueName
                       .split(' ')[0]

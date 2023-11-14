@@ -80,6 +80,17 @@ export const userApi = apiSlice.injectEndpoints({
           (response.status >= 200 && response.status <= 299) ||
           response.status === 404,
       }),
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          if (data.token !== undefined) {
+            console.log('TOKEN', data.token);
+            dispatch(updateUserDetails({ token: data.token }));
+          }
+        } catch {
+          console.log('ERROR_ON_LOGIN');
+        }
+      },
     }),
     updateUserDetails: builder.mutation<
       Partial<AuthResponseProps>,
