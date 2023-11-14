@@ -9,6 +9,7 @@ import { useLoginUserQuery } from '../../redux/query/endpoints/userApi';
 import { StackScreenName } from '../../../ScreenNames';
 import { useDispatch } from 'react-redux';
 import { updateUserDetails } from '../../redux/slices/userDataSlice';
+import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.welcome>;
 
@@ -16,7 +17,11 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
   const { email } = route.params ?? '';
   const dispatch = useDispatch();
 
-  const { data: userInfo, isSuccess } = useLoginUserQuery(
+  const {
+    data: userInfo,
+    isSuccess,
+    isFetching,
+  } = useLoginUserQuery(
     { email },
     {
       skip: email === undefined,
@@ -74,6 +79,7 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
 
   return (
     <SafeAreaView style={styles.parentContainer} edges={['bottom']}>
+      <LoadingComponent isLoading={isFetching} />
       <View style={styles.descriptionContainer}>{descriptionContent()}</View>
       <StandardButton
         buttonText="Continue"
