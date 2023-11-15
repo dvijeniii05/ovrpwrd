@@ -1,7 +1,8 @@
-import { View, Image, ViewStyle } from 'react-native';
+import { View, Image, ViewStyle, ImageProps } from 'react-native';
 import GreenFrame from '../../assets/GreenFrame.svg';
 import BlueFrame from '../../assets/BlueFrame.svg';
 import WhiteFrame from '../../assets/WhiteFrame.svg';
+import { heroIconPicker } from '../../utils/heroIconPicker';
 
 interface Props {
   avatar: string;
@@ -28,8 +29,9 @@ const FramedImage = (props: Props) => {
         return require('../../assets/icons/Avatar5.png');
       case '6':
         return require('../../assets/icons/Avatar6.png');
-      case 'auto':
-        return require('../../assets/images/circle.png');
+      default: {
+        return heroIconPicker(props.avatar);
+      }
     }
   };
 

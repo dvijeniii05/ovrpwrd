@@ -110,7 +110,8 @@ const Home = ({ navigation }: ScreenProps) => {
             />
             <PremiumBanner />
             <Leaderboard
-              isUserFethcing={isUserDetailsFetching}
+              isUserFetching={isUserDetailsFetching}
+              isUserStatsSuccess={isSuccess}
               nickname={userDetails?.nickname}
             />
           </>

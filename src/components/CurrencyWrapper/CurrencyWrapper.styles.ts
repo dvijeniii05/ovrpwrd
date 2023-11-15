@@ -9,7 +9,7 @@ const currencyContainer = (staticWidth: boolean): ViewStyle => {
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 6,
-    width: staticWidth ? 88 : 'auto',
+    width: staticWidth ? 96 : 'auto',
     borderRadius: 20,
   };
 };
