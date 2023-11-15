@@ -23,7 +23,7 @@ const SteamModal = () => {
 
   return (
     <WebView
-      source={{ uri: `${devBaseUrl}/auth/steam` }}
+      source={{ uri: `${prodBaseUrl}/auth/steam` }}
       onNavigationStateChange={stateChanged}
       startInLoadingState={true}
       renderLoading={() => (
