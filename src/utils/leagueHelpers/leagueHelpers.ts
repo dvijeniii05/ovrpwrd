@@ -57,6 +57,7 @@ export const leagueDaysCountdown = (rawEndDate: number | undefined) => {
 };
 
 export const parsedLeaderboardData = (
+  topFiveOnly: boolean,
   allUsers?: LeaderboardUser[],
   nickname?: string,
 ) => {
@@ -69,10 +70,15 @@ export const parsedLeaderboardData = (
         ? true
         : false;
 
+    const parseLeaderboard = () => {
+      if (topFiveOnly) {
+        return !isUserInTopFive ? topFive.concat(currentUser) : topFive;
+      } else {
+        return allUsers;
+      }
+    };
     return {
-      alteredLeaderboard: !isUserInTopFive
-        ? topFive.concat(currentUser)
-        : topFive,
+      alteredLeaderboard: parseLeaderboard(),
       currentUser: currentUser[0],
       currentUserIndex,
       totalUsers: allUsers.length,

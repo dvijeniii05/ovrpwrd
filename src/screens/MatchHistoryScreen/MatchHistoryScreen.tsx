@@ -19,6 +19,7 @@ import { ParsedMatch } from '../../constans/interfaces';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
 import { HEIGHT } from '../../utils/dimension';
+import { heroIconPicker } from '../../utils/heroIconPicker';
 
 const MatchHistoryScreen = () => {
   const headerHeight = useHeaderHeight();
@@ -35,7 +36,7 @@ const MatchHistoryScreen = () => {
   const renderItem = ({ item }: ListRenderItemInfo<ParsedMatch>) => (
     <View style={styles.singleMatchContainer}>
       <Image
-        source={{ uri: item.heroUrl }}
+        source={heroIconPicker(item.heroUrl)}
         style={{ width: 24, aspectRatio: 1 }}
       />
       <View style={{ flexDirection: 'row', gap: 8 }}>

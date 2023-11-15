@@ -41,56 +41,13 @@ const LeaderboardScreen = ({ route }: NavProps) => {
     useGetLeaderboardQuery();
 
   const leaderBoard = useMemo(() => {
-    return parsedLeaderboardData(data, userNickname);
+    return parsedLeaderboardData(false, data, userNickname);
   }, [data, userNickname]);
-
-  const dummyParsedLeaderboard = {
-    alteredLeaderboard: [
-      {
-        _id: '654389621c7f489ced746bf1',
-        avatar: '5',
-        nickname: 'Maybe',
-        perks: 108447,
-      },
-      {
-        _id: '65198be44ba7ee78bd0ac7f3',
-        avatar: '4',
-        nickname: 'Toxi4niy Uebok',
-        perks: 12000,
-      },
-      {
-        _id: '651b016e78456354dd876c16',
-        avatar: '4',
-        nickname: 'Mk clown',
-        perks: 7000,
-      },
-      {
-        _id: '65198b534ba7ee78bd0ac7f1',
-        avatar: '2',
-        nickname: 'Ebaniy Ishak',
-        perks: 4500,
-      },
-      {
-        _id: '6519a04a4ba7ee78bd0ac7f5',
-        avatar: '4',
-        nickname: 'Kiber xuy',
-        perks: 3334,
-      },
-    ],
-    currentUser: {
-      _id: '654389621c7f489ced746bf1',
-      avatar: '5',
-      nickname: 'Maybe',
-      perks: 108447,
-    },
-    currentUserIndex: 1,
-    totalUsers: 7,
-  };
 
   const renderItem = ({ item, index }: ListRenderItemInfo<LeaderboardUser>) => {
     const isCurrentUser = item.nickname === userNickname ?? false;
     const indexForCurrentUser = isCurrentUser
-      ? dummyParsedLeaderboard?.currentUserIndex
+      ? leaderBoard?.currentUserIndex
       : index + 1;
     return (
       <View style={styles.cardContainer(isCurrentUser)}>

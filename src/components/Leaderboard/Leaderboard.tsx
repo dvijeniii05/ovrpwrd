@@ -18,17 +18,20 @@ import { StackScreenName } from '../../../ScreenNames';
 import GeneralErrorComponent from '../GeneralErrorComponent/GeneralErrorComponent';
 
 interface Props {
-  isUserFethcing: boolean;
+  isUserFetching: boolean;
   nickname: string | undefined;
+  isUserStatsSuccess: boolean;
 }
 
 const Leaderboard = (props: Props) => {
   const navigation = useNavigation<StackProps>();
   const { data, isSuccess, isFetching, isError, refetch } =
-    useGetLeaderboardQuery();
+    useGetLeaderboardQuery(undefined, {
+      skip: !props.isUserStatsSuccess,
+    });
 
   const leaderBoard = useMemo(() => {
-    return parsedLeaderboardData(data, props.nickname);
+    return parsedLeaderboardData(true, data, props.nickname);
   }, [data, props.nickname]);
 
   const renderItem = ({ item, index }: ListRenderItemInfo<LeaderboardUser>) => {
@@ -77,7 +80,7 @@ const Leaderboard = (props: Props) => {
         </View>
       </View>
       <Loader
-        isFetching={isFetching || props.isUserFethcing}
+        isFetching={isFetching || props.isUserFetching}
         fetchFallback={leaderboardLoader}>
         {isSuccess && props.nickname ? (
           <>

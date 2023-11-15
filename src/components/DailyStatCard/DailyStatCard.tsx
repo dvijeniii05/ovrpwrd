@@ -110,7 +110,7 @@ const DailyStatCard = (props: Props) => {
           <FramedImage
             frameSize={{ width: 80, height: 80 }}
             style={{ zIndex: 10 }}
-            avatar="auto"
+            avatar={item.heroUrl}
             frameColor="blue"
           />
         </View>
