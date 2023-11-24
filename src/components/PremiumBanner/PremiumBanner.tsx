@@ -38,7 +38,7 @@ const PremiumBanner = () => {
           onPress={() => {}}
           buttonText="Go to Premium"
           iconName="round-chevron-right"
-          buttonTextStyle={{ fontSize: 14 }}
+          buttonTextStyle={{ fontSize: 16 }}
           style={styles.button}
         />
       </View>

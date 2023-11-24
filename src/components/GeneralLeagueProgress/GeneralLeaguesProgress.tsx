@@ -1,20 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import CardWrapper from '../CardWrapper/CardWrapper';
 import { View, Text, ViewStyle } from 'react-native';
 import { COLORS } from '../../constans/COLORS';
 import UserGreenIcon from '../../assets/icons/userGreen.svg';
 import TickIcon from '../../assets/icons/tick.svg';
 import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
-import {
-  BlurMask,
-  Canvas,
-  LinearGradient,
-  Rect,
-  vec,
-} from '@shopify/react-native-skia';
-import { leagueBarColor } from '../../utils/leagueHelpers/leagueHelpers';
 import { leaugeNames } from '../../constans/interfaces';
 import { styles } from './GeneralLeagueProgress.styles';
+import NeonBar from '../NeonBar/NeonBar';
 
 interface Props {
   leagueName: leaugeNames;
@@ -39,9 +32,6 @@ const GeneralLeagueProgress = (props: Props) => {
     }
     return 0;
   }, [props.leagueRequiredPerks, props.currentPerks]);
-
-  const [outerBarWidth, setOuterBarWidth] = useState<number>(0);
-  const barLength = leagueProgress * outerBarWidth;
 
   const content = (
     <>
@@ -83,23 +73,12 @@ const GeneralLeagueProgress = (props: Props) => {
             forLeagueProgression
           />
         </View>
-        <View
-          style={styles.bar}
-          onLayout={event => {
-            const width = event.nativeEvent.layout.width;
-            setOuterBarWidth(Number(width.toFixed(5)));
-          }}>
-          <Canvas style={{ width: Math.round(outerBarWidth), height: 30 }}>
-            <Rect height={30} width={barLength} color={'black'}>
-              <BlurMask blur={4} respectCTM />
-              <LinearGradient
-                start={vec(0, 15)}
-                end={vec(barLength, 0)}
-                colors={leagueBarColor(props.leagueName)}
-              />
-            </Rect>
-          </Canvas>
-        </View>
+
+        <NeonBar
+          leagueProgress={leagueProgress}
+          leagueName={props.leagueName}
+          generalLeague
+        />
       </View>
     </>
   );

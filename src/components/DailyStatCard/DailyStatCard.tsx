@@ -175,7 +175,7 @@ const DailyStatCard = (props: Props) => {
         />
         <StandardButton
           buttonText="Match history"
-          buttonTextStyle={{ fontSize: 14 }}
+          buttonTextStyle={{ fontSize: 16 }}
           iconName="round-chevron-right"
           onPress={() => navigation.navigate(StackScreenName.matchHistory)}
           style={styles.matchHistoryButton}

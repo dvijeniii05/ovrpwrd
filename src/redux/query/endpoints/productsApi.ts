@@ -11,7 +11,6 @@ export interface Product {
   isPremium: boolean;
   productDescription: string;
   price: number;
-  isPriceInPerks: boolean;
   isDigital: boolean;
 }
 
@@ -41,7 +40,7 @@ export const productsApi = apiSlice.injectEndpoints({
         body: arg,
         method: 'PATCH',
       }),
-      invalidatesTags: ['userStats', 'allProducts'],
+      invalidatesTags: ['userStats', 'allProducts', 'userDetails'],
     }),
   }),
 });

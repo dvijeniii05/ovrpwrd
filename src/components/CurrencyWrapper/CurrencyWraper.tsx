@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ViewStyle } from 'react-native';
 import { styles } from './CurrencyWrapper.styles';
 import Perks from '../../assets/Perks.svg';
-import Relics from '../../assets/lastOne.svg';
+import Relics from '../../assets/Relics.svg';
 import LottieView from 'lottie-react-native';
 
 interface Props {

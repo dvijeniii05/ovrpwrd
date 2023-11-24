@@ -29,7 +29,7 @@ const GiftCard = (props: Props) => {
         onPress={() => {}}
         buttonText="Claim"
         style={{ paddingVertical: 8, width: '100%', marginTop: 16 }}
-        buttonTextStyle={{ fontSize: 14 }}
+        buttonTextStyle={{ fontSize: 16 }}
         isDisabled={props.isDisabled}
       />
     </View>

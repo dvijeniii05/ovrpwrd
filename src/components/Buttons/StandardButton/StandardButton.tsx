@@ -5,12 +5,13 @@ import Google from '../../../assets/icons/google.svg';
 import RoundChevronRight from '../../../assets/icons/round-chevron-right.svg';
 import WebIcon from '../../../assets/icons/web.svg';
 import LockIcon from '../../../assets/icons/lock.svg';
+import RelicIcon from '../../../assets/Relics.svg';
 
 import LottieView from 'lottie-react-native';
 
 type LogoNames = 'apple' | 'google';
 
-type IconNames = 'round-chevron-right' | 'web' | 'lock';
+type IconNames = 'round-chevron-right' | 'web' | 'lock' | 'relic';
 interface Props {
   buttonText: string;
   buttonTextStyle?: TextStyle;
@@ -29,6 +30,7 @@ const StandardButton = ({ isDisabled = false, ...props }: Props) => {
         return <Apple />;
       case 'google':
         return <Google />;
+
       default:
         return null;
     }
@@ -42,7 +44,8 @@ const StandardButton = ({ isDisabled = false, ...props }: Props) => {
         return <WebIcon width={24} height={24} />;
       case 'lock':
         return <LockIcon width={16} height={16} fill={'white'} />;
-
+      case 'relic':
+        return <RelicIcon width={18} height={18} />;
       default:
         return null;
     }

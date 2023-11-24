@@ -102,7 +102,7 @@ const Leaderboard = (props: Props) => {
                   : undefined
               }
               style={styles.seeMoreButton}
-              buttonTextStyle={{ fontSize: 14 }}
+              buttonTextStyle={{ fontSize: 16 }}
             />
           </>
         ) : null}

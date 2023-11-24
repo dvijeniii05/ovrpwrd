@@ -15,7 +15,7 @@ export const withBackButton = (props: {
   headerTitle: '',
   headerLeft: () => (
     <Pressable onPress={() => props.navigation.goBack()}>
-      <ArrowLeft style={{ marginLeft: 16 }} />
+      <ArrowLeft style={{ marginLeft: 16 }} width={28} height={28} />
     </Pressable>
   ),
 });
@@ -29,7 +29,7 @@ export const withHomeButton = (props: {
   headerTitle: '',
   headerLeft: () => (
     <Pressable onPress={() => props.navigation.navigate(StackScreenName.home)}>
-      <Home style={{ marginLeft: 16 }} />
+      <Home style={{ marginLeft: 16 }} width={28} height={28} />
     </Pressable>
   ),
 });
@@ -44,13 +44,13 @@ export const withSpecialHeaderButtons = (props: {
   headerLeft: () => (
     <Pressable
       onPress={() => props.navigation.navigate(StackScreenName.marketplace)}>
-      <Basket style={{ marginLeft: 16 }} />
+      <Basket style={{ marginLeft: 16 }} width={28} height={28} />
     </Pressable>
   ),
   headerRight: () => (
     <Pressable
       onPress={() => props.navigation.navigate(StackScreenName.allLeagues)}>
-      <Cup style={{ marginRight: 16 }} />
+      <Cup style={{ marginRight: 16 }} width={28} height={28} />
     </Pressable>
   ),
 });

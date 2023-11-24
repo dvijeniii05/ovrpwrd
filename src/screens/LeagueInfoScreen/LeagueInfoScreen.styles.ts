@@ -29,6 +29,7 @@ const participantsContainer = (marginTop: number): ViewStyle => ({
   paddingRight: 10,
   borderRadius: 16,
   gap: 8,
+  backgroundColor: 'rgba(0,0,0, 0.8)',
 });
 
 const participantsText: Text = {

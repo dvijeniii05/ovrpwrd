@@ -8,7 +8,7 @@
  * @format
  */
 
-import { NavigationContainer } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import AppDrawer from './src/navigation/AppDrawer';
 import './i18';
@@ -19,6 +19,15 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import BottomSheet from './src/components/BottomSheet/BottomSheet';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import BootSplash from 'react-native-bootsplash';
+import { COLORS } from './src/constans/COLORS';
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: COLORS.darkBlue,
+  },
+};
 
 const App = () => {
   return (
@@ -28,7 +37,8 @@ const App = () => {
           <NavigationContainer
             onReady={() => {
               BootSplash.hide();
-            }}>
+            }}
+            theme={MyTheme}>
             <AppDrawer />
           </NavigationContainer>
           <BottomSheetModalProvider>
