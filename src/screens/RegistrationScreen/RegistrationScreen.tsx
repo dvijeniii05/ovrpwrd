@@ -96,6 +96,7 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
           placeholderText="Nickname"
           containerStyle={{ marginTop: 8 }}
           onChangeText={value => setNickname(value)}
+          needsProfanityCheck
         />
         <DetailInput
           placeholderText="DOB"

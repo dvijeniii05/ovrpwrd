@@ -1,8 +1,8 @@
-import { View, ViewStyle } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 import { styles } from './DividerLine.styles';
 
 interface Props {
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 const DividerLine = (props: Props) => {

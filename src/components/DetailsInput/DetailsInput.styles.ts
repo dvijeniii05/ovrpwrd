@@ -19,8 +19,15 @@ const textInput: TextStyle = {
   paddingVertical: 16,
 };
 
+const profanityText: TextStyle = {
+  color: COLORS.red,
+  marginTop: 8,
+  fontFamily: 'Jost-Regular',
+};
+
 export const styles = {
   parentContainer,
   inputContainer,
   textInput,
+  profanityText,
 };
