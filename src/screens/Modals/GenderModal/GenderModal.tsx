@@ -1,9 +1,7 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import StandardButton from '../../../components/Buttons/StandardButton/StandardButton';
 import { useTranslation } from 'react-i18next';
 import { styles } from './GenderModal.styles';
-import { COLORS } from '../../../constans/COLORS';
-import SelectedCheckbox from '../../../assets/icons/selected-checkbox.svg';
 import ButtonWithCheckbox from '../../../components/Buttons/ButtonWithCheckbox/ButtonWithCheckbox';
 import DividerLine from '../../../components/DividerLine/DividerLine';
 import { useState } from 'react';

@@ -20,6 +20,7 @@ import BottomSheet from './src/components/BottomSheet/BottomSheet';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import BootSplash from 'react-native-bootsplash';
 import { COLORS } from './src/constans/COLORS';
+import NoNetworkModal from './src/screens/Modals/NoNetworkModal/NoNetworkModal';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -41,6 +42,7 @@ const App = () => {
             theme={MyTheme}>
             <AppDrawer />
           </NavigationContainer>
+          <NoNetworkModal />
           <BottomSheetModalProvider>
             <BottomSheet />
           </BottomSheetModalProvider>
