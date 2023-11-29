@@ -109,7 +109,7 @@ const DailyStatCard = (props: Props) => {
           </Canvas>
           <FramedImage
             frameSize={{ width: 80, height: 80 }}
-            style={{ zIndex: 10 }}
+            style={{ zIndex: 10, height: 70 }}
             avatar={item.heroUrl}
             frameColor="blue"
           />
