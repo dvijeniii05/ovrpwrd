@@ -14,7 +14,7 @@ import GeneralErrorComponent from '../../components/GeneralErrorComponent/Genera
 
 const MarketplaceScreen = () => {
   const headerHeight = useHeaderHeight();
-  const topMargin = headerHeight + 80;
+  const topMargin = headerHeight + 20;
 
   const [isMarketplaceActive, setIsMarketplaceActive] = useState<boolean>(true);
 

@@ -78,11 +78,7 @@ const AccountScreen = () => {
           {item.date}
         </Text>
         <View style={styles.priceContainer}>
-          {item.isPriceInPerks ? (
-            <Perks width={24} height={24} />
-          ) : (
-            <Relics width={24} height={24} />
-          )}
+          <Relics width={22} height={22} />
           <Text style={styles.priceText}>{item.price}</Text>
         </View>
       </TouchableOpacity>
@@ -120,7 +116,7 @@ const AccountScreen = () => {
                 isDisabled
                 onPress={() => {}}
                 style={styles.editButton}
-                buttonTextStyle={{ fontSize: 14 }}
+                buttonTextStyle={{ fontSize: 16 }}
               />
             </View>
             <View style={styles.purchaseParentContent}>

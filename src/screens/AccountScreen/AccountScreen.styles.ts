@@ -63,8 +63,8 @@ const priceContainer: ViewStyle = {
   flexDirection: 'row',
   alignItems: 'center',
   backgroundColor: COLORS.darkNeutral,
-  paddingVertical: 2,
-  paddingHorizontal: 4,
+  paddingVertical: 4,
+  paddingHorizontal: 6,
   borderRadius: 8,
   gap: 2,
 };

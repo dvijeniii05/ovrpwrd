@@ -15,6 +15,7 @@
     "@react-native-async-storage/async-storage": "^1.18.2",
     "@react-native-clipboard/clipboard": "^1.10.0",
     "@react-native-community/blur": "^4.3.2",
+    "@react-native-community/netinfo": "^11.1.1",
     "@react-native-google-signin/google-signin": "^10.0.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.9.12",
@@ -43,10 +44,12 @@
     "react-native-screens": "^3.21.0",
     "react-native-shadow-2": "^7.0.8",
     "react-native-svg": "^13.14.0",
+    "react-native-version-check": "^3.4.7",
     "react-native-webview": "^13.2.2",
     "react-redux": "^8.0.5",
     "redux-flipper": "^2.0.2",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "use-debounce": "^10.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -58,6 +61,7 @@
     "@types/jest": "^29.2.1",
     "@types/luxon": "^3.3.0",
     "@types/react": "^18.2.0",
+    "@types/react-native-version-check": "^3.4.8",
     "@types/react-test-renderer": "^18.0.0",
     "@types/webpack-env": "^1.18.4",
     "babel-jest": "^29.2.1",

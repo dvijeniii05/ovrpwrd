@@ -10,7 +10,7 @@ const tabsContainer = (isDisabled?: boolean): ViewStyle => ({
 });
 
 const tabsButtonText: TextStyle = {
-  fontSize: 12,
+  fontSize: 14,
   fontFamily: 'Jost-SemiBold',
   color: COLORS.white,
 };

@@ -8,8 +8,7 @@ import Gradient from '../../components/Gradient/Gradient';
 import { SkeletonLoader } from '../../components/Loaders/SkeletonLoader';
 import { Rect } from 'react-content-loader/native';
 import { styles } from './LeagueInfoScreen.styles';
-import { BlurView } from '@react-native-community/blur';
-import UserIcon from '../../assets/icons/user.svg';
+import UserGreenIcon from '../../assets/icons/userGreen.svg';
 import CardWrapper from '../../components/CardWrapper/CardWrapper';
 import {
   useGetCurentLeaguesQuery,
@@ -97,13 +96,10 @@ const LeagueInfoScreen = ({ route }: NavProps) => {
         <Loader
           isFetching={isUserCountFetching}
           fetchFallback={userCountLoader}>
-          <BlurView
-            style={styles.participantsContainer(participantsMarginTop)}
-            blurAmount={10}
-            blurType="dark">
+          <View style={styles.participantsContainer(participantsMarginTop)}>
             {isUserCountSuccess ? (
               <>
-                <UserIcon />
+                <UserGreenIcon width={20} height={20} />
                 <Text style={styles.participantsText}>
                   {userCount?.legendary}
                 </Text>
@@ -115,7 +111,7 @@ const LeagueInfoScreen = ({ route }: NavProps) => {
                 isSmallComponent
               />
             ) : null}
-          </BlurView>
+          </View>
         </Loader>
         {relevantLeague ? (
           <GeneralLeagueProgress

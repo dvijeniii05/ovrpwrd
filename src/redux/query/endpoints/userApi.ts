@@ -1,7 +1,6 @@
 import { ParsedMatch } from '../../../constans/interfaces';
 import { updateUserDetails } from '../../slices/userDataSlice';
 import { apiSlice } from '../apiSlice';
-import { startListening } from '../listenerMiddleware';
 
 export interface AuthResponseProps {
   token: string | undefined;
@@ -30,7 +29,6 @@ export interface PurchasedProduct {
   productBrand: string;
   productName: string;
   price: number;
-  isPriceInPerks: boolean;
   uniqueId: string;
   promoCode: string;
   date: string;
@@ -124,11 +122,3 @@ export const {
   useGetUserDetailsQuery,
   useLinkSteamIDQuery,
 } = userApi;
-
-startListening({
-  matcher: userApi.endpoints.linkSteamID.matchFulfilled,
-  effect: async (action, listenerApi) => {
-    listenerApi.dispatch(updateUserDetails({ isGameLinked: true }));
-    //listener triggered too often
-  },
-});

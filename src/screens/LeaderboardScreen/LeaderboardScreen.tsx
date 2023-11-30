@@ -5,6 +5,7 @@ import {
   Text,
   FlatList,
   ListRenderItemInfo,
+  RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Gradient from '../../components/Gradient/Gradient';
@@ -23,7 +24,7 @@ import { StackScreenName } from '../../../ScreenNames';
 import { COLORS } from '../../constans/COLORS';
 import { HEIGHT } from '../../utils/dimension';
 import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { parsedLeaderboardData } from '../../utils/leagueHelpers/leagueHelpers';
 
 type NavProps = StackScreenProps<
@@ -75,6 +76,12 @@ const LeaderboardScreen = ({ route }: NavProps) => {
     );
   };
 
+  const refreshing = false; // static value for RefreshControl as there is no need for the loader logic apart from actual Pull-to-Refresh;
+
+  const onRefresh = useCallback(() => {
+    refetch();
+  }, []);
+
   return (
     <SafeAreaView edges={['bottom']}>
       <StatusBar barStyle={'light-content'} />
@@ -88,7 +95,10 @@ const LeaderboardScreen = ({ route }: NavProps) => {
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           style={{ width: '100%' }}
-          showsVerticalScrollIndicator={false}>
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
           {isSuccess ? (
             <>
               <View style={styles.headerContainer(topMargin)}></View>

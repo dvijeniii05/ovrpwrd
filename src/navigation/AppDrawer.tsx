@@ -1,4 +1,7 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  TransitionPresets,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import React from 'react';
 import { StackParamList } from './navigationTypes';
 import { StackScreenName } from '../../ScreenNames';
@@ -34,7 +37,11 @@ const AppDrawer = () => {
   const userLocalData = useSelector((state: RootState) => state.userData.data);
   const isUserFullyOnboarded = getToken() && userLocalData.isGameLinked; // This needs to be fixed as Uath desont work for a returning onobarded user
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{
+        ...TransitionPresets.SlideFromRightIOS,
+        headerShown: false,
+      }}>
       {!isUserFullyOnboarded ? (
         <>
           <Stack.Screen

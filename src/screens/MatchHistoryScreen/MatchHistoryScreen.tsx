@@ -25,13 +25,28 @@ const MatchHistoryScreen = () => {
   const headerHeight = useHeaderHeight();
   const topMargin = headerHeight + 40;
 
-  const one = 9.42;
-  const two = 4713;
-  const total = one + two * 0.001;
-  console.log('TOTAL', total);
-
   const { data, isFetching, isSuccess, isError, refetch } =
     useGetUserStatsQuery();
+
+  // const [refreshing, setIsRefreshing] = useState<boolean>(false); // static value for RefreshControl as there is no need for the loader logic apart from actual Pull-to-Refresh;
+  // const debounceRefetch = useDebouncedCallback(() => refetch(), 60000, {
+  //   leading: true,
+  //   maxWait: 60000,
+  //   trailing: false,
+  // });
+  // const debounceRefreshIndicator = useDebouncedCallback(
+  //   () => setIsRefreshing(false),
+  //   2000,
+  //   {
+  //     trailing: true,
+  //     leading: false,
+  //   },
+  // );
+  // const onRefresh = useCallback(() => {
+  //   setIsRefreshing(true);
+  //   debounceRefetch();
+  //   debounceRefreshIndicator();
+  // }, []);
 
   const renderItem = ({ item }: ListRenderItemInfo<ParsedMatch>) => (
     <View style={styles.singleMatchContainer}>

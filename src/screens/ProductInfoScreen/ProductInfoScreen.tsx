@@ -18,7 +18,6 @@ import { StackScreenName } from '../../../ScreenNames';
 import { COLORS } from '../../constans/COLORS';
 import CustomCarousel from 'carousel-with-pagination-rn';
 import { WIDTH } from '../../utils/dimension';
-import Perk from '../../assets/Perks.svg';
 import Relic from '../../assets/Relics.svg';
 import StandardButton from '../../components/Buttons/StandardButton/StandardButton';
 import { useEffect, useState } from 'react';
@@ -63,9 +62,7 @@ const ProductInfoScreen = ({ navigation, route }: NavProps) => {
   );
 
   const userHasEnoughCurrency = () => {
-    if (product.isPriceInPerks && userStats) {
-      return userStats?.currentPoints.currentPerks >= product.price;
-    } else if (!product.isPriceInPerks && userStats) {
+    if (userStats) {
       return userStats?.currentPoints.currentRelics >= product.price;
     }
   };
@@ -166,11 +163,7 @@ const ProductInfoScreen = ({ navigation, route }: NavProps) => {
             buttonTextStyle={styles.productLinkText}
           />
           <View style={styles.priceContainer}>
-            {product.isPriceInPerks ? (
-              <Perk width={24} height={24} />
-            ) : (
-              <Relic width={24} height={24} />
-            )}
+            <Relic width={24} height={24} />
             <Text style={styles.priceText}>{product.price}</Text>
           </View>
           <StandardButton

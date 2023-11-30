@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
-import { Text, View } from 'react-native';
+import { Keyboard, Text, View } from 'react-native';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
 import { useRegisterUserMutation } from '../../redux/query/endpoints/userApi';
@@ -96,32 +96,36 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
           placeholderText="Nickname"
           containerStyle={{ marginTop: 8 }}
           onChangeText={value => setNickname(value)}
+          needsProfanityCheck
         />
         <DetailInput
           placeholderText="DOB"
           containerStyle={{ marginTop: 8 }}
           editable={false}
-          onPress={() =>
-            dispatch(openBottomSheet({ isOpen: true, type: 'DOB' }))
-          }
+          onPress={() => {
+            Keyboard.dismiss();
+            dispatch(openBottomSheet({ isOpen: true, type: 'DOB' }));
+          }}
           defaultValue={dob}
         />
         <DetailInput
           placeholderText="Gender"
           containerStyle={{ marginTop: 8 }}
           editable={false}
-          onPress={() =>
-            dispatch(openBottomSheet({ isOpen: true, type: 'Gender' }))
-          }
+          onPress={() => {
+            Keyboard.dismiss();
+            dispatch(openBottomSheet({ isOpen: true, type: 'Gender' }));
+          }}
           defaultValue={gender}
           icon
         />
         <DetailInput
           placeholderText="Country"
           containerStyle={{ marginTop: 8 }}
-          onPress={() =>
-            dispatch(openBottomSheet({ isOpen: true, type: 'Country' }))
-          }
+          onPress={() => {
+            Keyboard.dismiss();
+            dispatch(openBottomSheet({ isOpen: true, type: 'Country' }));
+          }}
           editable={false}
           defaultValue={country}
           icon

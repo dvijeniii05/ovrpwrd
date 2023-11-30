@@ -28,7 +28,7 @@ const ProductCard = (props: Props) => {
       if (isOutOfStock) {
         return 'Out of Stock';
       }
-      return 'Get offer';
+      return `${props.product.price}`;
     };
 
     return (
@@ -55,8 +55,9 @@ const ProductCard = (props: Props) => {
             })
           }
           buttonText={buttonText()}
+          iconName={isOutOfStock ? undefined : 'relic'}
           style={styles.button(props.isPurchasable, isOutOfStock)}
-          buttonTextStyle={{ fontSize: 14 }}
+          buttonTextStyle={{ fontSize: 16 }}
           isDisabled={isOutOfStock}
         />
       </View>
@@ -83,7 +84,7 @@ const ProductCard = (props: Props) => {
           onPress={() => Linking.openURL(props.product.linkToProduct)}
           buttonText={'View'}
           style={styles.button(props.isPurchasable)}
-          buttonTextStyle={{ fontSize: 14 }}
+          buttonTextStyle={{ fontSize: 16 }}
         />
       </View>
     );

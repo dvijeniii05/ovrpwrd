@@ -1,5 +1,5 @@
-import React from 'react';
-import { ScrollView, StatusBar, View } from 'react-native';
+import React, { useCallback } from 'react';
+import { RefreshControl, ScrollView, StatusBar, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UserInfo from '../../components/UserInfo/UserInfo';
 import DailyStatCard from '../../components/DailyStatCard/DailyStatCard';
@@ -20,6 +20,7 @@ import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
 import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
 import { HEIGHT } from '../../utils/dimension';
+import { useDebouncedCallback } from 'use-debounce';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.home>;
 
@@ -55,13 +56,27 @@ const Home = ({ navigation }: ScreenProps) => {
     </SkeletonLoader>
   );
 
+  const refreshing = false; // static value for RefreshControl as there is no need for the loader logic apart from actual Pull-to-Refresh;
+  const debounceRefetch = useDebouncedCallback(() => refetch(), 60000, {
+    leading: true,
+    maxWait: 60000,
+    trailing: false,
+  });
+  const onRefresh = useCallback(() => {
+    refetchUserDetails();
+    debounceRefetch();
+  }, []);
+
   return (
     <SafeAreaView edges={['bottom']}>
       <StatusBar barStyle={'light-content'} />
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContentContainer}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <Gradient type="conical" style={{ position: 'absolute' }} />
         {isError || isUserDetailsError ? (
           <View

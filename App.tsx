@@ -8,8 +8,8 @@
  * @format
  */
 
-import { NavigationContainer } from '@react-navigation/native';
-import React from 'react';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import React, { useEffect } from 'react';
 import AppDrawer from './src/navigation/AppDrawer';
 import './i18';
 import { Provider } from 'react-redux';
@@ -19,8 +19,36 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import BottomSheet from './src/components/BottomSheet/BottomSheet';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import BootSplash from 'react-native-bootsplash';
+import { COLORS } from './src/constans/COLORS';
+import NoNetworkModal from './src/screens/Modals/NoNetworkModal/NoNetworkModal';
+// import VersionCheck from 'react-native-version-check';
+// import { Linking } from 'react-native';
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: COLORS.darkBlue,
+  },
+};
+
+// This logic has to be checked in production OR changed to a fully custom logic
+// const vershionCheck = async () => {
+//   try {
+//     const updateNeeded = await VersionCheck.needUpdate();
+//     console.log(updateNeeded);
+//     if (updateNeeded.isNeeded) {
+//       Linking.openURL(updateNeeded.storeUrl);
+//     }
+//   } catch {
+//     console.log('ERROR: app version check failure');
+//   }
+// };
 
 const App = () => {
+  // useEffect(() => {
+  //   vershionCheck();
+  // });
   return (
     <Provider store={mainStore}>
       <PersistGate loading={null} persistor={persistor}>
@@ -28,9 +56,11 @@ const App = () => {
           <NavigationContainer
             onReady={() => {
               BootSplash.hide();
-            }}>
+            }}
+            theme={MyTheme}>
             <AppDrawer />
           </NavigationContainer>
+          <NoNetworkModal />
           <BottomSheetModalProvider>
             <BottomSheet />
           </BottomSheetModalProvider>

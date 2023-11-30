@@ -42,16 +42,23 @@ const SteamLinkScreen = ({ navigation, route }: ScreenProps) => {
           </Text>
         </View>
       );
+    } else if (isError) {
+      return (
+        <View style={styles.descriptionWrapper}>
+          <Text style={styles.descriptionHeading}>Something went wrong</Text>
+          <Text style={styles.descriptionText}>
+            There was a problem linking your Steam account. Please press a
+            'Retry' button to try it again.
+          </Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.descriptionWrapper}>
+          <Text style={styles.descriptionHeading}>Processing data</Text>
+        </View>
+      );
     }
-    return (
-      <View style={styles.descriptionWrapper}>
-        <Text style={styles.descriptionHeading}>Something went wrong</Text>
-        <Text style={styles.descriptionText}>
-          There was a problem linking your Steam account. Please press a 'Retry'
-          button to try it again.
-        </Text>
-      </View>
-    );
   };
 
   const handleOnPress = () => {

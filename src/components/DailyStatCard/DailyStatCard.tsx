@@ -109,7 +109,7 @@ const DailyStatCard = (props: Props) => {
           </Canvas>
           <FramedImage
             frameSize={{ width: 80, height: 80 }}
-            style={{ zIndex: 10 }}
+            style={{ zIndex: 10, height: 70 }}
             avatar={item.heroUrl}
             frameColor="blue"
           />
@@ -175,7 +175,7 @@ const DailyStatCard = (props: Props) => {
         />
         <StandardButton
           buttonText="Match history"
-          buttonTextStyle={{ fontSize: 14 }}
+          buttonTextStyle={{ fontSize: 16 }}
           iconName="round-chevron-right"
           onPress={() => navigation.navigate(StackScreenName.matchHistory)}
           style={styles.matchHistoryButton}
