@@ -54,6 +54,15 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
     {
       value: '6',
     },
+    {
+      value: '7',
+    },
+    {
+      value: '8',
+    },
+    {
+      value: '9',
+    },
   ];
 
   const renderItem = ({ item }: ListRenderItemInfo<{ value: string }>) => (

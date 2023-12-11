@@ -8,7 +8,7 @@ const NoNetworkModal = () => {
   const { isConnected } = useNetInfo();
 
   const content = (
-    <Modal visible={true} transparent>
+    <Modal visible={!isConnected && isConnected !== null} transparent>
       <View style={styles.modalBackgroundContainer}></View>
       <View style={styles.modalContentContainer(useSafeAreaInsets().bottom)}>
         <Text style={styles.headerText}>No Internet Connection</Text>
@@ -26,7 +26,7 @@ const NoNetworkModal = () => {
     </Modal>
   );
 
-  return !isConnected ? content : null;
+  return content;
 };
 
 export default NoNetworkModal;

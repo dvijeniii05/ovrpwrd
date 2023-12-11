@@ -30,6 +30,7 @@ import AccountScreen from '../screens/AccountScreen/AccountScreen';
 import MatchHistoryScreen from '../screens/MatchHistoryScreen/MatchHistoryScreen';
 import LeaderboardScreen from '../screens/LeaderboardScreen/LeaderboardScreen';
 import { getToken } from '../redux/store/getTokenHelper';
+import WelcomeInfoScreen from '../screens/WelcomeInfoScreen/WelcomeInfoScreen';
 
 const Stack = createStackNavigator<StackParamList>();
 
@@ -44,6 +45,10 @@ const AppDrawer = () => {
       }}>
       {!isUserFullyOnboarded ? (
         <>
+          <Stack.Screen
+            name={StackScreenName.welcomeInfo}
+            component={WelcomeInfoScreen}
+          />
           <Stack.Screen
             name={StackScreenName.landing}
             component={LandingScreen}

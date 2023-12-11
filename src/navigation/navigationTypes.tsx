@@ -4,6 +4,7 @@ import { Product } from '../redux/query/endpoints/productsApi';
 
 export type StackParamList = {
   Landing: undefined;
+  WelcomeInfo: undefined;
   Welcome: { email: string };
   Registration: {
     email: string;

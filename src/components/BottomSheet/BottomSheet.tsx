@@ -1,9 +1,10 @@
 import {
+  BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetView,
   useBottomSheetDynamicSnapPoints,
 } from '@gorhom/bottom-sheet';
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/mainStore';
 import { closeBottomSheet } from '../../redux/slices/userDataSlice';
@@ -54,6 +55,17 @@ const BottomSheet = () => {
     return null;
   };
 
+  const renderBackdrop = useCallback(
+    props => (
+      <BottomSheetBackdrop
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        {...props}
+      />
+    ),
+    [],
+  );
+
   return (
     <>
       <BottomSheetModal
@@ -71,7 +83,8 @@ const BottomSheet = () => {
         containerStyle={{ backgroundColor: COLORS.modalBackground }}
         backgroundStyle={{ backgroundColor: COLORS.darkGrey }}
         handleIndicatorStyle={{ backgroundColor: COLORS.neutral }}
-        onDismiss={() => dispatch(closeBottomSheet())}>
+        onDismiss={() => dispatch(closeBottomSheet())}
+        backdropComponent={renderBackdrop}>
         <BottomSheetView
           onLayout={handleContentLayout}
           style={{ paddingBottom: useSafeAreaInsets().bottom }}>

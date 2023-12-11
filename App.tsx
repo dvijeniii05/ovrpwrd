@@ -21,6 +21,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import BootSplash from 'react-native-bootsplash';
 import { COLORS } from './src/constans/COLORS';
 import NoNetworkModal from './src/screens/Modals/NoNetworkModal/NoNetworkModal';
+import { closeBottomSheet } from './src/redux/slices/userDataSlice';
 // import VersionCheck from 'react-native-version-check';
 // import { Linking } from 'react-native';
 
@@ -46,9 +47,10 @@ const MyTheme = {
 // };
 
 const App = () => {
-  // useEffect(() => {
-  //   vershionCheck();
-  // });
+  useEffect(() => {
+    // vershionCheck();
+    mainStore.dispatch(closeBottomSheet);
+  }, []);
   return (
     <Provider store={mainStore}>
       <PersistGate loading={null} persistor={persistor}>

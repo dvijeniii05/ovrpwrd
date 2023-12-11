@@ -37,12 +37,14 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
 
   const [fullName, setFullName] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
+  const [isProfanitySuccess, setIsProfanitySuccess] = useState<boolean>(false);
   const [isInformationModalVisible, setIsInformationModalVisible] =
     useState<boolean>(false);
   const [informationModalText, setInformationModalText] = useState<string>('');
 
   // TODO: to be rewoerked with nickname confirmation logic
-  const isFormComplete = dob && gender && country && fullName && nickname;
+  const isFormComplete =
+    dob && gender && country && fullName && nickname && isProfanitySuccess;
 
   const handleOnpress = () => {
     registerUser({ nickname, email, fullName, dob, gender, country })
@@ -97,6 +99,7 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
           containerStyle={{ marginTop: 8 }}
           onChangeText={value => setNickname(value)}
           needsProfanityCheck
+          isProfanitySuccess={value => setIsProfanitySuccess(value)}
         />
         <DetailInput
           placeholderText="DOB"

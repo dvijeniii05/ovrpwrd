@@ -57,7 +57,7 @@ const LeaderboardScreen = ({ route }: NavProps) => {
             {indexForCurrentUser}
           </Text>
           <FramedImage
-            avatar="2"
+            avatar={item.avatar}
             frameColor="blue"
             frameSize={{ width: 24, height: 24 }}
           />

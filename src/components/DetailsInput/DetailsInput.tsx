@@ -15,6 +15,7 @@ interface Props {
   editable?: boolean;
   onPress?: () => void;
   onChangeText?: (value: string) => void;
+  isProfanitySuccess?: (value: boolean) => void;
   needsProfanityCheck?: boolean;
   defaultValue?: string;
   icon?: boolean;
@@ -42,8 +43,12 @@ const DetailInput = ({ editable = true, ...props }: Props) => {
     const hasProfanity = badWords.some(badWord =>
       text.toLowerCase().includes(badWord),
     );
+
+    props.isProfanitySuccess ? props.isProfanitySuccess(!hasProfanity) : null;
+
     if (!hasProfanity) {
       setIsProfanitySuccess(true);
+      props.onChangeText ? props.onChangeText(text) : null;
     } else {
       setIsProfanitySuccess(false);
     }
@@ -54,7 +59,7 @@ const DetailInput = ({ editable = true, ...props }: Props) => {
       profanityCheck(text);
     } else {
       setText(text);
-      props.onChangeText;
+      props.onChangeText ? props.onChangeText(text) : null;
     }
   };
 
@@ -72,9 +77,7 @@ const DetailInput = ({ editable = true, ...props }: Props) => {
         />
         {icon()}
       </Pressable>
-      {props.onChangeText &&
-      !isProfanitySuccess &&
-      props.needsProfanityCheck ? (
+      {!isProfanitySuccess && props.needsProfanityCheck && text ? (
         <>
           <DividerLine
             style={[props.dividerStyle, { backgroundColor: COLORS.red }]}

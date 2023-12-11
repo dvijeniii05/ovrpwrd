@@ -29,6 +29,12 @@ const FramedImage = (props: Props) => {
         return require('../../assets/icons/Avatar5.png');
       case '6':
         return require('../../assets/icons/Avatar6.png');
+      case '7':
+        return require('../../assets/icons/Avatar7.png');
+      case '8':
+        return require('../../assets/icons/Avatar8.png');
+      case '9':
+        return require('../../assets/icons/Avatar9.png');
       default: {
         return heroIconPicker(props.avatar);
       }
