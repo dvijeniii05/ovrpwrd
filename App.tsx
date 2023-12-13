@@ -22,6 +22,7 @@ import BootSplash from 'react-native-bootsplash';
 import { COLORS } from './src/constans/COLORS';
 import NoNetworkModal from './src/screens/Modals/NoNetworkModal/NoNetworkModal';
 import { closeBottomSheet } from './src/redux/slices/userDataSlice';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 // import VersionCheck from 'react-native-version-check';
 // import { Linking } from 'react-native';
 
@@ -60,7 +61,9 @@ const App = () => {
               BootSplash.hide();
             }}
             theme={MyTheme}>
-            <AppDrawer />
+            <ActionSheetProvider>
+              <AppDrawer />
+            </ActionSheetProvider>
           </NavigationContainer>
           <NoNetworkModal />
           <BottomSheetModalProvider>
