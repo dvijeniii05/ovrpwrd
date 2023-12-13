@@ -93,7 +93,7 @@ const PurchaseModal = ({ isDataDriven = true, ...props }: Props) => {
         />
         <StandardButton
           buttonText={'Close'}
-          onPress={() => props.onPress}
+          onPress={props.onPress}
           style={{ marginTop: 24 }}
         />
       </View>
