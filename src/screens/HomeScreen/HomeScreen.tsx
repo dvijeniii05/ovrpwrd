@@ -11,6 +11,7 @@ import PremiumBanner from '../../components/PremiumBanner/PremiumBanner';
 import {
   useGetUserDetailsQuery,
   useGetUserStatsQuery,
+  userApi,
 } from '../../redux/query/endpoints/userApi';
 import { Loader } from '../../components/Loaders/Loader';
 import { SkeletonLoader } from '../../components/Loaders/SkeletonLoader';
@@ -21,10 +22,12 @@ import { StackScreenName } from '../../../ScreenNames';
 import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
 import { HEIGHT } from '../../utils/dimension';
 import { useDebouncedCallback } from 'use-debounce';
+import { useDispatch } from 'react-redux';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.home>;
 
 const Home = ({ navigation }: ScreenProps) => {
+  const dispatch = useDispatch();
   const {
     data: userStats,
     isSuccess,
@@ -63,7 +66,7 @@ const Home = ({ navigation }: ScreenProps) => {
     trailing: false,
   });
   const onRefresh = useCallback(() => {
-    refetchUserDetails();
+    dispatch(userApi.util.invalidateTags(['leaderboard', 'userDetails']));
     debounceRefetch();
   }, []);
 
