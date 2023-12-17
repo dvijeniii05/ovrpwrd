@@ -125,10 +125,11 @@ export const DobModal = () => {
         monthsData.filter(item => item.month === selectedMonth)[0],
       ),
       selectedDay,
+      12,
     );
     const splitter = dob.toUTCString().split(', ')[1].split(' ');
     const convertedDob = `${splitter[0]}-${splitter[1]}-${splitter[2]}`;
-    console.log(convertedDob);
+    console.log(splitter, dob);
     dispatch(updateUserDetails({ dob: convertedDob }));
     dispatch(closeBottomSheet());
   };
