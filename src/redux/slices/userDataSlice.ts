@@ -12,9 +12,6 @@ interface StartingPointDataProps {
   dob: string;
   gender: string;
   country: string;
-  isAnonymousUser: boolean;
-  isNewUser: boolean;
-  isAuthed: boolean;
   // matchData: MatchStatsProps[];
 }
 
@@ -35,9 +32,6 @@ const userDataState: userDataStateProps = {
     dob: '',
     gender: '',
     country: '',
-    isAnonymousUser: true,
-    isNewUser: false,
-    isAuthed: false,
     // matchData: [],
   },
   status: 'idle',

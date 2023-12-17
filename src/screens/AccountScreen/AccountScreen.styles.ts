@@ -2,11 +2,12 @@ import { TextStyle, ViewStyle } from 'react-native';
 import { COLORS } from '../../constans/COLORS';
 import { HEIGHT } from '../../utils/dimension';
 
-const parentContainer: ViewStyle = {
+const parentContainer = (bottomSafeArea: number): ViewStyle => ({
   height: HEIGHT,
   backgroundColor: COLORS.darkBlue,
   alignItems: 'center',
-};
+  paddingBottom: bottomSafeArea,
+});
 
 const editButton: ViewStyle = {
   backgroundColor: COLORS.darkBlue,

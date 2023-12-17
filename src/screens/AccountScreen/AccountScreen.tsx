@@ -6,14 +6,16 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import Gradient from '../../components/Gradient/Gradient';
 import { styles } from './AccountScreen.styles';
-import { useHeaderHeight } from '@react-navigation/elements';
 import UserInfo from '../../components/UserInfo/UserInfo';
 import StandardButton from '../../components/Buttons/StandardButton/StandardButton';
-import Perks from '../../assets/Perks.svg';
 import Relics from '../../assets/Relics.svg';
 import { useCallback, useState } from 'react';
 import PurchaseModal from '../Modals/PurchaseModal/PurchaseModal';
@@ -24,8 +26,10 @@ import {
 } from '../../redux/query/endpoints/userApi';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
+import { useDispatch } from 'react-redux';
 
 const AccountScreen = () => {
+  const dispatch = useDispatch();
   const [isProductModalVisible, setIsProductModalVisible] =
     useState<boolean>(false);
   const [pickedProduct, setPickedProduct] = useState({
@@ -83,13 +87,27 @@ const AccountScreen = () => {
         </View>
       </TouchableOpacity>
     ),
-    [],
+    [userDetails],
   );
+
+  const onLogoutPress = () => {
+    Alert.alert('Leaving us?', 'Are you sure you want to log out?', [
+      {
+        text: 'No',
+        style: 'cancel',
+      },
+      {
+        text: 'Yes',
+        onPress: () => dispatch({ type: 'USER_LOGOUT' }),
+        style: 'cancel',
+      },
+    ]);
+  };
 
   return (
     <SafeAreaView edges={['bottom']}>
       <StatusBar barStyle={'light-content'} />
-      <View style={styles.parentContainer}>
+      <View style={styles.parentContainer(useSafeAreaInsets().bottom)}>
         <Gradient type="shaded" style={{ position: 'absolute' }} />
         <LoadingComponent isLoading={isUserDetailsFetching || isFetching} />
         <PurchaseModal
@@ -154,6 +172,7 @@ const AccountScreen = () => {
             />
           </View>
         ) : null}
+        <StandardButton buttonText="Log out" onPress={onLogoutPress} />
       </View>
     </SafeAreaView>
   );
