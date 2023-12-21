@@ -1,4 +1,8 @@
 {
   "name": "OVRPWRD",
-  "displayName": "OVRPWRD"
+  "displayName": "OVRPWRD",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-xxxxxxxx~xxxxxxxx",
+    "ios_app_id": "ca-app-pub-9280461977904939~5303100435"
+  }
 }

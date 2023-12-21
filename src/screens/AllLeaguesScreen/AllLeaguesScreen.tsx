@@ -11,7 +11,7 @@ import {
   activeLeague,
   leagueDaysCountdown,
 } from '../../utils/leagueHelpers/leagueHelpers';
-import { useGetUserStatsQuery } from '../../redux/query/endpoints/userApi';
+import { useGetUserCurrencyQuery } from '../../redux/query/endpoints/userApi';
 import { Loader } from '../../components/Loaders/Loader';
 import { SkeletonLoader } from '../../components/Loaders/SkeletonLoader';
 import { Rect } from 'react-content-loader/native';
@@ -37,9 +37,9 @@ const AllLeaguesScreen = ({ navigation }: NavProps) => {
     isPerksError,
     isPerksFetching,
     refetch: refetchPerks,
-  } = useGetUserStatsQuery(undefined, {
+  } = useGetUserCurrencyQuery(undefined, {
     selectFromResult: ({ data, isFetching, isError }) => ({
-      userPerks: data?.currentPoints.currentPerks,
+      userPerks: data?.perks,
       isPerksFetching: isFetching,
       isPerksError: isError,
     }),

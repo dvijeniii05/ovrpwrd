@@ -1,5 +1,4 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { calculatePoints } from '../../utils/pointCalculation/pointCalculation';
 import { userApi } from '../query/endpoints/userApi';
 
 interface StartingPointDataProps {
@@ -42,11 +41,6 @@ const userDataSlice = createSlice({
   name: 'userData',
   initialState: userDataState,
   reducers: {
-    addPoints: (state, action) => {
-      console.log('ADD_POINTS_REDUCER_CALLED', action.payload);
-      const points = calculatePoints(action.payload);
-      // state.data.points += points;
-    },
     openBottomSheet: (state, action) => {
       state.data.bottomSheetState = {
         ...action.payload,
@@ -84,10 +78,6 @@ const userDataSlice = createSlice({
   },
 });
 
-export const {
-  addPoints,
-  openBottomSheet,
-  closeBottomSheet,
-  updateUserDetails,
-} = userDataSlice.actions;
+export const { openBottomSheet, closeBottomSheet, updateUserDetails } =
+  userDataSlice.actions;
 export default userDataSlice.reducer;

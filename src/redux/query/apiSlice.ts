@@ -47,7 +47,7 @@ export interface LeaderboardUser {
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: prodBaseUrl,
+    baseUrl: devBaseUrl,
     prepareHeaders: async headers => {
       const token = getToken();
       // const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZGlrYnN3QGdtYWlsLmNvbSIsImlhdCI6MTY5NTc1MDY3M30.ZLtkz2ZAGWXPnugqHjGZppecpSesOwyTjZlXnB974uI`;
@@ -56,7 +56,14 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ['allProducts', 'userStats', 'userDetails', 'leaderboard'],
+  tagTypes: [
+    'allProducts',
+    'userStats',
+    'userDetails',
+    'leaderboard',
+    'rewards',
+    'currency',
+  ],
   keepUnusedDataFor: 6000,
   endpoints: builder => ({
     getCurentLeagues: builder.query<LeagueData[], void>({

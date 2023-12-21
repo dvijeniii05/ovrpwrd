@@ -21,8 +21,8 @@ import { useCallback, useState } from 'react';
 import PurchaseModal from '../Modals/PurchaseModal/PurchaseModal';
 import {
   PurchasedProduct,
+  useGetUserCurrencyQuery,
   useGetUserDetailsQuery,
-  useGetUserStatsQuery,
 } from '../../redux/query/endpoints/userApi';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
@@ -47,12 +47,12 @@ const AccountScreen = () => {
   } = useGetUserDetailsQuery();
 
   const {
-    data: userStats,
+    data: userCurrency,
     isFetching,
     isSuccess,
     isError,
     refetch,
-  } = useGetUserStatsQuery();
+  } = useGetUserCurrencyQuery();
 
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<PurchasedProduct>) => (
@@ -122,8 +122,8 @@ const AccountScreen = () => {
           <>
             <View style={{ marginTop: 40, alignItems: 'center' }}>
               <UserInfo
-                currentPerks={userStats.currentPoints.currentPerks}
-                currentRelics={userStats.currentPoints.currentRelics}
+                currentPerks={userCurrency.perks}
+                currentRelics={userCurrency.relics}
                 userName={userDetails.fullName}
                 nickName={userDetails.nickname}
                 avatar={userDetails.avatar}

@@ -42,6 +42,11 @@ export interface UserDetailsResponseProps
     latestGameId: number;
   };
   purchases: PurchasedProduct[];
+  rewards: {
+    leftGiftClaimedDate: number;
+    midGiftClaimedDate: number;
+    rightGiftClaimedDate: number;
+  };
 }
 
 export interface UserStatsResponseProps {
@@ -111,6 +116,10 @@ export const userApi = apiSlice.injectEndpoints({
       query: () => `/userAuth/getUserDetails`,
       providesTags: ['userDetails'],
     }),
+    getUserCurrency: builder.query<{ perks: number; relics: number }, void>({
+      query: () => `/userAuth/getUserCurrency`,
+      providesTags: ['currency'],
+    }),
   }),
 });
 
@@ -121,4 +130,5 @@ export const {
   useGetUserStatsQuery,
   useGetUserDetailsQuery,
   useLinkSteamIDQuery,
+  useGetUserCurrencyQuery,
 } = userApi;
