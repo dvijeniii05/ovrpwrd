@@ -126,7 +126,7 @@ export const userApi = apiSlice.injectEndpoints({
 startListening({
   matcher: userApi.endpoints.getUserStats.matchFulfilled,
   effect: async (action, listenerApi) => {
-    listenerApi.dispatch(userApi.util.invalidateTags(['currency']));
+    listenerApi.dispatch(userApi.util.invalidateTags(['currency', 'premium']));
   },
 });
 export const {
@@ -137,4 +137,5 @@ export const {
   useGetUserDetailsQuery,
   useLinkSteamIDQuery,
   useGetUserCurrencyQuery,
+  useLazyGetUserStatsQuery,
 } = userApi;

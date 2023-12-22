@@ -62,6 +62,7 @@ export const apiSlice = createApi({
     'leaderboard',
     'rewards',
     'currency',
+    'premium',
   ],
   keepUnusedDataFor: 6000,
   endpoints: builder => ({
