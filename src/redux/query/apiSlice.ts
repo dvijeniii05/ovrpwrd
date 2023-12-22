@@ -2,7 +2,6 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { devBaseUrl, prodBaseUrl } from '../../constans/urls';
 import { getToken } from '../store/getTokenHelper';
 import { leaugeNames } from '../../constans/interfaces';
-import { Product } from './endpoints/productsApi';
 
 export interface UserCountOnLeagues {
   legendary: number;
@@ -47,7 +46,7 @@ export interface LeaderboardUser {
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: devBaseUrl,
+    baseUrl: prodBaseUrl,
     prepareHeaders: async headers => {
       const token = getToken();
       // const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZGlrYnN3QGdtYWlsLmNvbSIsImlhdCI6MTY5NTc1MDY3M30.ZLtkz2ZAGWXPnugqHjGZppecpSesOwyTjZlXnB974uI`;

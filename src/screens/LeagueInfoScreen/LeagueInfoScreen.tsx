@@ -29,7 +29,6 @@ type NavProps = StackScreenProps<StackParamList, StackScreenName.leagueInfo>;
 
 const LeagueInfoScreen = ({ route }: NavProps) => {
   const { leagueName, userPerks } = route.params;
-  console.log('LEAGUE', userPerks);
   const [participantsMarginTop, setParticipantsMargintop] = useState<number>(0);
 
   const {

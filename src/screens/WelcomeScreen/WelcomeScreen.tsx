@@ -10,6 +10,7 @@ import { StackScreenName } from '../../../ScreenNames';
 import { useDispatch } from 'react-redux';
 import { updateUserDetails } from '../../redux/slices/userDataSlice';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
+import { COLORS } from '../../constans/COLORS';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.welcome>;
 
@@ -21,6 +22,8 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
     data: userInfo,
     isSuccess,
     isFetching,
+    isError,
+    refetch,
   } = useLoginUserQuery(
     { email },
     {
@@ -64,6 +67,22 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
     );
   };
 
+  const errorContent = (
+    <View style={styles.descriptionWrapper}>
+      <Text style={styles.descriptionHeading}>
+        There was an error while checking your account.
+      </Text>
+      <Text style={styles.descriptionText}>
+        Please try again or contact our customer support chat in Discord.
+      </Text>
+      <StandardButton
+        onPress={refetch}
+        buttonText="Retry"
+        style={{ marginTop: 40, backgroundColor: COLORS.red }}
+      />
+    </View>
+  );
+
   const handleOnPress = useCallback(() => {
     if (userInfo) {
       if (userInfo.isFullyOnboarded) {
@@ -80,12 +99,19 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
   return (
     <SafeAreaView style={styles.parentContainer} edges={['bottom']}>
       <LoadingComponent isLoading={isFetching} />
-      <View style={styles.descriptionContainer}>{descriptionContent()}</View>
-      <StandardButton
-        buttonText="Continue"
-        onPress={handleOnPress}
-        style={styles.button}
-      />
+      {isSuccess ? (
+        <>
+          <View style={styles.descriptionContainer}>
+            {descriptionContent()}
+          </View>
+          <StandardButton
+            buttonText="Continue"
+            onPress={handleOnPress}
+            style={styles.button}
+          />
+        </>
+      ) : null}
+      {isError ? errorContent : null}
     </SafeAreaView>
   );
 };

@@ -1,6 +1,7 @@
 import { ParsedMatch } from '../../../constans/interfaces';
 import { updateUserDetails } from '../../slices/userDataSlice';
 import { apiSlice } from '../apiSlice';
+import { startListening } from '../listenerMiddleware';
 
 export interface AuthResponseProps {
   token: string | undefined;
@@ -87,7 +88,6 @@ export const userApi = apiSlice.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
           if (data.token !== undefined) {
-            console.log('TOKEN', data.token);
             dispatch(updateUserDetails({ token: data.token }));
           }
         } catch {
@@ -123,6 +123,12 @@ export const userApi = apiSlice.injectEndpoints({
   }),
 });
 
+startListening({
+  matcher: userApi.endpoints.getUserStats.matchFulfilled,
+  effect: async (action, listenerApi) => {
+    listenerApi.dispatch(userApi.util.invalidateTags(['currency']));
+  },
+});
 export const {
   useRegisterUserMutation,
   useLoginUserQuery,

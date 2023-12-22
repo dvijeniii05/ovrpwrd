@@ -1,18 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import CardWrapper from '../CardWrapper/CardWrapper';
 import { View, Text, ViewStyle } from 'react-native';
 import { styles } from './ActiveLeagueProgress.style';
-import {
-  Canvas,
-  LinearGradient,
-  Rect,
-  vec,
-  rrect,
-  rect,
-  Box,
-  BoxShadow,
-} from '@shopify/react-native-skia';
-import { COLORS, SPECIFIC_COLORS } from '../../constans/COLORS';
+import { Canvas, Rect } from '@shopify/react-native-skia';
+import { COLORS } from '../../constans/COLORS';
 import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
 import Perk from '../../assets/Perks.svg';
 import StandardButton from '../Buttons/StandardButton/StandardButton';
@@ -20,7 +11,6 @@ import { useGetCurentLeaguesQuery } from '../../redux/query/apiSlice';
 import { Loader } from '../Loaders/Loader';
 import {
   activeLeague,
-  leagueBarColor,
   leagueDaysCountdown,
   prevAndNextLeagueNames,
 } from '../../utils/leagueHelpers/leagueHelpers';
