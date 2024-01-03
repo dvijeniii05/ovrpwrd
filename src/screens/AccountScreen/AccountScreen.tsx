@@ -8,10 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Gradient from '../../components/Gradient/Gradient';
 import { styles } from './AccountScreen.styles';
 import UserInfo from '../../components/UserInfo/UserInfo';
@@ -27,6 +24,7 @@ import {
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
 import { useDispatch } from 'react-redux';
+import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
 
 const AccountScreen = () => {
   const dispatch = useDispatch();
@@ -105,7 +103,7 @@ const AccountScreen = () => {
   };
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <CustomSafeAreaView edges={['bottom']}>
       <StatusBar barStyle={'light-content'} />
       <View style={styles.parentContainer(useSafeAreaInsets().bottom)}>
         <Gradient type="shaded" style={{ position: 'absolute' }} />
@@ -174,7 +172,7 @@ const AccountScreen = () => {
         ) : null}
         <StandardButton buttonText="Log out" onPress={onLogoutPress} />
       </View>
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

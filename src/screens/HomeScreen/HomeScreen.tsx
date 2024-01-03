@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
 import { RefreshControl, ScrollView, StatusBar, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import StatsAndRewardsCard from '../../components/StatsAndRewardsCard/StatsAndRewardsCard';
 import ActiveLeagueProgress from '../../components/ActiveLeagueProgress/ActiveLeagueProgress';
 import Leaderboard from '../../components/Leaderboard/Leaderboard';
@@ -90,7 +89,7 @@ const Home = ({ navigation }: ScreenProps) => {
   }, []);
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <View>
       <StatusBar barStyle={'light-content'} />
       <ScrollView
         style={styles.scroll}
@@ -157,7 +156,7 @@ const Home = ({ navigation }: ScreenProps) => {
           </>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

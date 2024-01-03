@@ -9,7 +9,6 @@ import LandingScreen from '../screens/LandingScreen/LandingScreen';
 import SteamModal from '../screens/Modals/SteamModal/SteamModal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store/mainStore';
-import SteamLoginScreen from '../screens/SteamLoginScreen/SteamLoginScreen';
 import Home from '../screens/HomeScreen/HomeScreen';
 import SteamLinkScreen from '../screens/SteamLinkScreen/SteamLinkScreen';
 import RegistrationScreen from '../screens/RegistrationScreen/RegistrationScreen';
@@ -71,10 +70,6 @@ const AppDrawer = () => {
               component={LinkGame}
             />
           </Stack.Group>
-          <Stack.Screen
-            name={StackScreenName.steamLogin}
-            component={SteamLoginScreen}
-          />
           <Stack.Screen
             name={StackScreenName.steamModal}
             component={SteamModal}

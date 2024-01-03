@@ -3,7 +3,6 @@ import React, { useCallback } from 'react';
 import { View, Text } from 'react-native';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { styles } from './WelcomeScreen.styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import StandardButton from '../../components/Buttons/StandardButton/StandardButton';
 import { useLoginUserQuery } from '../../redux/query/endpoints/userApi';
 import { StackScreenName } from '../../../ScreenNames';
@@ -11,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { updateUserDetails } from '../../redux/slices/userDataSlice';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import { COLORS } from '../../constans/COLORS';
+import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.welcome>;
 
@@ -97,7 +97,7 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
   }, [isSuccess]);
 
   return (
-    <SafeAreaView style={styles.parentContainer} edges={['bottom']}>
+    <CustomSafeAreaView style={styles.parentContainer} edges={['bottom']}>
       <LoadingComponent isLoading={isFetching} />
       {isSuccess ? (
         <>
@@ -112,7 +112,7 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
         </>
       ) : null}
       {isError ? errorContent : null}
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

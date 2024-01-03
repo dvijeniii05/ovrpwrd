@@ -10,7 +10,6 @@ import Gradient from '../../components/Gradient/Gradient';
 import { COLORS } from '../../constans/COLORS';
 import { useTranslation } from 'react-i18next';
 import { styles } from './AvatarScreen.styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useHeaderHeight } from '@react-navigation/elements';
 import FramedImage from '../../components/FramedImage/FramedImage';
 import { useState } from 'react';
@@ -21,6 +20,7 @@ import { StackScreenName } from '../../../ScreenNames';
 import { useUpdateUserDetailsMutation } from '../../redux/query/endpoints/userApi';
 import InformationModal from '../Modals/InformationModal/InformationModal';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
+import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.avatar>;
 
@@ -87,7 +87,7 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
   };
 
   return (
-    <SafeAreaView style={styles.parentContainer} edges={['bottom']}>
+    <CustomSafeAreaView style={styles.parentContainer} edges={['bottom']}>
       <Gradient type="shaded" style={{ position: 'absolute', top: 0 }} />
       <LoadingComponent isLoading={isLoading} />
       <InformationModal
@@ -117,7 +117,7 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
         isDisabled={!selectedAvatar}
         style={{ width: '100%' }}
       />
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

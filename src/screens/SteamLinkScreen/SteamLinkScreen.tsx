@@ -1,5 +1,4 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
@@ -14,6 +13,7 @@ import StandardButton from '../../components/Buttons/StandardButton/StandardButt
 import { styles } from './SteamLinkScreen.styles';
 import { useDispatch } from 'react-redux';
 import { updateUserDetails } from '../../redux/slices/userDataSlice';
+import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.steamLink>;
 
@@ -77,7 +77,7 @@ const SteamLinkScreen = ({ navigation, route }: ScreenProps) => {
   };
 
   return (
-    <SafeAreaView style={styles.parentContainer} edges={['bottom']}>
+    <CustomSafeAreaView style={styles.parentContainer} edges={['bottom']}>
       <LoadingComponent isLoading={isFetching} />
       <View style={styles.descriptionContainer}>{descriptionContent()}</View>
       {isSuccess ? (
@@ -94,7 +94,7 @@ const SteamLinkScreen = ({ navigation, route }: ScreenProps) => {
           style={styles.button}
         />
       ) : null}
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

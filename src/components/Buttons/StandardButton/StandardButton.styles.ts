@@ -7,8 +7,8 @@ const buttonContainer = (
 ): ViewStyle => ({
   backgroundColor: isDisabled ? COLORS.neutral : COLORS.mainBlue,
   flexDirection: hasIcon ? 'row' : 'column',
-  paddingVertical: 16,
-  paddingHorizontal: 24,
+  paddingVertical: 12,
+  paddingHorizontal: 22,
   justifyContent: 'center',
   alignItems: 'center',
   gap: 8,
@@ -17,7 +17,7 @@ const buttonContainer = (
 });
 
 const buttonText: TextStyle = {
-  fontSize: 20,
+  fontSize: 18,
   fontFamily: 'Jost-SemiBold',
   color: COLORS.white,
   textAlignVertical: 'center',

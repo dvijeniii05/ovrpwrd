@@ -9,7 +9,6 @@ import {
   Alert,
 } from 'react-native';
 import Gradient from '../../components/Gradient/Gradient';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './ProductInfoScreen.styles';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -105,7 +104,7 @@ const ProductInfoScreen = ({ navigation, route }: NavProps) => {
   };
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <View>
       <StatusBar barStyle={'light-content'} />
       <View style={styles.parentContainer}>
         <Gradient
@@ -175,7 +174,7 @@ const ProductInfoScreen = ({ navigation, route }: NavProps) => {
           />
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

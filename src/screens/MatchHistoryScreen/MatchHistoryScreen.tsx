@@ -7,7 +7,6 @@ import {
   ListRenderItemInfo,
   Image,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Gradient from '../../components/Gradient/Gradient';
 import { COLORS } from '../../constans/COLORS';
 import { useHeaderHeight } from '@react-navigation/elements';
@@ -78,7 +77,7 @@ const MatchHistoryScreen = () => {
   );
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <View>
       <StatusBar barStyle={'light-content'} />
       <View style={styles.parentContainer}>
         <Gradient type="shaded" style={styles.shadedGradient} />
@@ -141,7 +140,7 @@ const MatchHistoryScreen = () => {
           ) : null}
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -17,7 +17,10 @@ import { mainStore, persistor } from './src/redux/store/mainStore';
 import { PersistGate } from 'redux-persist/integration/react';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import BottomSheet from './src/components/BottomSheet/BottomSheet';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+  SafeAreaProvider,
+  initialWindowMetrics,
+} from 'react-native-safe-area-context';
 import BootSplash from 'react-native-bootsplash';
 import { COLORS } from './src/constans/COLORS';
 import NoNetworkModal from './src/screens/Modals/NoNetworkModal/NoNetworkModal';
@@ -55,7 +58,7 @@ const App = () => {
   return (
     <Provider store={mainStore}>
       <PersistGate loading={null} persistor={persistor}>
-        <SafeAreaProvider>
+        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
           <NavigationContainer
             onReady={() => {
               BootSplash.hide();

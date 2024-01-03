@@ -11,7 +11,6 @@ export type StackParamList = {
   };
   Avatar: undefined;
   LinkGame: undefined;
-  SteamLogin: undefined;
   SteamModal: undefined;
   SteamLink: {
     steamID32: string;

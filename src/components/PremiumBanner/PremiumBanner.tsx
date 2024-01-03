@@ -49,6 +49,9 @@ const PremiumBanner = () => {
     { data: latestGames, isFetching: isLatestGamesLoading },
   ] = useLazyGetUserStatsQuery();
 
+  const nextMatchIdPremium =
+    latestGames?.significantMatches[0]?.matchId ?? 'next match';
+
   const fetchingContent = (
     <LottieView
       source={require('../../assets/lottie/greenLoader.json')}
@@ -64,7 +67,7 @@ const PremiumBanner = () => {
         return (
           <View style={styles.contentContainer}>
             <Text style={styles.withPremiumHeadingText}>
-              {`Premium Boost is currently active and you will get 2x points for the match after ${latestGames?.significantMatches[0].matchId}`}
+              {`Premium Boost is currently active and you will get 2x points for the match after ${nextMatchIdPremium}`}
             </Text>
           </View>
         );

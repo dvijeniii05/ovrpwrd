@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
+import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.linkGame>;
 
@@ -134,7 +135,7 @@ const LinkGame = ({ navigation }: ScreenProps) => {
   };
 
   return (
-    <SafeAreaView
+    <CustomSafeAreaView
       style={styles.parentContainer(isModalVisible)}
       edges={['bottom']}>
       <InformationModal
@@ -155,7 +156,7 @@ const LinkGame = ({ navigation }: ScreenProps) => {
         indicatorHeight={[8, 8, 8]}
         indicatorColor={[COLORS.neutral, COLORS.white, COLORS.neutral]}
       />
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

@@ -1,5 +1,5 @@
-import { View, Text, Image, ListRenderItemInfo } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, Image, ListRenderItemInfo, Alert } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WIDTH } from '../../utils/dimension';
 import { COLORS } from '../../constans/COLORS';
 import Logo from '../../assets/Logo.svg';
@@ -12,6 +12,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
 import { welcomeInfoData } from '../../constans/welcomeInfoData';
+import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
 
 type ScreenProps = StackScreenProps<
   StackParamList,
@@ -21,11 +22,22 @@ type ScreenProps = StackScreenProps<
 const WelcomeInfoScreen = ({ navigation }: ScreenProps) => {
   const carouselRef = useRef<RefProps>(null);
   const [isLastCarouselItem, setIsLastCarouselItem] = useState<boolean>(false);
+  const { top, bottom } = useSafeAreaInsets();
+
+  const createTwoButtonAlert = () =>
+    Alert.alert('Alert Title', `TOP: ${top}, BOTTOM:  ${bottom}`, [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'OK', onPress: () => console.log('OK Pressed') },
+    ]);
 
   const renderItem = ({
     item,
   }: ListRenderItemInfo<(typeof welcomeInfoData)[0]>) => (
-    <View style={{ width: WIDTH }}>
+    <View style={{ width: WIDTH, alignItems: 'center' }}>
       <Image source={item.image} style={styles.imageStyle} />
       <View style={styles.textWrapper}>
         <Text style={styles.titleText}>{item.title}</Text>
@@ -34,13 +46,13 @@ const WelcomeInfoScreen = ({ navigation }: ScreenProps) => {
     </View>
   );
   return (
-    <SafeAreaView style={styles.parentContainer}>
+    <CustomSafeAreaView style={styles.parentContainer}>
       <Logo style={{ marginTop: 24 }} />
       <CustomCarousel
         ref={carouselRef}
         data={welcomeInfoData}
         renderItem={renderItem}
-        paginationContainerStyle={{ marginTop: 32 }}
+        paginationContainerStyle={{ marginTop: 24 }}
         indicatorWidth={[8, 8, 8]}
         indicatorHeight={[8, 8, 8]}
         indicatorColor={[COLORS.neutral, COLORS.white, COLORS.neutral]}
@@ -68,7 +80,7 @@ const WelcomeInfoScreen = ({ navigation }: ScreenProps) => {
           />
         )}
       </View>
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

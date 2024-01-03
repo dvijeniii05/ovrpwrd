@@ -7,7 +7,6 @@ export enum StackScreenName {
   avatar = 'Avatar',
   linkGame = 'LinkGame',
   googleModal = 'GoogleModal',
-  steamLogin = 'SteamLogin',
   steamModal = 'SteamModal',
   steamLink = 'SteamLink',
   home = 'Home',

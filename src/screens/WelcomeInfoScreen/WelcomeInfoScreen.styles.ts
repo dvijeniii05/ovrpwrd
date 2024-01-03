@@ -11,7 +11,7 @@ const parentContainer: ViewStyle = {
 
 const imageStyle = {
   marginTop: 16,
-  width: WIDTH,
+  width: WIDTH * 0.8,
   aspectRatio: 1,
   height: undefined,
 };

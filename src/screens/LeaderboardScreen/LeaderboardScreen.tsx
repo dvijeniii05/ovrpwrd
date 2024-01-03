@@ -8,7 +8,6 @@ import {
   RefreshControl,
   TouchableOpacity,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Gradient from '../../components/Gradient/Gradient';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import { useHeaderHeight } from '@react-navigation/elements';
@@ -122,7 +121,7 @@ const LeaderboardScreen = ({ route }: NavProps) => {
   }, []);
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <View>
       <StatusBar barStyle={'light-content'} />
       <View style={styles.parentContainer}>
         <InformationModal
@@ -177,7 +176,7 @@ const LeaderboardScreen = ({ route }: NavProps) => {
           ) : null}
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 export default LeaderboardScreen;
