@@ -4,6 +4,7 @@ import Light from '../../assets/Light.svg';
 import Gift from '../../assets/Gift.svg';
 import DisabledLight from '../../assets/Disabled-light.svg';
 import DisabledGift from '../../assets/Disabled-gift.svg';
+import Shine from '../../assets/shine.svg';
 import { styles } from './GiftCard.styles';
 import StandardButton from '../Buttons/StandardButton/StandardButton';
 import { TestIds, useRewardedAd } from 'react-native-google-mobile-ads';
@@ -103,8 +104,9 @@ const GiftCard = (props: Props) => {
         </>
       ) : (
         <>
-          <Light style={{ position: 'absolute', top: -8 }} />
-          <Gift width={72} />
+          <Light style={{ position: 'absolute', top: -8, zIndex: 1 }} />
+          <Shine style={{ position: 'absolute', zIndex: 3, top: 40 }} />
+          <Gift width={72} style={{ zIndex: 2 }} />
         </>
       )}
       <StandardButton

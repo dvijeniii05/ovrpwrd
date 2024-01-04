@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ViewStyle } from 'react-native';
+import { View, Text, ViewStyle, TextStyle } from 'react-native';
 import { styles } from './CurrencyWrapper.styles';
 import Perks from '../../assets/Perks.svg';
 import Relics from '../../assets/Relics.svg';
@@ -13,6 +13,8 @@ interface Props {
   forLeagueProgression?: boolean;
   perkWidth?: number;
   perkHeight?: number;
+  textStyle?: TextStyle;
+  hidePerks?: boolean;
 }
 
 const CurrencyWrapper = ({ staticWidth = false, ...props }: Props) => {
@@ -40,8 +42,10 @@ const CurrencyWrapper = ({ staticWidth = false, ...props }: Props) => {
     <View style={[styles.currencyContainer(staticWidth), props.style]}>
       {props.isPerks ? (
         <>
-          <Perks width={28} height={28} />
-          <Text style={styles.text(staticWidth)}>{props.value}</Text>
+          {props.hidePerks ? null : <Perks width={28} height={28} />}
+          <Text style={[styles.text(staticWidth), props.textStyle]}>
+            {props.value}
+          </Text>
         </>
       ) : (
         <>
@@ -52,7 +56,9 @@ const CurrencyWrapper = ({ staticWidth = false, ...props }: Props) => {
             loop
           /> */}
           <Relics width={28} height={28} />
-          <Text style={styles.text(staticWidth)}>{props.value}</Text>
+          <Text style={[styles.text(staticWidth), props.textStyle]}>
+            {props.value}
+          </Text>
         </>
       )}
     </View>

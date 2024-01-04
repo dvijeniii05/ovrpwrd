@@ -63,6 +63,7 @@ const FramedImage = (props: Props) => {
         {
           justifyContent: 'center',
           alignItems: 'center',
+          overflow: 'hidden',
         },
         props.style,
       ]}>

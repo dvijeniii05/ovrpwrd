@@ -3,7 +3,6 @@ import CardWrapper from '../CardWrapper/CardWrapper';
 import { View, Text, ViewStyle } from 'react-native';
 import { COLORS } from '../../constans/COLORS';
 import UserGreenIcon from '../../assets/icons/userGreen.svg';
-import TickIcon from '../../assets/icons/tick.svg';
 import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
 import { leaugeNames } from '../../constans/interfaces';
 import { styles } from './GeneralLeagueProgress.styles';
@@ -56,9 +55,13 @@ const GeneralLeagueProgress = (props: Props) => {
             style={{ minWidth: 46 }}
           />
           {hasEnoughPointsForLeague ? (
-            <View>
-              <TickIcon />
-            </View>
+            <CurrencyWrapper
+              isPerks
+              value={'QUALIFIED'}
+              style={{ backgroundColor: COLORS.green }}
+              textStyle={{ color: COLORS.black, fontSize: 12 }}
+              hidePerks
+            />
           ) : (
             <CurrencyWrapper
               isPerks

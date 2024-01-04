@@ -51,10 +51,14 @@ const ActiveLeagueProgress = (props: Props) => {
 
   const leagueProgress = useMemo(() => {
     if (props.currentPerks && league !== undefined) {
-      return (
-        (props.currentPerks - league?.pointsMin) /
-        (league?.pointsMax - league?.pointsMin)
-      );
+      if (props.currentPerks >= league.pointsMax) {
+        return 1;
+      } else {
+        return (
+          (props.currentPerks - league?.pointsMin) /
+          (league?.pointsMax - league?.pointsMin)
+        );
+      }
     }
     return 0;
   }, [league, props.currentPerks]);
