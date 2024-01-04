@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
   FlatList,
   ListRenderItemInfo,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native';
 import Gradient from '../../components/Gradient/Gradient';
 import { COLORS } from '../../constans/COLORS';
@@ -32,6 +33,16 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
   const [isInformationModalVisible, setIsInformationModalVisible] =
     useState<boolean>(false);
   const [informationModalText, setInformationModalText] = useState<string>('');
+
+  // Code below is to disable hardware backButton action on old models of Android devices to stop user from going back
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => true,
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const [addAvatar, { isLoading }] = useUpdateUserDetailsMutation();
 

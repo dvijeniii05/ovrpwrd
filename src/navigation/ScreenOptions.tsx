@@ -20,6 +20,14 @@ export const withBackButton = (props: {
   ),
 });
 
+export const withHiddenBackButtonAndDisabledSwipe = (props: {
+  route: any;
+  navigation: any;
+}): StackNavigationOptions => ({
+  headerLeft: () => <></>,
+  gestureEnabled: false,
+});
+
 export const withHomeButton = (props: {
   route: any;
   navigation: any;

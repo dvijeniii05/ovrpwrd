@@ -16,6 +16,7 @@ import AvatarScreen from '../screens/AvatarScreen/AvatarScreen';
 import LinkGame from '../screens/LinkGameScreen/LinkGameScreen';
 import {
   withBackButton,
+  withHiddenBackButtonAndDisabledSwipe,
   withHomeButton,
   withSpecialHeaderButtons,
 } from './ScreenOptions';
@@ -64,6 +65,7 @@ const AppDrawer = () => {
             <Stack.Screen
               name={StackScreenName.avatar}
               component={AvatarScreen}
+              options={withHiddenBackButtonAndDisabledSwipe}
             />
             <Stack.Screen
               name={StackScreenName.linkGame}

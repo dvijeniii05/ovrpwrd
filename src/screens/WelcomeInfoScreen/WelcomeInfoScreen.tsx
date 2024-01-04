@@ -1,4 +1,4 @@
-import { View, Text, Image, ListRenderItemInfo, Alert } from 'react-native';
+import { View, Text, Image, ListRenderItemInfo } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WIDTH } from '../../utils/dimension';
 import { COLORS } from '../../constans/COLORS';
@@ -23,16 +23,6 @@ const WelcomeInfoScreen = ({ navigation }: ScreenProps) => {
   const carouselRef = useRef<RefProps>(null);
   const [isLastCarouselItem, setIsLastCarouselItem] = useState<boolean>(false);
   const { top, bottom } = useSafeAreaInsets();
-
-  const createTwoButtonAlert = () =>
-    Alert.alert('Alert Title', `TOP: ${top}, BOTTOM:  ${bottom}`, [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      { text: 'OK', onPress: () => console.log('OK Pressed') },
-    ]);
 
   const renderItem = ({
     item,

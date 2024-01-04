@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
@@ -34,11 +34,14 @@ const SteamLinkScreen = ({ navigation, route }: ScreenProps) => {
     if (isSuccess) {
       return (
         <View style={styles.descriptionWrapper}>
-          <Text style={styles.descriptionHeading}>
-            You steam account is now linked to your OVRPWRD account.
-          </Text>
+          <Text style={styles.descriptionHeading}>Before you go...</Text>
+          <Image
+            source={require('../../assets/images/beforeYouGo.png')}
+            style={styles.imageStyle}
+          />
           <Text style={styles.descriptionText}>
-            {` We are going to gather and proccess your statics starting from a match with the following match ID: ${data?.latestGameId}`}
+            Perks and Relics will start accumulating after your first match is
+            tracked in OVRPWRD
           </Text>
         </View>
       );
@@ -82,7 +85,7 @@ const SteamLinkScreen = ({ navigation, route }: ScreenProps) => {
       <View style={styles.descriptionContainer}>{descriptionContent()}</View>
       {isSuccess ? (
         <StandardButton
-          buttonText="Continue"
+          buttonText="Got it"
           onPress={handleOnPress}
           style={styles.button}
         />

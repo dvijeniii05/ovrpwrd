@@ -5,7 +5,9 @@ import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
 import { useRegisterUserMutation } from '../../redux/query/endpoints/userApi';
 import { COLORS } from '../../constans/COLORS';
-import DetailInput from '../../components/DetailsInput/DetailsInput';
+import DetailInput, {
+  ValidationTypes,
+} from '../../components/DetailsInput/DetailsInput';
 import { useTranslation } from 'react-i18next';
 import { styles } from './RegistrationScreen.styles';
 import Gradient from '../../components/Gradient/Gradient';
@@ -38,13 +40,21 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
   const [fullName, setFullName] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
   const [isProfanitySuccess, setIsProfanitySuccess] = useState<boolean>(false);
+  const [isAgeVerificationSuccess, setIsAgeVerificationSuccess] =
+    useState<boolean>(false);
   const [isInformationModalVisible, setIsInformationModalVisible] =
     useState<boolean>(false);
   const [informationModalText, setInformationModalText] = useState<string>('');
 
   // TODO: to be rewoerked with nickname confirmation logic
   const isFormComplete =
-    dob && gender && country && fullName && nickname && isProfanitySuccess;
+    dob &&
+    gender &&
+    country &&
+    fullName &&
+    nickname &&
+    isProfanitySuccess &&
+    isAgeVerificationSuccess;
 
   const handleOnpress = () => {
     registerUser({ nickname, email, fullName, dob, gender, country })
@@ -98,7 +108,7 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
           placeholderText="Nickname"
           containerStyle={{ marginTop: 8 }}
           onChangeText={value => setNickname(value)}
-          needsProfanityCheck
+          needsValidation={ValidationTypes.profanity}
           isProfanitySuccess={value => setIsProfanitySuccess(value)}
         />
         <DetailInput
@@ -110,6 +120,8 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
             dispatch(openBottomSheet({ isOpen: true, type: 'DOB' }));
           }}
           defaultValue={dob}
+          needsValidation={ValidationTypes.age}
+          isAgeVerificationSuccess={value => setIsAgeVerificationSuccess(value)}
         />
         <DetailInput
           placeholderText="Gender"
