@@ -81,6 +81,7 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
       <FramedImage
         avatar={item.value}
         frameColor={selectedAvatar == item.value ? 'green' : 'blue'}
+        isOverflowHidden
       />
     </TouchableOpacity>
   );

@@ -27,22 +27,27 @@ const GiftCardsContainer = (props: Props) => {
   );
 
   const successContent = (
-    <View style={styles.giftsContainer}>
-      <GiftCard
-        rawPerks={props.rawPerks}
-        rawRelics={props.rawRelics}
-        cardId="left"
-      />
-      <GiftCard
-        rawPerks={props.rawPerks}
-        rawRelics={props.rawRelics}
-        cardId="mid"
-      />
-      <GiftCard
-        rawPerks={props.rawPerks}
-        rawRelics={props.rawRelics}
-        cardId="right"
-      />
+    <View>
+      <View style={styles.giftsContainer}>
+        <GiftCard
+          rawPerks={props.rawPerks}
+          rawRelics={props.rawRelics}
+          cardId="left"
+        />
+        <GiftCard
+          rawPerks={props.rawPerks}
+          rawRelics={props.rawRelics}
+          cardId="mid"
+        />
+        <GiftCard
+          rawPerks={props.rawPerks}
+          rawRelics={props.rawRelics}
+          cardId="right"
+        />
+      </View>
+      <Text style={styles.informationText}>
+        Try your luck for a chance to win between 40 and 70 Relics
+      </Text>
     </View>
   );
 

@@ -1,8 +1,10 @@
 import { View, Image, ViewStyle, ImageProps } from 'react-native';
 import GreenFrame from '../../assets/GreenFrame.svg';
+import PremiumFrame from '../../assets/PremiumFrame.svg';
 import BlueFrame from '../../assets/BlueFrame.svg';
 import WhiteFrame from '../../assets/WhiteFrame.svg';
 import { heroIconPicker } from '../../utils/heroIconPicker';
+import { styles } from './FramedImage.styles';
 
 interface Props {
   avatar: string;
@@ -12,6 +14,7 @@ interface Props {
     height: number;
   };
   style?: ViewStyle;
+  isOverflowHidden?: boolean;
 }
 
 const FramedImage = (props: Props) => {
@@ -54,23 +57,17 @@ const FramedImage = (props: Props) => {
         );
       case 'white':
         return <WhiteFrame />;
+      case 'premium':
+        return <PremiumFrame />;
     }
   };
 
   return (
-    <View
-      style={[
-        {
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-        },
-        props.style,
-      ]}>
+    <View style={[styles.parentContainer(props.isOverflowHidden), props.style]}>
       {frame()}
       <Image
         source={avatarLocation()}
-        style={{ position: 'absolute', height: '90%' }}
+        style={styles.image(props.frameColor === 'blue')}
         resizeMode="contain"
       />
     </View>

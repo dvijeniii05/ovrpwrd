@@ -84,7 +84,7 @@ const ProductInfoScreen = ({ navigation, route }: NavProps) => {
               setIsPurchaseModalShown(true);
               trigger({ uniqueId: product.uniqueId });
             },
-            style: 'cancel',
+            style: 'default',
           },
         ],
       );

@@ -8,8 +8,7 @@ const itemWrapper: ViewStyle = {
   width: '100%',
   flex: 1,
   alignItems: 'center',
-  marginTop: 24,
-  paddingVertical: 8,
+  marginTop: 0,
   paddingHorizontal: gapBetweenListItems * 0.5,
 };
 
@@ -18,7 +17,6 @@ const itemContainer: ViewStyle = {
   backgroundColor: COLORS.darkNeutral,
   padding: 16,
   borderRadius: 16,
-  marginTop: 16,
 };
 
 const currencyContainer: ViewStyle = {

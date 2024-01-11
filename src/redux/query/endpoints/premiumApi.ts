@@ -3,7 +3,7 @@ import { apiSlice } from '../apiSlice';
 import { startListening } from '../listenerMiddleware';
 import { userApi } from './userApi';
 
-export interface RewardStatusResponseProps {
+export interface PremiumStatusResponseProps {
   premium: {
     hasPremium: boolean;
     isPremiumActive: boolean;
@@ -27,7 +27,7 @@ export const premiumApi = apiSlice.injectEndpoints({
         method: 'PATCH',
       }),
     }),
-    getPremiumStatus: buidler.query<RewardStatusResponseProps, void>({
+    getPremiumStatus: buidler.query<PremiumStatusResponseProps, void>({
       query: () => '/premium/getPremiumStatus',
       providesTags: ['premium'],
     }),

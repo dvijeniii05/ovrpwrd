@@ -24,6 +24,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { useSharedValue } from 'react-native-reanimated';
 import AnimatedUserInfo from '../../components/UserInfo/AnimatedUserInfo';
+import { useGetPremiumStatusQuery } from '../../redux/query/endpoints/premiumApi';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.home>;
 
@@ -50,6 +51,13 @@ const Home = ({ navigation }: ScreenProps) => {
     isFetching: isUserCurrencyFetching,
     isSuccess: isUserCurrencySuccess,
   } = useGetUserCurrencyQuery();
+
+  const {
+    data: premiumStatus,
+    isSuccess: premiumStatusSuccess,
+    isError: premiumStatusError,
+    isFetching: premiumStatusFetching,
+  } = useGetPremiumStatusQuery();
 
   const userDetailsLoader = (
     <SkeletonLoader viewBox="0,0,300,200">
@@ -117,7 +125,9 @@ const Home = ({ navigation }: ScreenProps) => {
         ) : (
           <>
             <Loader
-              isFetching={isUserDetailsFetching || isFetching}
+              isFetching={
+                isUserDetailsFetching || isFetching || premiumStatusFetching
+              }
               fetchFallback={userDetailsLoader}>
               <AnimatedUserInfo
                 rawPerks={rawPerks}
@@ -129,6 +139,7 @@ const Home = ({ navigation }: ScreenProps) => {
                 }
                 avatar={userDetails?.avatar}
                 isAnimatedCurrencies={true}
+                premiumStatus={premiumStatus}
               />
             </Loader>
             <Loader

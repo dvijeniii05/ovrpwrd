@@ -48,9 +48,7 @@ export const leagueDaysCountdown = (rawEndDate: number | undefined) => {
     const endDate = DateTime.fromSeconds(rawEndDate);
     const daysLeft = endDate.diffNow('days').toObject().days?.toFixed();
     const countDownText =
-      Number(daysLeft) > 0
-        ? `${daysLeft} days left`
-        : `League has ended. The Winner will be announced shotly`;
+      Number(daysLeft) > 0 ? `${daysLeft} days left` : undefined;
 
     return countDownText;
   }

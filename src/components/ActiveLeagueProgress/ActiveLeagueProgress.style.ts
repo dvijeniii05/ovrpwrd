@@ -101,6 +101,35 @@ const allLeaguesButton: ViewStyle = {
   borderColor: COLORS.mainBlue,
 };
 
+const leagueEndedContainer: ViewStyle = {
+  padding: 8,
+  alignItems: 'center',
+  marginTop: 16,
+  gap: 8,
+};
+
+const leagueEndedHeading: ViewStyle = {
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: 8,
+};
+
+const headingText: TextStyle = {
+  color: 'white',
+  fontSize: 20,
+};
+
+const descriptionText: TextStyle = {
+  color: 'white',
+  fontSize: 16,
+  textAlign: 'center',
+};
+
+const descriptionGreenText: TextStyle = {
+  ...descriptionText,
+  color: COLORS.green,
+};
+
 export const styles = {
   parentContainer,
   wrapperContainer,
@@ -118,4 +147,9 @@ export const styles = {
   perkContainer,
   perkShadeCanvas,
   allLeaguesButton,
+  leagueEndedContainer,
+  leagueEndedHeading,
+  headingText,
+  descriptionGreenText,
+  descriptionText,
 };

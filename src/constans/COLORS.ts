@@ -13,6 +13,7 @@ export const COLORS = {
   darkNeutral: '#1C2128',
   red: '#FF392A',
   orange: '#FFCD4C',
+  neonGreen: '#1BFD9C',
 };
 
 export const SPECIFIC_COLORS = {

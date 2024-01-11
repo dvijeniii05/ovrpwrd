@@ -5,7 +5,6 @@ import { WIDTH } from '../../utils/dimension';
 const gapBetweenListItems = 8;
 
 const wrapperContainer: ViewStyle = {
-  justifyContent: 'center',
   alignItems: 'center',
   marginTop: 24,
   backgroundColor: COLORS.darkBlue,

@@ -49,14 +49,14 @@ const GeneralLeagueProgress = (props: Props) => {
       <View style={styles.progressMainContainer}>
         <View style={styles.progressPerksContainer}>
           <CurrencyWrapper
-            isPerks
+            currencyType="perks"
             value={0}
             forLeagueProgression
             style={{ minWidth: 46 }}
           />
           {hasEnoughPointsForLeague ? (
             <CurrencyWrapper
-              isPerks
+              currencyType="perks"
               value={'QUALIFIED'}
               style={{ backgroundColor: COLORS.green }}
               textStyle={{ color: COLORS.black, fontSize: 12 }}
@@ -64,14 +64,14 @@ const GeneralLeagueProgress = (props: Props) => {
             />
           ) : (
             <CurrencyWrapper
-              isPerks
+              currencyType="perks"
               value={props.currentPerks}
               style={{ backgroundColor: COLORS.darkGrey }}
             />
           )}
 
           <CurrencyWrapper
-            isPerks
+            currencyType="perks"
             value={props.leagueRequiredPerks}
             forLeagueProgression
           />

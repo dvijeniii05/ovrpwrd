@@ -13,7 +13,14 @@ export const supportApi = apiSlice.injectEndpoints({
         body: nickname,
       }),
     }),
+    deleteAccount: builder.mutation<void, void>({
+      query: () => ({
+        url: '/support/deleteAccount',
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useReportNicknameMutation } = supportApi;
+export const { useReportNicknameMutation, useDeleteAccountMutation } =
+  supportApi;

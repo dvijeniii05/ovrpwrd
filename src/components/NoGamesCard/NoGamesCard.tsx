@@ -17,14 +17,14 @@ const NoGamesCard = (props: Props) => {
         <View style={styles.currencyContainer}>
           <CurrencyWrapper
             value={0}
-            isPerks
+            currencyType="perks"
             staticWidth
             style={{ backgroundColor: COLORS.darkGrey }}
             forLeagueProgression={undefined}
           />
           <CurrencyWrapper
             value={0}
-            isPerks={false}
+            currencyType="relics"
             staticWidth
             style={{ backgroundColor: COLORS.darkGrey }}
           />

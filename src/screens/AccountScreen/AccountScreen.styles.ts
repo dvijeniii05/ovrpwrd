@@ -2,12 +2,20 @@ import { TextStyle, ViewStyle } from 'react-native';
 import { COLORS } from '../../constans/COLORS';
 import { HEIGHT } from '../../utils/dimension';
 
-const parentContainer = (bottomSafeArea: number): ViewStyle => ({
+const scrollContent: ViewStyle = {
+  alignItems: 'center',
+  paddingBottom: 80,
+};
+
+const scroll: ViewStyle = {
   height: HEIGHT,
   backgroundColor: COLORS.darkBlue,
+};
+
+const userContainer: ViewStyle = {
+  marginTop: 40,
   alignItems: 'center',
-  paddingBottom: bottomSafeArea,
-});
+};
 
 const editButton: ViewStyle = {
   backgroundColor: COLORS.darkBlue,
@@ -82,8 +90,20 @@ const separator: ViewStyle = {
   backgroundColor: COLORS.darkNeutral,
 };
 
+const transparentButton: ViewStyle = {
+  backgroundColor: 'transparent',
+};
+
+const accountDeleteButtonText: TextStyle = {
+  color: COLORS.red,
+  opacity: 0.8,
+  marginTop: 32,
+};
+
 export const styles = {
-  parentContainer,
+  scrollContent,
+  scroll,
+  userContainer,
   editButton,
   noPurchaseText,
   purchaseParentContent,
@@ -94,4 +114,6 @@ export const styles = {
   priceContainer,
   priceText,
   separator,
+  transparentButton,
+  accountDeleteButtonText,
 };

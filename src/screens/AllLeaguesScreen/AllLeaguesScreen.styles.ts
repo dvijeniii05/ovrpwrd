@@ -46,6 +46,19 @@ const errorContainer: ViewStyle = {
   marginTop: 16,
 };
 
+const leagueEndedText: TextStyle = {
+  color: COLORS.white,
+  fontFamily: 'Jost-Regular',
+  fontSize: 20,
+  textAlign: 'center',
+};
+
+const card: ViewStyle = {
+  padding: 32,
+  alignItems: 'center',
+  gap: 32,
+};
+
 export const styles = {
   scroll,
   scrollContentContainer,
@@ -55,4 +68,6 @@ export const styles = {
   headerText,
   leaguesContainer,
   errorContainer,
+  leagueEndedText,
+  card,
 };

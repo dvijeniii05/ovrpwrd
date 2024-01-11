@@ -9,6 +9,7 @@ export interface ParsedMatch {
   assists: number;
   matchId: number;
   gameMode: string;
+  isBonusMatch: boolean;
 }
 
 export enum leaugeNames {

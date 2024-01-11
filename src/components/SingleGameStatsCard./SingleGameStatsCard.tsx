@@ -13,37 +13,25 @@ const SingleGameStatsCard = (props: ParsedMatch) => {
         <View style={styles.currencyContainer}>
           <CurrencyWrapper
             value={props.points}
-            isPerks
+            currencyType="perks"
             staticWidth
             style={{ backgroundColor: COLORS.darkGrey }}
           />
 
           <CurrencyWrapper
             value={+(props.points * 0.001).toFixed(2)} // "+" is used to convert string into number
-            isPerks={false}
+            currencyType="relics"
             staticWidth
             style={{ backgroundColor: COLORS.darkGrey }}
           />
         </View>
         <View style={styles.infoContainer}>
           {props.isWin ? (
-            <View
-              style={{
-                paddingHorizontal: 6,
-                paddingVertical: 2,
-                backgroundColor: COLORS.green,
-                borderRadius: 6,
-              }}>
+            <View style={styles.outcomeContainer(true)}>
               <Text style={styles.infoText}>WIN</Text>
             </View>
           ) : (
-            <View
-              style={{
-                paddingHorizontal: 6,
-                paddingVertical: 2,
-                backgroundColor: COLORS.red,
-                borderRadius: 6,
-              }}>
+            <View style={styles.outcomeContainer(false)}>
               <Text style={[styles.infoText, { color: COLORS.white }]}>
                 LOSS
               </Text>
@@ -69,13 +57,7 @@ const SingleGameStatsCard = (props: ParsedMatch) => {
         </View>
       </View>
       <View style={styles.imageContainer}>
-        <Canvas
-          style={{
-            position: 'absolute',
-            zIndex: 6,
-            width: '100%',
-            height: '100%',
-          }}>
+        <Canvas style={styles.canvas}>
           <Circle cx={50} cy={50} r={45} color={COLORS.darkBlue} />
         </Canvas>
         <FramedImage

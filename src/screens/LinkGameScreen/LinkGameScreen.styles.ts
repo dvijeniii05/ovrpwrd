@@ -22,7 +22,7 @@ const canvas: ViewStyle = {
 
 const publisherImage: ImageStyle = {
   width: 360,
-  height: 360,
+  height: 300,
   alignItems: 'center',
 };
 

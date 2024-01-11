@@ -7,10 +7,13 @@ import RoundChevronRightDark from '../../../assets/icons/round-chevron-right-dar
 import WebIcon from '../../../assets/icons/web.svg';
 import LockIcon from '../../../assets/icons/lock.svg';
 import RelicIcon from '../../../assets/Relics.svg';
+import DiscordIcon from '../../../assets/icons/discord.svg';
+import TandCIcon from '../../../assets/icons/fileIcon.svg';
+import PrivacyIcon from '../../../assets/icons/infoShieldIcon.svg';
 
 import LottieView from 'lottie-react-native';
 
-type LogoNames = 'apple' | 'google';
+type LogoNames = 'apple' | 'google' | 'discord' | 'tandc' | 'privacy';
 
 type IconNames =
   | 'round-chevron-right'
@@ -36,6 +39,12 @@ const StandardButton = ({ isDisabled = false, ...props }: Props) => {
         return <Apple />;
       case 'google':
         return <Google />;
+      case 'discord':
+        return <DiscordIcon width={20} height={20} />;
+      case 'tandc':
+        return <TandCIcon width={20} height={20} />;
+      case 'privacy':
+        return <PrivacyIcon width={20} height={20} />;
 
       default:
         return null;

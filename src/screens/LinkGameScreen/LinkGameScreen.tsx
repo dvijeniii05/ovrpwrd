@@ -93,15 +93,19 @@ const LinkGame = ({ navigation }: ScreenProps) => {
     return (
       <View style={styles.publisherContainer}>
         <Canvas style={styles.canvas}>
-          <RoundedRect x={0} y={0} width={360} height={360} r={30}>
+          <RoundedRect x={0} y={0} width={360} height={300} r={30}>
             <LinearGradient
               start={vec(180, 180)}
-              end={vec(180, 360)}
+              end={vec(180, 300)}
               colors={['transparent', '#040413']}
             />
           </RoundedRect>
         </Canvas>
-        <Image source={imagePicker().publisher} style={styles.publisherImage} />
+        <Image
+          source={imagePicker().publisher}
+          style={styles.publisherImage}
+          resizeMode="contain"
+        />
         <View style={styles.publisherIcon}>{imagePicker().icon}</View>
         <View>
           <View

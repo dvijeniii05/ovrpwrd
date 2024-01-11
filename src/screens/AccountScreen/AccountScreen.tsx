@@ -7,8 +7,8 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  ScrollView,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Gradient from '../../components/Gradient/Gradient';
 import { styles } from './AccountScreen.styles';
 import UserInfo from '../../components/UserInfo/UserInfo';
@@ -24,7 +24,8 @@ import {
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
 import { useDispatch } from 'react-redux';
-import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
+import { useGetPremiumStatusQuery } from '../../redux/query/endpoints/premiumApi';
+import { useDeleteAccountMutation } from '../../redux/query/endpoints/supportApi';
 
 const AccountScreen = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,15 @@ const AccountScreen = () => {
     isError,
     refetch,
   } = useGetUserCurrencyQuery();
+
+  const {
+    data: premiumStatus,
+    isSuccess: premiumStatusSuccess,
+    isError: premiumStatusError,
+    isFetching: premiumStatusFetching,
+  } = useGetPremiumStatusQuery();
+
+  const [triggerAccountDeletion] = useDeleteAccountMutation();
 
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<PurchasedProduct>) => (
@@ -102,12 +112,36 @@ const AccountScreen = () => {
     ]);
   };
 
+  const accountDeletionPress = () => {
+    Alert.alert(
+      'Deleting account?',
+      'Are you sure you want to delete this account?. Be aware that we will be processing your deletion reqeust within the next 7 days. If you wish to cancel the deletion process, please contact our support team.',
+      [
+        {
+          text: 'No',
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => triggerAccountDeletion(),
+          style: 'cancel',
+        },
+      ],
+    );
+  };
+
   return (
-    <CustomSafeAreaView edges={['bottom']}>
+    <View>
       <StatusBar barStyle={'light-content'} />
-      <View style={styles.parentContainer(useSafeAreaInsets().bottom)}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        style={styles.scroll}>
         <Gradient type="shaded" style={{ position: 'absolute' }} />
-        <LoadingComponent isLoading={isUserDetailsFetching || isFetching} />
+        <LoadingComponent
+          isLoading={
+            isUserDetailsFetching || isFetching || premiumStatusFetching
+          }
+        />
         <PurchaseModal
           isVisible={isProductModalVisible}
           uniqueId={pickedProduct.uniqueId}
@@ -116,15 +150,16 @@ const AccountScreen = () => {
           isDataDriven={false}
           onPress={() => setIsProductModalVisible(false)}
         />
-        {isUserDetailsSuccess && isSuccess ? (
+        {isUserDetailsSuccess && isSuccess && premiumStatusSuccess ? (
           <>
-            <View style={{ marginTop: 40, alignItems: 'center' }}>
+            <View style={styles.userContainer}>
               <UserInfo
                 currentPerks={userCurrency.perks}
                 currentRelics={userCurrency.relics}
                 userName={userDetails.fullName}
                 nickName={userDetails.nickname}
                 avatar={userDetails.avatar}
+                premiumStatus={premiumStatus}
               />
               <StandardButton
                 buttonText="Edit profile"
@@ -148,6 +183,7 @@ const AccountScreen = () => {
                   ItemSeparatorComponent={() => (
                     <View style={styles.separator} />
                   )}
+                  scrollEnabled={false}
                 />
               ) : (
                 <Text style={styles.noPurchaseText}>
@@ -170,9 +206,37 @@ const AccountScreen = () => {
             />
           </View>
         ) : null}
-        <StandardButton buttonText="Log out" onPress={onLogoutPress} />
-      </View>
-    </CustomSafeAreaView>
+        <StandardButton
+          buttonText="Support"
+          logoName="discord"
+          onPress={() => {}}
+          style={styles.transparentButton}
+        />
+        <StandardButton
+          buttonText="Terms and Conditions"
+          logoName="tandc"
+          onPress={() => {}}
+          style={styles.transparentButton}
+        />
+        <StandardButton
+          buttonText="Privacy Policy"
+          logoName="privacy"
+          onPress={() => {}}
+          style={styles.transparentButton}
+        />
+        <StandardButton
+          buttonText="Log out"
+          onPress={onLogoutPress}
+          style={{ marginTop: 16 }}
+        />
+        <StandardButton
+          buttonText="Delete account"
+          onPress={accountDeletionPress}
+          style={styles.transparentButton}
+          buttonTextStyle={styles.accountDeleteButtonText}
+        />
+      </ScrollView>
+    </View>
   );
 };
 

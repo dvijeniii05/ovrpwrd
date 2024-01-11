@@ -8,7 +8,7 @@ const itemWrapper: ViewStyle = {
   width: '100%',
   flex: 1,
   alignItems: 'center',
-  marginTop: 24,
+  marginTop: 16,
   paddingVertical: 8,
   paddingHorizontal: gapBetweenListItems * 0.5,
 };
@@ -72,6 +72,13 @@ const kdaText: TextStyle = {
   fontSize: 14,
 };
 
+const outcomeContainer = (isWin: boolean): ViewStyle => ({
+  paddingHorizontal: 6,
+  paddingVertical: 2,
+  backgroundColor: isWin ? COLORS.green : COLORS.red,
+  borderRadius: 6,
+});
+
 const imageContainer: ViewStyle = {
   position: 'absolute',
   alignItems: 'center',
@@ -80,6 +87,13 @@ const imageContainer: ViewStyle = {
   borderRadius: 45,
   width: 100,
   height: 100,
+};
+
+const canvas: ViewStyle = {
+  position: 'absolute',
+  zIndex: 6,
+  width: '100%',
+  height: '100%',
 };
 
 export const styles = {
@@ -93,5 +107,7 @@ export const styles = {
   kdaSeparator,
   kdaNumberText,
   kdaText,
+  outcomeContainer,
   imageContainer,
+  canvas,
 };

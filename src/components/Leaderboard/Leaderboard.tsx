@@ -100,7 +100,7 @@ const Leaderboard = (props: Props) => {
         </View>
         <CurrencyWrapper
           forLeagueProgression
-          isPerks
+          currencyType="perks"
           perkWidth={16}
           perkHeight={16}
           value={item.perks}
@@ -126,11 +126,11 @@ const Leaderboard = (props: Props) => {
         isSuccess={isReportSuccess}
       />
       <View style={styles.headingContainer}>
-        <Text style={[styles.text, { fontSize: 20 }]}>Monthly Ranking</Text>
+        <Text style={[styles.text, { fontSize: 18 }]} numberOfLines={1}>
+          Monthly Ranking
+        </Text>
         <View style={styles.allUsersContainer}>
-          <Text style={[styles.text, { fontFamily: 'Jost-SemiBold' }]}>
-            {leaderBoard?.totalUsers}
-          </Text>
+          <Text style={styles.userCountText}>{leaderBoard?.totalUsers}</Text>
         </View>
       </View>
       <Loader

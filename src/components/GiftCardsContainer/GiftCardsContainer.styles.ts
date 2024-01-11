@@ -21,8 +21,19 @@ const errorText: TextStyle = {
   textAlign: 'center',
 };
 
+const informationText: TextStyle = {
+  fontSize: 12,
+  fontFamily: 'Jost-Regular',
+  color: COLORS.white,
+  opacity: 0.7,
+  textAlign: 'center',
+  marginTop: 8,
+  fontWeight: '500',
+};
+
 export const styles = {
   giftsContainer,
   errorContainer,
   errorText,
+  informationText,
 };

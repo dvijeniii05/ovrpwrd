@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, ListRenderItemInfo, Pressable } from 'react-native';
+import React, { useCallback, useMemo, useState } from 'react';
+import { View, Text, ListRenderItemInfo, Pressable, Alert } from 'react-native';
 import CardWrapper from '../CardWrapper/CardWrapper';
 import { styles } from './StatsAndRewardsCard.styles';
 import { COLORS } from '../../constans/COLORS';
@@ -14,6 +14,12 @@ import { SharedValue } from 'react-native-reanimated';
 import SingleGameStatsCard from '../SingleGameStatsCard./SingleGameStatsCard';
 import NoGamesCard from '../NoGamesCard/NoGamesCard';
 import GiftCardsContainer from '../GiftCardsContainer/GiftCardsContainer';
+import PremiumButton from '../Buttons/PremiumButton/PremiumButton';
+import {
+  useActivatePremiumMutation,
+  useGetPremiumStatusQuery,
+} from '../../redux/query/endpoints/premiumApi';
+import PremiumContent from '../PremiumContent/PremiumContent';
 
 interface Props {
   lastTenMatches?: ParsedMatch[];
@@ -72,6 +78,7 @@ const StatsAndRewardsCard = (props: Props) => {
           <Text style={styles.tabsButtonText}>Daily rewards</Text>
         </Pressable>
       </View>
+      <PremiumContent />
       {isTodaysStatsCard ? (
         carouselContent()
       ) : (

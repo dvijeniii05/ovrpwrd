@@ -17,7 +17,9 @@ import {
   useGetLeaderboardQuery,
 } from '../../redux/query/apiSlice';
 import FramedImage from '../../components/FramedImage/FramedImage';
-import CurrencyWrapper from '../../components/CurrencyWrapper/CurrencyWraper';
+import CurrencyWrapper, {
+  currencyType,
+} from '../../components/CurrencyWrapper/CurrencyWraper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
@@ -105,7 +107,7 @@ const LeaderboardScreen = ({ route }: NavProps) => {
         </View>
         <CurrencyWrapper
           forLeagueProgression
-          isPerks
+          currencyType="perks"
           perkWidth={16}
           perkHeight={16}
           value={item.perks}

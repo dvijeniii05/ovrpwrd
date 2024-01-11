@@ -46,11 +46,11 @@ export interface LeaderboardUser {
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: prodBaseUrl,
+    baseUrl: devBaseUrl,
     prepareHeaders: async headers => {
       const token = getToken();
       // const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZGlrYnN3QGdtYWlsLmNvbSIsImlhdCI6MTY5NTc1MDY3M30.ZLtkz2ZAGWXPnugqHjGZppecpSesOwyTjZlXnB974uI`;
-      console.log('LOCAL_TOKEN', token);
+      // console.log('LOCAL_TOKEN', token);
       headers.set('authorization', `${token}`);
       return headers;
     },

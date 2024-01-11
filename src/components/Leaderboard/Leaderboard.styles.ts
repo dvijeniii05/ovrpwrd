@@ -50,6 +50,13 @@ const text: TextStyle = {
   maxWidth: WIDTH * 0.4,
 };
 
+const userCountText: TextStyle = {
+  color: COLORS.white,
+  maxWidth: WIDTH * 0.4,
+  fontFamily: 'Jost-SemiBold',
+  fontSize: 12,
+};
+
 const seeMoreButton: ViewStyle = {
   paddingVertical: 8,
   marginTop: 24,
@@ -66,5 +73,6 @@ export const styles = {
   cardContainer,
   leftSideContainer,
   text,
+  userCountText,
   seeMoreButton,
 };

@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { styles } from './UserInfo.styles';
 import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
 import FramedImage from '../FramedImage/FramedImage';
+import { PremiumStatusResponseProps } from '../../redux/query/endpoints/premiumApi';
+import ProductTag from '../ProductTag/ProductTag';
 
 interface Props {
   currentPerks?: number;
@@ -11,32 +13,47 @@ interface Props {
   nickName?: string;
   avatar?: string;
   onAvatarPress?: () => void;
+  premiumStatus?: PremiumStatusResponseProps;
 }
 
 const UserInfo = (props: Props) => {
-  return (
-    <View style={styles.parentContainer}>
-      <TouchableOpacity
-        disabled={props.onAvatarPress === undefined}
-        onPress={() =>
-          props.onAvatarPress ? props.onAvatarPress() : undefined
-        }>
-        <FramedImage avatar={props.avatar ?? '1'} frameColor="white" />
-      </TouchableOpacity>
-      <Text style={styles.nameText}>{props.userName}</Text>
-      <Text style={styles.nickNameText}>{`@${props.nickName}`}</Text>
-      <View style={styles.currencyContainer}>
-        <CurrencyWrapper
-          value={Number(props.currentPerks).toFixed(0) ?? 0}
-          isPerks
-        />
-        <CurrencyWrapper
-          value={Number(props.currentRelics).toFixed(2) ?? '0'}
-          isPerks={false}
-        />
+  if (props.premiumStatus) {
+    const { hasPremium, premiumGamesLeft } = props.premiumStatus.premium;
+
+    return (
+      <View style={styles.parentContainer}>
+        <TouchableOpacity
+          disabled={props.onAvatarPress === undefined}
+          onPress={() =>
+            props.onAvatarPress ? props.onAvatarPress() : undefined
+          }>
+          <FramedImage
+            avatar={props.avatar ?? '1'}
+            frameColor={hasPremium ? 'premium' : 'white'}
+          />
+        </TouchableOpacity>
+        {hasPremium ? (
+          <ProductTag isPremium style={{ marginTop: 8, paddingVertical: 4 }} />
+        ) : null}
+        <Text style={styles.nameText}>{props.userName}</Text>
+        <Text style={styles.nickNameText}>{`@${props.nickName}`}</Text>
+        <View style={styles.currencyContainer}>
+          <CurrencyWrapper
+            value={Number(props.currentPerks).toFixed(0) ?? 0}
+            currencyType="perks"
+          />
+          <CurrencyWrapper
+            value={Number(props.currentRelics).toFixed(2) ?? '0'}
+            currencyType="relics"
+          />
+          {hasPremium ? (
+            <CurrencyWrapper currencyType="premiums" value={premiumGamesLeft} />
+          ) : null}
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
+  return null;
 };
 
 export default UserInfo;
