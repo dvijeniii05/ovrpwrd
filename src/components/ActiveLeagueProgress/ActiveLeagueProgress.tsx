@@ -15,6 +15,7 @@ import { Loader } from '../Loaders/Loader';
 import {
   activeLeague,
   leagueDaysCountdown,
+  participatingLeague,
   prevAndNextLeagueNames,
 } from '../../utils/leagueHelpers/leagueHelpers';
 import { SkeletonLoader } from '../Loaders/SkeletonLoader';
@@ -37,6 +38,7 @@ interface Props {
 const ActiveLeagueProgress = (props: Props) => {
   const {
     league,
+    inThisLeague,
     isLeagueFetching,
     isLeagueSuccess,
     isLeagueError,
@@ -45,6 +47,7 @@ const ActiveLeagueProgress = (props: Props) => {
     selectFromResult: ({ data, isSuccess, isFetching, isError }) => {
       return {
         league: activeLeague(data, props.currentPerks),
+        inThisLeague: participatingLeague(data, props.currentPerks),
         isLeagueSuccess: isSuccess,
         isLeagueFetching: isFetching,
         isLeagueError: isError,
@@ -78,7 +81,6 @@ const ActiveLeagueProgress = (props: Props) => {
     const isLeagueActive = leagueDaysCountdown(league.endDate);
 
     if (!isLeagueActive) {
-      // render mesage about finished leagues + user stsatus
       return (
         <View style={styles.leagueEndedContainer}>
           <View style={styles.leagueEndedHeading}>
@@ -90,7 +92,7 @@ const ActiveLeagueProgress = (props: Props) => {
             start accumulating once the new league is started.
           </Text>
           <Text style={styles.descriptionGreenText}>
-            {`You are participating in ${league.leagueName}`}
+            {`You are participating in ${inThisLeague}`}
           </Text>
         </View>
       );

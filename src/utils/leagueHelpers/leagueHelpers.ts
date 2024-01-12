@@ -20,6 +20,33 @@ export const activeLeague = (
   }
 };
 
+export const participatingLeague = (
+  leagues: LeagueData[] | undefined,
+  currentPerks: number | undefined,
+) => {
+  if (leagues && currentPerks !== undefined) {
+    const legendary = leagues[0];
+    const mythical = leagues[1];
+    const immortal = leagues[2];
+
+    if (currentPerks < legendary.pointsMax) {
+      return 'No League';
+    } else if (
+      currentPerks >= mythical.pointsMin &&
+      currentPerks < mythical.pointsMax
+    ) {
+      return legendary.leagueName;
+    } else if (
+      currentPerks >= immortal.pointsMin &&
+      currentPerks < immortal.pointsMax
+    ) {
+      return mythical.leagueName;
+    } else {
+      return immortal.leagueName;
+    }
+  }
+};
+
 export const prevAndNextLeagueNames = (currentLeagueName: string) => {
   switch (currentLeagueName) {
     case 'Legendary League': {

@@ -56,13 +56,18 @@ const MarketplaceScreen = () => {
             {isSuccess ? (
               <>
                 <ProductsCarousel
-                  data={data.digitalProducts}
-                  headerText="Digital"
+                  data={data.offers}
+                  headerText={data.offers[0].type}
                   style={{ marginTop: 48 }}
                 />
                 <ProductsCarousel
-                  data={data.physicalProducts}
-                  headerText="Physical"
+                  data={data.games}
+                  headerText={data.games[0].type}
+                  style={{ marginTop: 48 }}
+                />
+                <ProductsCarousel
+                  data={data.physical}
+                  headerText={'Physical'}
                   style={{ marginTop: 48 }}
                 />
               </>
