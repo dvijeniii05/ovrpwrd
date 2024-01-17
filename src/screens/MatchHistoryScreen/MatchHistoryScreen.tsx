@@ -7,7 +7,6 @@ import {
   ListRenderItemInfo,
   Image,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Gradient from '../../components/Gradient/Gradient';
 import { COLORS } from '../../constans/COLORS';
 import { useHeaderHeight } from '@react-navigation/elements';
@@ -20,6 +19,7 @@ import LoadingComponent from '../../components/LoadingComponent/LoadingComponent
 import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
 import { HEIGHT } from '../../utils/dimension';
 import { heroIconPicker } from '../../utils/heroIconPicker';
+import LinearGradient from 'react-native-linear-gradient';
 
 const MatchHistoryScreen = () => {
   const headerHeight = useHeaderHeight();
@@ -48,21 +48,31 @@ const MatchHistoryScreen = () => {
   //   debounceRefreshIndicator();
   // }, []);
 
-  const renderItem = ({ item }: ListRenderItemInfo<ParsedMatch>) => (
+  const renderItem = ({ item, index }: ListRenderItemInfo<ParsedMatch>) => (
     <View style={styles.singleMatchContainer}>
-      <Image
-        source={heroIconPicker(item.heroUrl)}
-        style={{ width: 24, aspectRatio: 1 }}
-      />
-      <View style={{ flexDirection: 'row', gap: 8 }}>
+      <Image source={heroIconPicker(item.heroUrl)} style={styles.heroImage} />
+      <View style={styles.kdaContainer}>
         <Text style={styles.kText}>{item.kills}</Text>
         <Text style={styles.dText}>{item.deaths}</Text>
         <Text style={styles.aText}>{item.assists}</Text>
       </View>
-      <View style={{ flexDirection: 'row', minWidth: 52, gap: 4 }}>
+      <View style={styles.matchOutcomeContainer}>
+        {item.isBonusMatch ? (
+          <View style={styles.gradientContainer}>
+            <LinearGradient
+              useAngle
+              angle={80}
+              angleCenter={{ x: 0.5, y: 0.5 }}
+              colors={['#1BFD9C', '#FFCD4C']}
+              style={styles.gradient}>
+              <Text style={styles.multiplierText}>x2</Text>
+            </LinearGradient>
+          </View>
+        ) : null}
         <Perks width={16} height={16} />
         <Text style={styles.singleMatchPointsText}>{item.points}</Text>
       </View>
+
       {item.isWin ? (
         <View style={styles.winWrapper}>
           <View style={styles.winContainer}>
@@ -78,7 +88,7 @@ const MatchHistoryScreen = () => {
   );
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <View>
       <StatusBar barStyle={'light-content'} />
       <View style={styles.parentContainer}>
         <Gradient type="shaded" style={styles.shadedGradient} />
@@ -89,7 +99,7 @@ const MatchHistoryScreen = () => {
         />
         <ScrollView
           contentContainerStyle={styles.scrollContent}
-          style={{ width: '100%' }}
+          style={styles.scroll}
           showsVerticalScrollIndicator={false}>
           {isSuccess ? (
             <>
@@ -119,18 +129,14 @@ const MatchHistoryScreen = () => {
                 data={data?.significantMatches}
                 renderItem={renderItem}
                 scrollEnabled={false}
-                style={{ width: '100%', marginTop: 16 }}
-                contentContainerStyle={{ gap: 8 }}
+                style={styles.flatlistStyle}
+                contentContainerStyle={styles.flatlistContainerStyle}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
               />
             </>
           ) : null}
           {isError ? (
-            <View
-              style={{
-                justifyContent: 'center',
-                height: HEIGHT,
-              }}>
+            <View style={styles.errorContainer}>
               <GeneralErrorComponent
                 refetchFunction={() => {
                   refetch();
@@ -141,7 +147,7 @@ const MatchHistoryScreen = () => {
           ) : null}
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

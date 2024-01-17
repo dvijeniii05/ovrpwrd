@@ -6,8 +6,8 @@ import {
   FlatList,
   ListRenderItemInfo,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Gradient from '../../components/Gradient/Gradient';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import { useHeaderHeight } from '@react-navigation/elements';
@@ -17,15 +17,20 @@ import {
   useGetLeaderboardQuery,
 } from '../../redux/query/apiSlice';
 import FramedImage from '../../components/FramedImage/FramedImage';
-import CurrencyWrapper from '../../components/CurrencyWrapper/CurrencyWraper';
+import CurrencyWrapper, {
+  currencyType,
+} from '../../components/CurrencyWrapper/CurrencyWraper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
 import { COLORS } from '../../constans/COLORS';
 import { HEIGHT } from '../../utils/dimension';
 import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { parsedLeaderboardData } from '../../utils/leagueHelpers/leagueHelpers';
+import { useActionSheet } from '@expo/react-native-action-sheet';
+import { useReportNicknameMutation } from '../../redux/query/endpoints/supportApi';
+import InformationModal from '../Modals/InformationModal/InformationModal';
 
 type NavProps = StackScreenProps<
   StackParamList,
@@ -38,6 +43,18 @@ const LeaderboardScreen = ({ route }: NavProps) => {
 
   const { userNickname } = route.params;
 
+  const { showActionSheetWithOptions } = useActionSheet();
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
+  const [
+    reportTrigger,
+    {
+      isLoading: isReportLoading,
+      isSuccess: isReportSuccess,
+      isError: isReportError,
+    },
+  ] = useReportNicknameMutation();
+
   const { data, isSuccess, isFetching, isError, refetch } =
     useGetLeaderboardQuery();
 
@@ -45,19 +62,42 @@ const LeaderboardScreen = ({ route }: NavProps) => {
     return parsedLeaderboardData(false, data, userNickname);
   }, [data, userNickname]);
 
+  const onUserPress = useCallback(
+    (nickname: string) => () => {
+      const options = [`Report nickname as offensive`, 'Cancel'];
+      const destructiveButtonIndex = 0;
+      const cancelButtonIndex = 1;
+      showActionSheetWithOptions(
+        { options, cancelButtonIndex, destructiveButtonIndex },
+        (selectedIndex?: number) => {
+          if (selectedIndex === cancelButtonIndex) {
+            // close actionssheet
+          } else {
+            // report user
+            reportTrigger({ nickname });
+            setIsModalVisible(true);
+          }
+        },
+      );
+    },
+    [leaderBoard?.alteredLeaderboard],
+  );
+
   const renderItem = ({ item, index }: ListRenderItemInfo<LeaderboardUser>) => {
     const isCurrentUser = item.nickname === userNickname ?? false;
     const indexForCurrentUser = isCurrentUser
       ? leaderBoard?.currentUserIndex
       : index + 1;
     return (
-      <View style={styles.cardContainer(isCurrentUser)}>
+      <TouchableOpacity
+        style={styles.cardContainer(isCurrentUser)}
+        onPress={onUserPress(item.nickname)}>
         <View style={styles.leftSideContainer}>
           <Text style={[styles.text, { marginRight: 24 }]}>
             {indexForCurrentUser}
           </Text>
           <FramedImage
-            avatar="2"
+            avatar={item.avatar}
             frameColor="blue"
             frameSize={{ width: 24, height: 24 }}
           />
@@ -67,12 +107,12 @@ const LeaderboardScreen = ({ route }: NavProps) => {
         </View>
         <CurrencyWrapper
           forLeagueProgression
-          isPerks
+          currencyType="perks"
           perkWidth={16}
           perkHeight={16}
           value={item.perks}
         />
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -83,9 +123,17 @@ const LeaderboardScreen = ({ route }: NavProps) => {
   }, []);
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <View>
       <StatusBar barStyle={'light-content'} />
       <View style={styles.parentContainer}>
+        <InformationModal
+          isVisible={isModalVisible}
+          onPress={() => setIsModalVisible(false)}
+          isDataDriven
+          isLoading={isReportLoading}
+          isError={isReportError}
+          isSuccess={isReportSuccess}
+        />
         <Gradient type="shaded" style={styles.shadedGradient} />
         <Gradient type="noise" style={styles.noiseGradient} />
         <LoadingComponent
@@ -130,7 +178,7 @@ const LeaderboardScreen = ({ route }: NavProps) => {
           ) : null}
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 export default LeaderboardScreen;

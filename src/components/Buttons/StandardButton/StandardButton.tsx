@@ -3,15 +3,24 @@ import { styles } from './StandardButton.styles';
 import Apple from '../../../assets/icons/apple.svg';
 import Google from '../../../assets/icons/google.svg';
 import RoundChevronRight from '../../../assets/icons/round-chevron-right.svg';
+import RoundChevronRightDark from '../../../assets/icons/round-chevron-right-dark.svg';
 import WebIcon from '../../../assets/icons/web.svg';
 import LockIcon from '../../../assets/icons/lock.svg';
 import RelicIcon from '../../../assets/Relics.svg';
+import DiscordIcon from '../../../assets/icons/discord.svg';
+import TandCIcon from '../../../assets/icons/fileIcon.svg';
+import PrivacyIcon from '../../../assets/icons/infoShieldIcon.svg';
 
 import LottieView from 'lottie-react-native';
 
-type LogoNames = 'apple' | 'google';
+type LogoNames = 'apple' | 'google' | 'discord' | 'tandc' | 'privacy';
 
-type IconNames = 'round-chevron-right' | 'web' | 'lock' | 'relic';
+type IconNames =
+  | 'round-chevron-right'
+  | 'round-chevron-right-dark'
+  | 'web'
+  | 'lock'
+  | 'relic';
 interface Props {
   buttonText: string;
   buttonTextStyle?: TextStyle;
@@ -30,6 +39,12 @@ const StandardButton = ({ isDisabled = false, ...props }: Props) => {
         return <Apple />;
       case 'google':
         return <Google />;
+      case 'discord':
+        return <DiscordIcon width={20} height={20} />;
+      case 'tandc':
+        return <TandCIcon width={20} height={20} />;
+      case 'privacy':
+        return <PrivacyIcon width={20} height={20} />;
 
       default:
         return null;
@@ -40,6 +55,8 @@ const StandardButton = ({ isDisabled = false, ...props }: Props) => {
     switch (props.iconName) {
       case 'round-chevron-right':
         return <RoundChevronRight height={16} width={16} />;
+      case 'round-chevron-right-dark':
+        return <RoundChevronRightDark height={16} width={16} />;
       case 'web':
         return <WebIcon width={24} height={24} />;
       case 'lock':

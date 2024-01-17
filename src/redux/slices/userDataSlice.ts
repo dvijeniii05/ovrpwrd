@@ -1,5 +1,4 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { calculatePoints } from '../../utils/pointCalculation/pointCalculation';
 import { userApi } from '../query/endpoints/userApi';
 
 interface StartingPointDataProps {
@@ -12,9 +11,7 @@ interface StartingPointDataProps {
   dob: string;
   gender: string;
   country: string;
-  isAnonymousUser: boolean;
-  isNewUser: boolean;
-  isAuthed: boolean;
+  isAppUpdateRequired: boolean;
   // matchData: MatchStatsProps[];
 }
 
@@ -35,9 +32,7 @@ const userDataState: userDataStateProps = {
     dob: '',
     gender: '',
     country: '',
-    isAnonymousUser: true,
-    isNewUser: false,
-    isAuthed: false,
+    isAppUpdateRequired: false,
     // matchData: [],
   },
   status: 'idle',
@@ -48,11 +43,6 @@ const userDataSlice = createSlice({
   name: 'userData',
   initialState: userDataState,
   reducers: {
-    addPoints: (state, action) => {
-      console.log('ADD_POINTS_REDUCER_CALLED', action.payload);
-      const points = calculatePoints(action.payload);
-      // state.data.points += points;
-    },
     openBottomSheet: (state, action) => {
       state.data.bottomSheetState = {
         ...action.payload,
@@ -70,6 +60,9 @@ const userDataSlice = createSlice({
         ...state.data,
         ...payloadDetails,
       };
+    },
+    updateAppVersionCheck: (state, action) => {
+      state.data.isAppUpdateRequired = action.payload;
     },
   },
   extraReducers: builder => {
@@ -91,9 +84,9 @@ const userDataSlice = createSlice({
 });
 
 export const {
-  addPoints,
   openBottomSheet,
   closeBottomSheet,
   updateUserDetails,
+  updateAppVersionCheck,
 } = userDataSlice.actions;
 export default userDataSlice.reducer;

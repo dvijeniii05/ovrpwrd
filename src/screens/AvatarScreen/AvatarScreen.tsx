@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
   FlatList,
   ListRenderItemInfo,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native';
 import Gradient from '../../components/Gradient/Gradient';
 import { COLORS } from '../../constans/COLORS';
 import { useTranslation } from 'react-i18next';
 import { styles } from './AvatarScreen.styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useHeaderHeight } from '@react-navigation/elements';
 import FramedImage from '../../components/FramedImage/FramedImage';
 import { useState } from 'react';
@@ -21,6 +21,7 @@ import { StackScreenName } from '../../../ScreenNames';
 import { useUpdateUserDetailsMutation } from '../../redux/query/endpoints/userApi';
 import InformationModal from '../Modals/InformationModal/InformationModal';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
+import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.avatar>;
 
@@ -32,6 +33,16 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
   const [isInformationModalVisible, setIsInformationModalVisible] =
     useState<boolean>(false);
   const [informationModalText, setInformationModalText] = useState<string>('');
+
+  // Code below is to disable hardware backButton action on old models of Android devices to stop user from going back
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => true,
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const [addAvatar, { isLoading }] = useUpdateUserDetailsMutation();
 
@@ -54,6 +65,15 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
     {
       value: '6',
     },
+    {
+      value: '7',
+    },
+    {
+      value: '8',
+    },
+    {
+      value: '9',
+    },
   ];
 
   const renderItem = ({ item }: ListRenderItemInfo<{ value: string }>) => (
@@ -61,6 +81,7 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
       <FramedImage
         avatar={item.value}
         frameColor={selectedAvatar == item.value ? 'green' : 'blue'}
+        isOverflowHidden
       />
     </TouchableOpacity>
   );
@@ -78,7 +99,7 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
   };
 
   return (
-    <SafeAreaView style={styles.parentContainer} edges={['bottom']}>
+    <CustomSafeAreaView style={styles.parentContainer} edges={['bottom']}>
       <Gradient type="shaded" style={{ position: 'absolute', top: 0 }} />
       <LoadingComponent isLoading={isLoading} />
       <InformationModal
@@ -108,7 +129,7 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
         isDisabled={!selectedAvatar}
         style={{ width: '100%' }}
       />
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

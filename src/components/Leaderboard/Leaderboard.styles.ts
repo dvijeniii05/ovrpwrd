@@ -1,5 +1,6 @@
 import { TextStyle, ViewStyle } from 'react-native';
 import { COLORS } from '../../constans/COLORS';
+import { WIDTH } from '../../utils/dimension';
 
 const parentContainer: ViewStyle = {
   width: '100%',
@@ -46,6 +47,14 @@ const leftSideContainer: ViewStyle = {
 const text: TextStyle = {
   fontFamily: 'Jost-Regular',
   color: COLORS.white,
+  maxWidth: WIDTH * 0.4,
+};
+
+const userCountText: TextStyle = {
+  color: COLORS.white,
+  maxWidth: WIDTH * 0.4,
+  fontFamily: 'Jost-SemiBold',
+  fontSize: 12,
 };
 
 const seeMoreButton: ViewStyle = {
@@ -64,5 +73,6 @@ export const styles = {
   cardContainer,
   leftSideContainer,
   text,
+  userCountText,
   seeMoreButton,
 };

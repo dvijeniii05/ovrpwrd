@@ -9,7 +9,6 @@ import LandingScreen from '../screens/LandingScreen/LandingScreen';
 import SteamModal from '../screens/Modals/SteamModal/SteamModal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store/mainStore';
-import SteamLoginScreen from '../screens/SteamLoginScreen/SteamLoginScreen';
 import Home from '../screens/HomeScreen/HomeScreen';
 import SteamLinkScreen from '../screens/SteamLinkScreen/SteamLinkScreen';
 import RegistrationScreen from '../screens/RegistrationScreen/RegistrationScreen';
@@ -17,6 +16,7 @@ import AvatarScreen from '../screens/AvatarScreen/AvatarScreen';
 import LinkGame from '../screens/LinkGameScreen/LinkGameScreen';
 import {
   withBackButton,
+  withHiddenBackButtonAndDisabledSwipe,
   withHomeButton,
   withSpecialHeaderButtons,
 } from './ScreenOptions';
@@ -30,6 +30,7 @@ import AccountScreen from '../screens/AccountScreen/AccountScreen';
 import MatchHistoryScreen from '../screens/MatchHistoryScreen/MatchHistoryScreen';
 import LeaderboardScreen from '../screens/LeaderboardScreen/LeaderboardScreen';
 import { getToken } from '../redux/store/getTokenHelper';
+import WelcomeInfoScreen from '../screens/WelcomeInfoScreen/WelcomeInfoScreen';
 
 const Stack = createStackNavigator<StackParamList>();
 
@@ -44,6 +45,10 @@ const AppDrawer = () => {
       }}>
       {!isUserFullyOnboarded ? (
         <>
+          <Stack.Screen
+            name={StackScreenName.welcomeInfo}
+            component={WelcomeInfoScreen}
+          />
           <Stack.Screen
             name={StackScreenName.landing}
             component={LandingScreen}
@@ -60,16 +65,13 @@ const AppDrawer = () => {
             <Stack.Screen
               name={StackScreenName.avatar}
               component={AvatarScreen}
+              options={withHiddenBackButtonAndDisabledSwipe}
             />
             <Stack.Screen
               name={StackScreenName.linkGame}
               component={LinkGame}
             />
           </Stack.Group>
-          <Stack.Screen
-            name={StackScreenName.steamLogin}
-            component={SteamLoginScreen}
-          />
           <Stack.Screen
             name={StackScreenName.steamModal}
             component={SteamModal}

@@ -1,5 +1,11 @@
-import React, { useMemo } from 'react';
-import { FlatList, ListRenderItemInfo, Text, View } from 'react-native';
+import React, { useCallback, useMemo, useState } from 'react';
+import {
+  FlatList,
+  ListRenderItemInfo,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { styles } from './Leaderboard.styles';
 import FramedImage from '../FramedImage/FramedImage';
 import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
@@ -16,6 +22,9 @@ import { useNavigation } from '@react-navigation/native';
 import { StackProps } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
 import GeneralErrorComponent from '../GeneralErrorComponent/GeneralErrorComponent';
+import { useActionSheet } from '@expo/react-native-action-sheet';
+import { useReportNicknameMutation } from '../../redux/query/endpoints/supportApi';
+import InformationModal from '../../screens/Modals/InformationModal/InformationModal';
 
 interface Props {
   isUserFetching: boolean;
@@ -25,14 +34,47 @@ interface Props {
 
 const Leaderboard = (props: Props) => {
   const navigation = useNavigation<StackProps>();
+  const { showActionSheetWithOptions } = useActionSheet();
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
   const { data, isSuccess, isFetching, isError, refetch } =
     useGetLeaderboardQuery(undefined, {
       skip: !props.isUserStatsSuccess,
     });
 
+  const [
+    reportTrigger,
+    {
+      isLoading: isReportLoading,
+      isSuccess: isReportSuccess,
+      isError: isReportError,
+    },
+  ] = useReportNicknameMutation();
+
   const leaderBoard = useMemo(() => {
     return parsedLeaderboardData(true, data, props.nickname);
   }, [data, props.nickname]);
+
+  const onUserPress = useCallback(
+    (nickname: string) => () => {
+      const options = [`Report nickname as offensive`, 'Cancel'];
+      const destructiveButtonIndex = 0;
+      const cancelButtonIndex = 1;
+      showActionSheetWithOptions(
+        { options, cancelButtonIndex, destructiveButtonIndex },
+        (selectedIndex?: number) => {
+          if (selectedIndex === cancelButtonIndex) {
+            // close actionssheet
+          } else {
+            // report user
+            reportTrigger({ nickname });
+            setIsModalVisible(true);
+          }
+        },
+      );
+    },
+    [leaderBoard?.alteredLeaderboard],
+  );
 
   const renderItem = ({ item, index }: ListRenderItemInfo<LeaderboardUser>) => {
     const isCurrentUser = item.nickname === props.nickname ?? false;
@@ -40,26 +82,30 @@ const Leaderboard = (props: Props) => {
       ? leaderBoard?.currentUserIndex
       : index + 1;
     return (
-      <View style={styles.cardContainer(isCurrentUser)}>
+      <TouchableOpacity
+        style={styles.cardContainer(isCurrentUser)}
+        onPress={onUserPress(item.nickname)}>
         <View style={styles.leftSideContainer}>
           <Text style={[styles.text, { marginRight: 24 }]}>
             {indexForCurrentUser}
           </Text>
           <FramedImage
-            avatar="2"
+            avatar={item.avatar}
             frameColor="blue"
             frameSize={{ width: 24, height: 24 }}
           />
-          <Text style={[styles.text, { marginLeft: 26 }]}>{item.nickname}</Text>
+          <Text style={[styles.text, { marginLeft: 26 }]} numberOfLines={1}>
+            {item.nickname}
+          </Text>
         </View>
         <CurrencyWrapper
           forLeagueProgression
-          isPerks
+          currencyType="perks"
           perkWidth={16}
           perkHeight={16}
           value={item.perks}
         />
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -71,12 +117,20 @@ const Leaderboard = (props: Props) => {
 
   return (
     <View style={styles.parentContainer}>
+      <InformationModal
+        isVisible={isModalVisible}
+        onPress={() => setIsModalVisible(false)}
+        isDataDriven
+        isLoading={isReportLoading}
+        isError={isReportError}
+        isSuccess={isReportSuccess}
+      />
       <View style={styles.headingContainer}>
-        <Text style={[styles.text, { fontSize: 20 }]}>Monthly Ranking</Text>
+        <Text style={[styles.text, { fontSize: 18 }]} numberOfLines={1}>
+          Monthly Ranking
+        </Text>
         <View style={styles.allUsersContainer}>
-          <Text style={[styles.text, { fontFamily: 'Jost-SemiBold' }]}>
-            {leaderBoard?.totalUsers}
-          </Text>
+          <Text style={styles.userCountText}>{leaderBoard?.totalUsers}</Text>
         </View>
       </View>
       <Loader

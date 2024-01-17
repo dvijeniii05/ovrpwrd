@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ScrollView, StatusBar, View, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './MarketplaceScreen.styles';
 import Gradient from '../../components/Gradient/Gradient';
 import { useHeaderHeight } from '@react-navigation/elements';
@@ -35,7 +34,7 @@ const MarketplaceScreen = () => {
   );
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <View>
       <StatusBar barStyle={'light-content'} />
       <ScrollView
         style={styles.scroll}
@@ -57,13 +56,18 @@ const MarketplaceScreen = () => {
             {isSuccess ? (
               <>
                 <ProductsCarousel
-                  data={data.digitalProducts}
-                  headerText="Digital"
+                  data={data.offers}
+                  headerText={data.offers[0].type}
                   style={{ marginTop: 48 }}
                 />
                 <ProductsCarousel
-                  data={data.physicalProducts}
-                  headerText="Physical"
+                  data={data.games}
+                  headerText={data.games[0].type}
+                  style={{ marginTop: 48 }}
+                />
+                <ProductsCarousel
+                  data={data.physical}
+                  headerText={'Physical'}
                   style={{ marginTop: 48 }}
                 />
               </>
@@ -83,7 +87,7 @@ const MarketplaceScreen = () => {
           <Text style={{ color: 'white' }}>AUCTION</Text>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

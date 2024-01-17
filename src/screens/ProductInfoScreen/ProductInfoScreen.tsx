@@ -9,7 +9,6 @@ import {
   Alert,
 } from 'react-native';
 import Gradient from '../../components/Gradient/Gradient';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './ProductInfoScreen.styles';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -24,7 +23,7 @@ import { useEffect, useState } from 'react';
 import ProductTag from '../../components/ProductTag/ProductTag';
 import PurchaseModal from '../Modals/PurchaseModal/PurchaseModal';
 import { useBuyProductMutation } from '../../redux/query/endpoints/productsApi';
-import { useGetUserStatsQuery } from '../../redux/query/endpoints/userApi';
+import { useGetUserCurrencyQuery } from '../../redux/query/endpoints/userApi';
 
 type NavProps = StackScreenProps<StackParamList, StackScreenName.prodcutInfo>;
 
@@ -40,8 +39,8 @@ const ProductInfoScreen = ({ navigation, route }: NavProps) => {
   const [trigger, { data, isSuccess, isError, isLoading }] =
     useBuyProductMutation();
 
-  const { data: userStats, isSuccess: isUserStatsSuccess } =
-    useGetUserStatsQuery();
+  const { data: userCurrency, isSuccess: isUserStatsSuccess } =
+    useGetUserCurrencyQuery();
 
   const isAvailable = product.promoCodes.length > 0;
 
@@ -62,8 +61,8 @@ const ProductInfoScreen = ({ navigation, route }: NavProps) => {
   );
 
   const userHasEnoughCurrency = () => {
-    if (userStats) {
-      return userStats?.currentPoints.currentRelics >= product.price;
+    if (userCurrency) {
+      return userCurrency?.relics >= product.price;
     }
   };
 
@@ -85,14 +84,14 @@ const ProductInfoScreen = ({ navigation, route }: NavProps) => {
               setIsPurchaseModalShown(true);
               trigger({ uniqueId: product.uniqueId });
             },
-            style: 'cancel',
+            style: 'default',
           },
         ],
       );
     } else {
       Alert.alert(
         `Oooops!`,
-        `You don't have enough currency to purchase this product. You currently own ${userStats?.currentPoints.currentPerks} Perks and ${userStats?.currentPoints.currentRelics} Relics`,
+        `You don't have enough currency to purchase this product. You currently own ${userCurrency?.perks} Perks and ${userCurrency?.relics} Relics`,
         [
           {
             text: 'Understood',
@@ -105,7 +104,7 @@ const ProductInfoScreen = ({ navigation, route }: NavProps) => {
   };
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <View>
       <StatusBar barStyle={'light-content'} />
       <View style={styles.parentContainer}>
         <Gradient
@@ -175,7 +174,7 @@ const ProductInfoScreen = ({ navigation, route }: NavProps) => {
           />
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

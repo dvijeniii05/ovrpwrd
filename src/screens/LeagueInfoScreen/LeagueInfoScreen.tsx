@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, StatusBar, Text, View } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Gradient from '../../components/Gradient/Gradient';
 import { SkeletonLoader } from '../../components/Loaders/SkeletonLoader';
 import { Rect } from 'react-content-loader/native';
@@ -29,7 +26,6 @@ type NavProps = StackScreenProps<StackParamList, StackScreenName.leagueInfo>;
 
 const LeagueInfoScreen = ({ route }: NavProps) => {
   const { leagueName, userPerks } = route.params;
-  console.log('LEAGUE', userPerks);
   const [participantsMarginTop, setParticipantsMargintop] = useState<number>(0);
 
   const {
@@ -79,7 +75,7 @@ const LeagueInfoScreen = ({ route }: NavProps) => {
   );
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <View>
       <StatusBar barStyle={'light-content'} />
       <ScrollView
         style={styles.scroll}
@@ -165,7 +161,7 @@ const LeagueInfoScreen = ({ route }: NavProps) => {
           </CardWrapper>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

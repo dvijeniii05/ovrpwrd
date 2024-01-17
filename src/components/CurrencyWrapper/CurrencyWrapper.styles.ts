@@ -24,6 +24,7 @@ const text = (staticWidth: boolean): TextStyle => {
     color: 'white',
     marginLeft: staticWidth ? 0 : 8,
     fontFamily: 'Jost-SemiBold',
+    paddingVertical: 0,
   };
 };
 const textForLeagues: TextStyle = {

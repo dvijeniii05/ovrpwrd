@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -13,6 +12,7 @@ import Logo from '../../assets/Logo.svg';
 import { useTranslation } from 'react-i18next';
 import StandardButton from '../../components/Buttons/StandardButton/StandardButton';
 import Gradient from '../../components/Gradient/Gradient';
+import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
 
 type ScreenProps = StackScreenProps<StackParamList>;
 
@@ -73,7 +73,7 @@ const LandingScreen = ({ navigation }: ScreenProps) => {
     }
   };
   return (
-    <SafeAreaView style={styles.parentContainer} edges={['bottom']}>
+    <CustomSafeAreaView style={styles.parentContainer} edges={['bottom']}>
       <Gradient type="conical" />
       <Logo style={styles.logo} />
       <Text style={styles.heading}>{t('singUp.text')}</Text>
@@ -90,7 +90,7 @@ const LandingScreen = ({ navigation }: ScreenProps) => {
           onPress={signIn}
         />
       </View>
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

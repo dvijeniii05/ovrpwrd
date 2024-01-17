@@ -6,7 +6,6 @@ import {
   ListRenderItemInfo,
 } from 'react-native';
 import Gradient from '../../components/Gradient/Gradient';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './AllProductsScreen.styles';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { Product } from '../../redux/query/endpoints/productsApi';
@@ -38,7 +37,7 @@ const AllProductsScreen = ({ route }: NavProps) => {
   );
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <View>
       <StatusBar barStyle={'light-content'} />
       <View style={styles.parentContainer}>
         <Gradient type="shaded" style={{ position: 'absolute' }} />
@@ -55,7 +54,7 @@ const AllProductsScreen = ({ route }: NavProps) => {
           showsVerticalScrollIndicator={false}
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

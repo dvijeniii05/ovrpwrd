@@ -32,7 +32,7 @@ const headerContainer = (marginTop: number): ViewStyle => ({
 
 const infoHeading: TextStyle = {
   width: '100%',
-  marginTop: 40,
+  marginTop: 16,
   color: COLORS.white,
   fontSize: 24,
   fontFamily: 'Jost-Regular',

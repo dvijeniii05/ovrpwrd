@@ -3,7 +3,6 @@ import CardWrapper from '../CardWrapper/CardWrapper';
 import { View, Text, ViewStyle } from 'react-native';
 import { COLORS } from '../../constans/COLORS';
 import UserGreenIcon from '../../assets/icons/userGreen.svg';
-import TickIcon from '../../assets/icons/tick.svg';
 import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
 import { leaugeNames } from '../../constans/interfaces';
 import { styles } from './GeneralLeagueProgress.styles';
@@ -50,25 +49,29 @@ const GeneralLeagueProgress = (props: Props) => {
       <View style={styles.progressMainContainer}>
         <View style={styles.progressPerksContainer}>
           <CurrencyWrapper
-            isPerks
+            currencyType="perks"
             value={0}
             forLeagueProgression
             style={{ minWidth: 46 }}
           />
           {hasEnoughPointsForLeague ? (
-            <View>
-              <TickIcon />
-            </View>
+            <CurrencyWrapper
+              currencyType="perks"
+              value={'QUALIFIED'}
+              style={{ backgroundColor: COLORS.green }}
+              textStyle={{ color: COLORS.black, fontSize: 12 }}
+              hidePerks
+            />
           ) : (
             <CurrencyWrapper
-              isPerks
+              currencyType="perks"
               value={props.currentPerks}
               style={{ backgroundColor: COLORS.darkGrey }}
             />
           )}
 
           <CurrencyWrapper
-            isPerks
+            currencyType="perks"
             value={props.leagueRequiredPerks}
             forLeagueProgression
           />

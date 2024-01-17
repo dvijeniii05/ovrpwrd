@@ -9,11 +9,14 @@ interface Props {
 
 const ProductTag = (props: Props) => {
   const tagText = props.isPremium ? 'PREMIUM' : 'FREE';
-  return (
-    <View style={[styles.prizeTag(props.isPremium), props.style]}>
-      <Text style={styles.prizeTagText}>{tagText}</Text>
-    </View>
-  );
+  if (props.isPremium) {
+    return (
+      <View style={[styles.prizeTag(props.isPremium), props.style]}>
+        <Text style={styles.prizeTagText}>{tagText}</Text>
+      </View>
+    );
+  }
+  return null;
 };
 
 export default ProductTag;

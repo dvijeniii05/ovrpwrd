@@ -4,14 +4,12 @@ import { styles } from './AllLeaguesScreen.styles';
 import { useState } from 'react';
 import GeneralLeagueProgress from '../../components/GeneralLeagueProgress/GeneralLeaguesProgress';
 import {
+  LeagueData,
   useGetCurentLeaguesQuery,
   useGetUserCountOnLeaguesQuery,
 } from '../../redux/query/apiSlice';
-import {
-  activeLeague,
-  leagueDaysCountdown,
-} from '../../utils/leagueHelpers/leagueHelpers';
-import { useGetUserStatsQuery } from '../../redux/query/endpoints/userApi';
+import { leagueDaysCountdown } from '../../utils/leagueHelpers/leagueHelpers';
+import { useGetUserCurrencyQuery } from '../../redux/query/endpoints/userApi';
 import { Loader } from '../../components/Loaders/Loader';
 import { SkeletonLoader } from '../../components/Loaders/SkeletonLoader';
 import { Rect } from 'react-content-loader/native';
@@ -20,6 +18,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
 import { ScrollView } from 'react-native-gesture-handler';
+import CardWrapper from '../../components/CardWrapper/CardWrapper';
+import LottieView from 'lottie-react-native';
 
 type NavProps = StackScreenProps<StackParamList, StackScreenName.allLeagues>;
 
@@ -37,9 +37,9 @@ const AllLeaguesScreen = ({ navigation }: NavProps) => {
     isPerksError,
     isPerksFetching,
     refetch: refetchPerks,
-  } = useGetUserStatsQuery(undefined, {
+  } = useGetUserCurrencyQuery(undefined, {
     selectFromResult: ({ data, isFetching, isError }) => ({
-      userPerks: data?.currentPoints.currentPerks,
+      userPerks: data?.perks,
       isPerksFetching: isFetching,
       isPerksError: isError,
     }),
@@ -72,6 +72,49 @@ const AllLeaguesScreen = ({ navigation }: NavProps) => {
     </SkeletonLoader>
   );
 
+  const leaguesContent = (leaguesData: LeagueData[], userPerks: number) => {
+    const areLeaguesActive = leagueDaysCountdown(leaguesData[0].endDate);
+    if (!areLeaguesActive) {
+      return (
+        <CardWrapper style={styles.card}>
+          <Text style={styles.leagueEndedText}>
+            All monthly Leagues have concluded. We are currently processing the
+            winners draw and new Leagues will start soon.
+          </Text>
+          <LottieView
+            source={require('../../assets/lottie/swords.json')}
+            style={{ width: 180, height: 180 }}
+            autoPlay
+            loop
+          />
+        </CardWrapper>
+      );
+    } else {
+      return leaguesData.map(singleLeague => {
+        const parsedLeagueName = singleLeague.leagueName
+          .split(' ')[0]
+          .toLowerCase() as keyof typeof userCount;
+
+        return (
+          <GeneralLeagueProgress
+            leagueName={singleLeague.leagueName}
+            daysLeft={leagueDaysCountdown(singleLeague.endDate)}
+            leagueRequiredPerks={singleLeague.pointsMax}
+            currentPerks={userPerks}
+            userCount={userCount ? userCount[parsedLeagueName] : 0}
+            key={singleLeague.leagueName}
+            onPress={() =>
+              navigation.navigate(StackScreenName.leagueInfo, {
+                leagueName: singleLeague.leagueName,
+                userPerks,
+              })
+            }
+          />
+        );
+      });
+    }
+  };
+
   return (
     <SafeAreaView edges={['bottom']}>
       <StatusBar barStyle={'light-content'} />
@@ -96,33 +139,7 @@ const AllLeaguesScreen = ({ navigation }: NavProps) => {
               isFetching={isPerksFetching || isLeaguesFetching}
               fetchFallback={loader}>
               {isLeaguesSuccess && userPerks !== undefined
-                ? leaguesData.map(singleLeague => {
-                    const parsedLeagueName = singleLeague.leagueName
-                      .split(' ')[0]
-                      .toLowerCase() as keyof typeof userCount;
-
-                    //logic below needs a rework to calculate the active league for user
-                    const isUserInThisLeague =
-                      singleLeague.leagueName ==
-                      activeLeague(leaguesData, userPerks)?.leagueName;
-
-                    return (
-                      <GeneralLeagueProgress
-                        leagueName={singleLeague.leagueName}
-                        daysLeft={leagueDaysCountdown(singleLeague.endDate)}
-                        leagueRequiredPerks={singleLeague.pointsMax}
-                        currentPerks={userPerks}
-                        userCount={userCount ? userCount[parsedLeagueName] : 0}
-                        key={singleLeague.leagueName}
-                        onPress={() =>
-                          navigation.navigate(StackScreenName.leagueInfo, {
-                            leagueName: singleLeague.leagueName,
-                            userPerks,
-                          })
-                        }
-                      />
-                    );
-                  })
+                ? leaguesContent(leaguesData, userPerks)
                 : null}
               {isLeaguesError || isPerksError ? (
                 <GeneralErrorComponent

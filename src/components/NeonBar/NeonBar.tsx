@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import {
   Canvas,
   LinearGradient,
-  Rect,
   vec,
   rrect,
   rect,

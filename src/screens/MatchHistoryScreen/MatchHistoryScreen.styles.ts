@@ -20,6 +20,24 @@ const noiseGradient: ImageStyle = {
   tintColor: COLORS.darkGrey,
 };
 
+const scroll: ViewStyle = {
+  width: '100%',
+};
+
+const flatlistStyle: ViewStyle = {
+  width: '100%',
+  marginTop: 16,
+};
+
+const flatlistContainerStyle: ViewStyle = {
+  gap: 8,
+};
+
+const errorContainer: ViewStyle = {
+  justifyContent: 'center',
+  height: HEIGHT,
+};
+
 const scrollContent: ViewStyle = {
   alignItems: 'center',
   paddingBottom: 60,
@@ -75,7 +93,7 @@ const divider: ViewStyle = {
 
 const infoHeading: TextStyle = {
   width: '100%',
-  marginTop: 40,
+  marginTop: 16,
   color: COLORS.white,
   fontSize: 24,
   fontFamily: 'Jost-Regular',
@@ -87,6 +105,39 @@ const singleMatchContainer: ViewStyle = {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
+};
+
+const heroImage: ImageStyle = {
+  width: 24,
+  aspectRatio: 1,
+};
+
+const kdaContainer: ViewStyle = {
+  flexDirection: 'row',
+  gap: 8,
+};
+
+const matchOutcomeContainer: ViewStyle = {
+  flexDirection: 'row',
+  minWidth: 52,
+  gap: 4,
+  alignItems: 'center',
+};
+
+const gradientContainer: ViewStyle = {
+  borderRadius: 6,
+  overflow: 'hidden',
+};
+
+const gradient: ViewStyle = {
+  alignItems: 'center',
+};
+
+const multiplierText: TextStyle = {
+  color: COLORS.black,
+  opacity: 1,
+  paddingHorizontal: 6,
+  fontFamily: 'Jost-Regular',
 };
 
 const kText: TextStyle = {
@@ -149,6 +200,10 @@ export const styles = {
   noiseGradient,
   headerContainer,
   scrollContent,
+  scroll,
+  flatlistStyle,
+  flatlistContainerStyle,
+  errorContainer,
   currencyTopContainer,
   currencyBottomContainer,
   currencyIconContainer,
@@ -157,6 +212,12 @@ export const styles = {
   divider,
   infoHeading,
   singleMatchContainer,
+  heroImage,
+  kdaContainer,
+  matchOutcomeContainer,
+  gradient,
+  gradientContainer,
+  multiplierText,
   kText,
   dText,
   aText,

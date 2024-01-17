@@ -6,26 +6,29 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  Alert,
+  ScrollView,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Gradient from '../../components/Gradient/Gradient';
 import { styles } from './AccountScreen.styles';
-import { useHeaderHeight } from '@react-navigation/elements';
 import UserInfo from '../../components/UserInfo/UserInfo';
 import StandardButton from '../../components/Buttons/StandardButton/StandardButton';
-import Perks from '../../assets/Perks.svg';
 import Relics from '../../assets/Relics.svg';
 import { useCallback, useState } from 'react';
 import PurchaseModal from '../Modals/PurchaseModal/PurchaseModal';
 import {
   PurchasedProduct,
+  useGetUserCurrencyQuery,
   useGetUserDetailsQuery,
-  useGetUserStatsQuery,
 } from '../../redux/query/endpoints/userApi';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
+import { useDispatch } from 'react-redux';
+import { useGetPremiumStatusQuery } from '../../redux/query/endpoints/premiumApi';
+import { useDeleteAccountMutation } from '../../redux/query/endpoints/supportApi';
 
 const AccountScreen = () => {
+  const dispatch = useDispatch();
   const [isProductModalVisible, setIsProductModalVisible] =
     useState<boolean>(false);
   const [pickedProduct, setPickedProduct] = useState({
@@ -43,12 +46,21 @@ const AccountScreen = () => {
   } = useGetUserDetailsQuery();
 
   const {
-    data: userStats,
+    data: userCurrency,
     isFetching,
     isSuccess,
     isError,
     refetch,
-  } = useGetUserStatsQuery();
+  } = useGetUserCurrencyQuery();
+
+  const {
+    data: premiumStatus,
+    isSuccess: premiumStatusSuccess,
+    isError: premiumStatusError,
+    isFetching: premiumStatusFetching,
+  } = useGetPremiumStatusQuery();
+
+  const [triggerAccountDeletion] = useDeleteAccountMutation();
 
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<PurchasedProduct>) => (
@@ -83,15 +95,53 @@ const AccountScreen = () => {
         </View>
       </TouchableOpacity>
     ),
-    [],
+    [userDetails],
   );
 
+  const onLogoutPress = () => {
+    Alert.alert('Leaving us?', 'Are you sure you want to log out?', [
+      {
+        text: 'No',
+        style: 'cancel',
+      },
+      {
+        text: 'Yes',
+        onPress: () => dispatch({ type: 'USER_LOGOUT' }),
+        style: 'cancel',
+      },
+    ]);
+  };
+
+  const accountDeletionPress = () => {
+    Alert.alert(
+      'Deleting account?',
+      'Are you sure you want to delete this account?. Be aware that we will be processing your deletion reqeust within the next 7 days. If you wish to cancel the deletion process, please contact our support team.',
+      [
+        {
+          text: 'No',
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => triggerAccountDeletion(),
+          style: 'cancel',
+        },
+      ],
+    );
+  };
+
   return (
-    <SafeAreaView edges={['bottom']}>
+    <View>
       <StatusBar barStyle={'light-content'} />
-      <View style={styles.parentContainer}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        style={styles.scroll}>
         <Gradient type="shaded" style={{ position: 'absolute' }} />
-        <LoadingComponent isLoading={isUserDetailsFetching || isFetching} />
+        <LoadingComponent
+          isLoading={
+            isUserDetailsFetching || isFetching || premiumStatusFetching
+          }
+        />
         <PurchaseModal
           isVisible={isProductModalVisible}
           uniqueId={pickedProduct.uniqueId}
@@ -100,15 +150,16 @@ const AccountScreen = () => {
           isDataDriven={false}
           onPress={() => setIsProductModalVisible(false)}
         />
-        {isUserDetailsSuccess && isSuccess ? (
+        {isUserDetailsSuccess && isSuccess && premiumStatusSuccess ? (
           <>
-            <View style={{ marginTop: 40, alignItems: 'center' }}>
+            <View style={styles.userContainer}>
               <UserInfo
-                currentPerks={userStats.currentPoints.currentPerks}
-                currentRelics={userStats.currentPoints.currentRelics}
+                currentPerks={userCurrency.perks}
+                currentRelics={userCurrency.relics}
                 userName={userDetails.fullName}
                 nickName={userDetails.nickname}
                 avatar={userDetails.avatar}
+                premiumStatus={premiumStatus}
               />
               <StandardButton
                 buttonText="Edit profile"
@@ -132,6 +183,7 @@ const AccountScreen = () => {
                   ItemSeparatorComponent={() => (
                     <View style={styles.separator} />
                   )}
+                  scrollEnabled={false}
                 />
               ) : (
                 <Text style={styles.noPurchaseText}>
@@ -154,8 +206,37 @@ const AccountScreen = () => {
             />
           </View>
         ) : null}
-      </View>
-    </SafeAreaView>
+        <StandardButton
+          buttonText="Support"
+          logoName="discord"
+          onPress={() => {}}
+          style={styles.transparentButton}
+        />
+        <StandardButton
+          buttonText="Terms and Conditions"
+          logoName="tandc"
+          onPress={() => {}}
+          style={styles.transparentButton}
+        />
+        <StandardButton
+          buttonText="Privacy Policy"
+          logoName="privacy"
+          onPress={() => {}}
+          style={styles.transparentButton}
+        />
+        <StandardButton
+          buttonText="Log out"
+          onPress={onLogoutPress}
+          style={{ marginTop: 16 }}
+        />
+        <StandardButton
+          buttonText="Delete account"
+          onPress={accountDeletionPress}
+          style={styles.transparentButton}
+          buttonTextStyle={styles.accountDeleteButtonText}
+        />
+      </ScrollView>
+    </View>
   );
 };
 

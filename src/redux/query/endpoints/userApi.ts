@@ -1,6 +1,7 @@
 import { ParsedMatch } from '../../../constans/interfaces';
 import { updateUserDetails } from '../../slices/userDataSlice';
 import { apiSlice } from '../apiSlice';
+import { startListening } from '../listenerMiddleware';
 
 export interface AuthResponseProps {
   token: string | undefined;
@@ -42,6 +43,11 @@ export interface UserDetailsResponseProps
     latestGameId: number;
   };
   purchases: PurchasedProduct[];
+  rewards: {
+    leftGiftClaimedDate: number;
+    midGiftClaimedDate: number;
+    rightGiftClaimedDate: number;
+  };
 }
 
 export interface UserStatsResponseProps {
@@ -82,7 +88,6 @@ export const userApi = apiSlice.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
           if (data.token !== undefined) {
-            console.log('TOKEN', data.token);
             dispatch(updateUserDetails({ token: data.token }));
           }
         } catch {
@@ -108,12 +113,37 @@ export const userApi = apiSlice.injectEndpoints({
       providesTags: ['userStats'],
     }),
     getUserDetails: builder.query<UserDetailsResponseProps, void>({
-      query: () => `/userAuth/getUserDetails`,
+      query: () => ({
+        url: `/userAuth/getUserDetails`,
+        validateStatus: response =>
+          (response.status >= 200 && response.status <= 299) ||
+          response.status === 404,
+      }),
       providesTags: ['userDetails'],
+      onQueryStarted: async (args, { dispatch, queryFulfilled }) => {
+        try {
+          const { meta } = await queryFulfilled;
+          if (meta?.response?.status === 404) {
+            dispatch({ type: 'USER_LOGOUT' });
+          }
+        } catch {
+          console.log('ERROR_ON_LOGIN');
+        }
+      },
+    }),
+    getUserCurrency: builder.query<{ perks: number; relics: number }, void>({
+      query: () => `/userAuth/getUserCurrency`,
+      providesTags: ['currency'],
     }),
   }),
 });
 
+startListening({
+  matcher: userApi.endpoints.getUserStats.matchFulfilled,
+  effect: async (action, listenerApi) => {
+    listenerApi.dispatch(userApi.util.invalidateTags(['currency', 'premium']));
+  },
+});
 export const {
   useRegisterUserMutation,
   useLoginUserQuery,
@@ -121,4 +151,6 @@ export const {
   useGetUserStatsQuery,
   useGetUserDetailsQuery,
   useLinkSteamIDQuery,
+  useGetUserCurrencyQuery,
+  useLazyGetUserStatsQuery,
 } = userApi;

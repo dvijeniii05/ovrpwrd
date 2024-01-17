@@ -1,5 +1,6 @@
 import { TextStyle, ViewStyle } from 'react-native';
 import { COLORS } from '../../constans/COLORS';
+import { WIDTH } from '../../utils/dimension';
 
 const parentContainer: ViewStyle = {
   flex: 1,
@@ -9,29 +10,39 @@ const parentContainer: ViewStyle = {
 };
 
 const descriptionContainer: ViewStyle = {
-  marginTop: 160,
+  marginTop: 80,
   alignItems: 'center',
 };
 
 const descriptionWrapper: ViewStyle = {
   alignItems: 'center',
+  gap: 16,
 };
 
 const descriptionHeading: TextStyle = {
   color: COLORS.white,
   fontSize: 28,
-  fontFamily: 'Jost-Regular',
+  fontFamily: 'Jost-SemiBold',
   textAlign: 'center',
 };
 
 const descriptionText: TextStyle = {
-  ...descriptionHeading,
-  marginTop: 40,
-  fontSize: 20,
+  fontFamily: 'Jost-Regular',
+  marginTop: 8,
+  fontSize: 18,
+  color: COLORS.white,
+  textAlign: 'center',
 };
 
 const button: ViewStyle = {
   bottom: 0,
+};
+
+const imageStyle = {
+  marginTop: 16,
+  width: WIDTH,
+  aspectRatio: 1,
+  height: undefined,
 };
 
 export const styles = {
@@ -41,4 +52,5 @@ export const styles = {
   descriptionHeading,
   descriptionText,
   button,
+  imageStyle,
 };

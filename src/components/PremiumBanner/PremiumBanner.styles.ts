@@ -1,9 +1,11 @@
 import { TextStyle, ViewStyle } from 'react-native';
+import { COLORS } from '../../constans/COLORS';
 
 const parentContainer: ViewStyle = {
   width: '100%',
   marginTop: 16,
-  justifyContent: 'flex-end',
+  alignItems: 'center',
+  justifyContent: 'center',
 };
 
 const canvas: ViewStyle = {
@@ -18,6 +20,8 @@ const contentContainer: ViewStyle = {
   position: 'absolute',
   paddingHorizontal: 16,
   paddingBottom: 24,
+  height: '100%',
+  justifyContent: 'flex-end',
 };
 
 const headingText: TextStyle = {
@@ -26,9 +30,21 @@ const headingText: TextStyle = {
   fontFamily: 'Jost-Regular',
 };
 
+const withPremiumHeadingText: TextStyle = {
+  color: 'white',
+  fontSize: 26,
+  fontFamily: 'Jost-Regular',
+  textAlign: 'center',
+};
+
 const descriptionText: TextStyle = {
   ...headingText,
   fontSize: 14,
+};
+
+const withPremiumDescriptionText: TextStyle = {
+  ...withPremiumHeadingText,
+  fontSize: 16,
 };
 
 const button: ViewStyle = {
@@ -37,11 +53,21 @@ const button: ViewStyle = {
   marginTop: 16,
 };
 
+const withPremiumButton: ViewStyle = {
+  width: '100%',
+  paddingVertical: 8,
+  marginTop: 16,
+  backgroundColor: COLORS.green,
+};
+
 export const styles = {
   parentContainer,
   canvas,
   contentContainer,
   headingText,
+  withPremiumHeadingText,
+  withPremiumDescriptionText,
   descriptionText,
   button,
+  withPremiumButton,
 };

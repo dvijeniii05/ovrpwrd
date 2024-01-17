@@ -1,16 +1,16 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { RefreshControl, ScrollView, StatusBar, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import UserInfo from '../../components/UserInfo/UserInfo';
-import DailyStatCard from '../../components/DailyStatCard/DailyStatCard';
+import StatsAndRewardsCard from '../../components/StatsAndRewardsCard/StatsAndRewardsCard';
 import ActiveLeagueProgress from '../../components/ActiveLeagueProgress/ActiveLeagueProgress';
 import Leaderboard from '../../components/Leaderboard/Leaderboard';
 import Gradient from '../../components/Gradient/Gradient';
 import { styles } from './HomeScreen.styles';
 import PremiumBanner from '../../components/PremiumBanner/PremiumBanner';
 import {
+  useGetUserCurrencyQuery,
   useGetUserDetailsQuery,
   useGetUserStatsQuery,
+  userApi,
 } from '../../redux/query/endpoints/userApi';
 import { Loader } from '../../components/Loaders/Loader';
 import { SkeletonLoader } from '../../components/Loaders/SkeletonLoader';
@@ -21,10 +21,16 @@ import { StackScreenName } from '../../../ScreenNames';
 import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
 import { HEIGHT } from '../../utils/dimension';
 import { useDebouncedCallback } from 'use-debounce';
+import { useDispatch } from 'react-redux';
+import { useSharedValue } from 'react-native-reanimated';
+import AnimatedUserInfo from '../../components/UserInfo/AnimatedUserInfo';
+import { useGetPremiumStatusQuery } from '../../redux/query/endpoints/premiumApi';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.home>;
 
 const Home = ({ navigation }: ScreenProps) => {
+  const dispatch = useDispatch();
+
   const {
     data: userStats,
     isSuccess,
@@ -39,6 +45,19 @@ const Home = ({ navigation }: ScreenProps) => {
     isError: isUserDetailsError,
     refetch: refetchUserDetails,
   } = useGetUserDetailsQuery();
+
+  const {
+    data: userCurrency,
+    isFetching: isUserCurrencyFetching,
+    isSuccess: isUserCurrencySuccess,
+  } = useGetUserCurrencyQuery();
+
+  const {
+    data: premiumStatus,
+    isSuccess: premiumStatusSuccess,
+    isError: premiumStatusError,
+    isFetching: premiumStatusFetching,
+  } = useGetPremiumStatusQuery();
 
   const userDetailsLoader = (
     <SkeletonLoader viewBox="0,0,300,200">
@@ -56,6 +75,16 @@ const Home = ({ navigation }: ScreenProps) => {
     </SkeletonLoader>
   );
 
+  const rawPerks = useSharedValue(userStats?.currentPoints.currentPerks ?? 0);
+  const rawRelics = useSharedValue(userStats?.currentPoints.currentRelics ?? 0);
+
+  useEffect(() => {
+    if (userStats?.currentPoints.currentPerks) {
+      rawPerks.value = userStats?.currentPoints.currentPerks;
+      rawRelics.value = userStats?.currentPoints.currentRelics;
+    }
+  }, [userStats]);
+
   const refreshing = false; // static value for RefreshControl as there is no need for the loader logic apart from actual Pull-to-Refresh;
   const debounceRefetch = useDebouncedCallback(() => refetch(), 60000, {
     leading: true,
@@ -63,12 +92,12 @@ const Home = ({ navigation }: ScreenProps) => {
     trailing: false,
   });
   const onRefresh = useCallback(() => {
-    refetchUserDetails();
+    dispatch(userApi.util.invalidateTags(['leaderboard', 'userDetails']));
     debounceRefetch();
   }, []);
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <View>
       <StatusBar barStyle={'light-content'} />
       <ScrollView
         style={styles.scroll}
@@ -96,32 +125,38 @@ const Home = ({ navigation }: ScreenProps) => {
         ) : (
           <>
             <Loader
-              isFetching={isUserDetailsFetching || isFetching}
+              isFetching={
+                isUserDetailsFetching || isFetching || premiumStatusFetching
+              }
               fetchFallback={userDetailsLoader}>
-              <UserInfo
-                currentPerks={userStats?.currentPoints.currentPerks}
-                currentRelics={userStats?.currentPoints.currentRelics}
+              <AnimatedUserInfo
+                rawPerks={rawPerks}
+                rawRelics={rawRelics}
                 userName={userDetails?.fullName}
                 nickName={userDetails?.nickname}
                 onAvatarPress={() =>
                   navigation.navigate(StackScreenName.account)
                 }
                 avatar={userDetails?.avatar}
+                isAnimatedCurrencies={true}
+                premiumStatus={premiumStatus}
               />
             </Loader>
             <Loader
               isFetching={isFetching || isUserDetailsFetching}
               fetchFallback={dailyStatsLoader}>
-              <DailyStatCard
+              <StatsAndRewardsCard
+                rawPerks={rawPerks}
+                rawRelics={rawRelics}
                 lastTenMatches={userStats?.significantMatches}
                 firstGameId={userDetails?.dota.latestGameId}
               />
             </Loader>
             <ActiveLeagueProgress
               navigation={navigation}
-              isUserFetching={isFetching}
-              isUserSuccess={isSuccess}
-              currentPerks={userStats?.currentPoints.currentPerks}
+              isUserFetching={isUserCurrencyFetching}
+              isUserSuccess={isUserCurrencySuccess}
+              currentPerks={userCurrency?.perks}
             />
             <PremiumBanner />
             <Leaderboard
@@ -132,7 +167,7 @@ const Home = ({ navigation }: ScreenProps) => {
           </>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

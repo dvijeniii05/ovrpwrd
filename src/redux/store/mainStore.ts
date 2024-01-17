@@ -21,10 +21,18 @@ const persistConfig = {
   blacklist: [apiSlice.reducerPath],
 };
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   userData,
   [apiSlice.reducerPath]: apiSlice.reducer,
 });
+
+const rootReducer = (state: any, action: any) => {
+  if (action.type === 'USER_LOGOUT') {
+    return appReducer(undefined, action);
+  }
+
+  return appReducer(state, action);
+};
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -34,9 +42,7 @@ export const mainStore = configureStore({
   reducer: persistedReducer, //replace with persistedReducer when cache driven development needed
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
+      serializableCheck: false,
     })
       .prepend(listenerMiddleware.middleware)
       .concat(createDebugger(), apiSlice.middleware),
