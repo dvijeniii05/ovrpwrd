@@ -8,7 +8,7 @@ const itemWrapper: ViewStyle = {
   width: '100%',
   flex: 1,
   alignItems: 'center',
-  marginTop: 0,
+  marginTop: 16,
   paddingHorizontal: gapBetweenListItems * 0.5,
 };
 

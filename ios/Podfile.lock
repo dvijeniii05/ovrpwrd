@@ -454,8 +454,6 @@ PODS:
     - React
     - React-callinvoker
     - React-Core
-  - react-native-version-check (3.4.7):
-    - React-Core
   - react-native-webview (13.6.2):
     - React-Core
   - React-NativeModulesApple (0.72.6):
@@ -576,6 +574,8 @@ PODS:
     - React-Core
   - RNCClipboard (1.12.1):
     - React-Core
+  - RNDeviceInfo (10.12.0):
+    - React-Core
   - RNFlashList (1.5.0):
     - React-Core
   - RNGestureHandler (2.13.4):
@@ -681,7 +681,6 @@ DEPENDENCIES:
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-skia (from `../node_modules/@shopify/react-native-skia`)"
-  - react-native-version-check (from `../node_modules/react-native-version-check`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -704,6 +703,7 @@ DEPENDENCIES:
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNGoogleMobileAds (from `../node_modules/react-native-google-mobile-ads`)
@@ -799,8 +799,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-skia:
     :path: "../node_modules/@shopify/react-native-skia"
-  react-native-version-check:
-    :path: "../node_modules/react-native-version-check"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-NativeModulesApple:
@@ -845,6 +843,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
     :path: "../node_modules/@react-native-clipboard/clipboard"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNFlashList:
     :path: "../node_modules/@shopify/flash-list"
   RNGestureHandler:
@@ -914,7 +914,6 @@ SPEC CHECKSUMS:
   react-native-netinfo: b0ae7d0f76302eaf249de7b2b7add297e155b1d0
   react-native-safe-area-context: 2cd91d532de12acdb0a9cbc8d43ac72a8e4c897c
   react-native-skia: f4d52c69fd3534143365287d03db35270d7b09b7
-  react-native-version-check: 6cd36aad4e30b8e3216747e3b4ddeb09e0647af8
   react-native-webview: 8fc09f66a1a5b16bbe37c3878fda27d5982bb776
   React-NativeModulesApple: 02e35e9a51e10c6422f04f5e4076a7c02243fff2
   React-perflogger: e3596db7e753f51766bceadc061936ef1472edc3
@@ -937,6 +936,7 @@ SPEC CHECKSUMS:
   RNBootSplash: e71ad597c05273b6185b3448517003bd2a92c37a
   RNCAsyncStorage: 3a8f7145d17cdd9f88e7b77666c94a09e4f759c8
   RNCClipboard: d77213bfa269013bf4b857b7a9ca37ee062d8ef1
+  RNDeviceInfo: db5c64a060e66e5db3102d041ebe3ef307a85120
   RNFlashList: 25b0e092b4470c84db0386d4f5316dc34123bb6d
   RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
   RNGoogleMobileAds: 8404675425542a477dd643180f74186497ee3171
@@ -950,4 +950,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 02e4ef649ceb0544f1191186dc90ac9eae244063
 
-COCOAPODS: 1.14.2
+COCOAPODS: 1.14.3

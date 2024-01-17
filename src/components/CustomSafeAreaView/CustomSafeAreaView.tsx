@@ -3,7 +3,6 @@ import { StyleProp, ViewStyle, Platform } from 'react-native';
 import {
   SafeAreaView,
   SafeAreaViewProps,
-  useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import { styles } from './CustomSafeAreaView.styles';
 
@@ -13,12 +12,9 @@ interface Props extends Omit<SafeAreaViewProps, 'style'> {
 
 const CustomSafeAreaView = (props: Props) => {
   const { style, children, ...rest } = props;
-  const { bottom } = useSafeAreaInsets();
   const isAndroid = Platform.OS === 'android';
   return (
-    <SafeAreaView
-      style={[style, styles.parentContainer(isAndroid, bottom)]}
-      {...rest}>
+    <SafeAreaView style={[style, styles.parentContainer(isAndroid)]} {...rest}>
       {children}
     </SafeAreaView>
   );

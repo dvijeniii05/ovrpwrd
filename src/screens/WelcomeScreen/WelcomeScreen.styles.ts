@@ -28,8 +28,8 @@ const descriptionHeading: TextStyle = {
 
 const descriptionText: TextStyle = {
   fontFamily: 'Jost-Regular',
-  marginTop: 16,
-  fontSize: 20,
+  marginTop: 8,
+  fontSize: 18,
   color: COLORS.white,
   textAlign: 'center',
 };

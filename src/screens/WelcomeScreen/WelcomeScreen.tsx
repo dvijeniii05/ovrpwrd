@@ -98,7 +98,6 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
     if (userInfo) {
       if (userInfo.isFullyOnboarded) {
         dispatch(updateUserDetails({ isGameLinked: true }));
-        // navigation.navigate(StackScreenName.home);
       } else {
         navigation.navigate(StackScreenName.avatar);
       }

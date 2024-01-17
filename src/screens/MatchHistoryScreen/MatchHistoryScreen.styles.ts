@@ -121,6 +121,7 @@ const matchOutcomeContainer: ViewStyle = {
   flexDirection: 'row',
   minWidth: 52,
   gap: 4,
+  alignItems: 'center',
 };
 
 const gradientContainer: ViewStyle = {

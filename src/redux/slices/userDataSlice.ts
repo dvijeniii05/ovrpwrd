@@ -11,6 +11,7 @@ interface StartingPointDataProps {
   dob: string;
   gender: string;
   country: string;
+  isAppUpdateRequired: boolean;
   // matchData: MatchStatsProps[];
 }
 
@@ -31,6 +32,7 @@ const userDataState: userDataStateProps = {
     dob: '',
     gender: '',
     country: '',
+    isAppUpdateRequired: false,
     // matchData: [],
   },
   status: 'idle',
@@ -59,6 +61,9 @@ const userDataSlice = createSlice({
         ...payloadDetails,
       };
     },
+    updateAppVersionCheck: (state, action) => {
+      state.data.isAppUpdateRequired = action.payload;
+    },
   },
   extraReducers: builder => {
     builder.addMatcher(
@@ -78,6 +83,10 @@ const userDataSlice = createSlice({
   },
 });
 
-export const { openBottomSheet, closeBottomSheet, updateUserDetails } =
-  userDataSlice.actions;
+export const {
+  openBottomSheet,
+  closeBottomSheet,
+  updateUserDetails,
+  updateAppVersionCheck,
+} = userDataSlice.actions;
 export default userDataSlice.reducer;

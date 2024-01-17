@@ -5,13 +5,14 @@ import { WIDTH } from '../../utils/dimension';
 const parentContainer: ViewStyle = {
   flex: 1,
   backgroundColor: COLORS.darkBlue,
-  justifyContent: 'space-between',
   paddingHorizontal: 16,
 };
 
 const descriptionContainer: ViewStyle = {
   marginTop: 80,
   alignItems: 'center',
+  flex: 1,
+  justifyContent: 'space-between',
 };
 
 const descriptionWrapper: ViewStyle = {

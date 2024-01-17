@@ -1,5 +1,4 @@
 import { View, Text, Image, ListRenderItemInfo } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WIDTH } from '../../utils/dimension';
 import { COLORS } from '../../constans/COLORS';
 import Logo from '../../assets/Logo.svg';
@@ -22,7 +21,6 @@ type ScreenProps = StackScreenProps<
 const WelcomeInfoScreen = ({ navigation }: ScreenProps) => {
   const carouselRef = useRef<RefProps>(null);
   const [isLastCarouselItem, setIsLastCarouselItem] = useState<boolean>(false);
-  const { top, bottom } = useSafeAreaInsets();
 
   const renderItem = ({
     item,

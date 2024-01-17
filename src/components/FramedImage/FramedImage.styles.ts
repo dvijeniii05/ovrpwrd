@@ -8,7 +8,7 @@ const parentContainer = (isOverflowHidden?: boolean): ViewStyle => ({
 
 const image = (isFrameBlue: boolean): ImageStyle => ({
   position: 'absolute',
-  height: isFrameBlue ? '90%' : '80%',
+  height: isFrameBlue ? '90%' : '85%',
 });
 
 export const styles = {

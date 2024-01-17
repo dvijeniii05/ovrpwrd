@@ -113,8 +113,23 @@ export const userApi = apiSlice.injectEndpoints({
       providesTags: ['userStats'],
     }),
     getUserDetails: builder.query<UserDetailsResponseProps, void>({
-      query: () => `/userAuth/getUserDetails`,
+      query: () => ({
+        url: `/userAuth/getUserDetails`,
+        validateStatus: response =>
+          (response.status >= 200 && response.status <= 299) ||
+          response.status === 404,
+      }),
       providesTags: ['userDetails'],
+      onQueryStarted: async (args, { dispatch, queryFulfilled }) => {
+        try {
+          const { meta } = await queryFulfilled;
+          if (meta?.response?.status === 404) {
+            dispatch({ type: 'USER_LOGOUT' });
+          }
+        } catch {
+          console.log('ERROR_ON_LOGIN');
+        }
+      },
     }),
     getUserCurrency: builder.query<{ perks: number; relics: number }, void>({
       query: () => `/userAuth/getUserCurrency`,
