@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -7,17 +7,21 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
 import { styles } from './LandingScreen.styles';
 import Logo from '../../assets/Logo.svg';
 import { useTranslation } from 'react-i18next';
 import StandardButton from '../../components/Buttons/StandardButton/StandardButton';
 import Gradient from '../../components/Gradient/Gradient';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
+import { useDispatch } from 'react-redux';
+import { updateUserDetails } from '../../redux/slices/userDataSlice';
 
 type ScreenProps = StackScreenProps<StackParamList>;
 
 const LandingScreen = ({ navigation }: ScreenProps) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -25,18 +29,17 @@ const LandingScreen = ({ navigation }: ScreenProps) => {
       // offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
       forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
     });
-    isSignedIn();
+    googleIsSignedIn();
   }, []);
 
-  const signIn = async () => {
+  const googleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log(userInfo);
-      const { email, name } = userInfo.user;
-      //TODO: add query to check userExistance with login/User endpoint and navigate to correct stack OR automate navigation in AppDrawer
-      // loginUser({ email });
-      navigation.navigate(StackScreenName.welcome, { email });
+      const { email } = userInfo.user;
+      dispatch(updateUserDetails({ email }));
+      navigation.navigate(StackScreenName.welcome);
     } catch (error: any) {
       console.log('Message', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -50,15 +53,15 @@ const LandingScreen = ({ navigation }: ScreenProps) => {
       }
     }
   };
-  const isSignedIn = async () => {
+  const googleIsSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (!isSignedIn) {
-      getCurrentUserInfo();
+      getGoogleCurrentUserInfo();
     } else {
       console.log('Please Login');
     }
   };
-  const getCurrentUserInfo = async () => {
+  const getGoogleCurrentUserInfo = async () => {
     try {
       const userInfo = await GoogleSignin.signInSilently();
       console.log('SILENT_SIGNING');
@@ -72,22 +75,50 @@ const LandingScreen = ({ navigation }: ScreenProps) => {
       }
     }
   };
+
+  const appleSignIn = async () => {
+    console.warn('Beginning Apple Authentication');
+
+    // start a login request
+    try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+      });
+
+      const { user: newUser, email } = appleAuthRequestResponse;
+
+      const user = newUser;
+      if (email !== null) {
+        dispatch(updateUserDetails({ email }));
+      }
+      dispatch(updateUserDetails({ appleUserId: user }));
+      navigation.navigate(StackScreenName.welcome);
+    } catch (error: any) {
+      if (error.code === appleAuth.Error.CANCELED) {
+        console.warn(' Apple Sign in is cancelled');
+      } else {
+        console.error(error);
+      }
+    }
+  };
   return (
     <CustomSafeAreaView style={styles.parentContainer} edges={['bottom']}>
       <Gradient type="conical" />
       <Logo style={styles.logo} />
       <Text style={styles.heading}>{t('singUp.text')}</Text>
       <View style={styles.buttonsContainer}>
-        <StandardButton
-          logoName="apple"
-          buttonText="Apple"
-          isDisabled
-          onPress={() => {}}
-        />
+        {Platform.OS === 'ios' ? (
+          <StandardButton
+            logoName="apple"
+            buttonText="Apple"
+            onPress={appleSignIn}
+          />
+        ) : null}
         <StandardButton
           logoName="google"
           buttonText="Google"
-          onPress={signIn}
+          onPress={googleSignIn}
         />
       </View>
     </CustomSafeAreaView>

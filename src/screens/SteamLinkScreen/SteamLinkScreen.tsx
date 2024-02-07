@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, Image } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View, Text, Image, ScrollView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
@@ -13,8 +13,10 @@ import StandardButton from '../../components/Buttons/StandardButton/StandardButt
 import { styles } from './SteamLinkScreen.styles';
 import { useDispatch } from 'react-redux';
 import { updateUserDetails } from '../../redux/slices/userDataSlice';
-import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
 import { z } from 'zod';
+import SteamIcon from '../../assets/icons/steam2.svg';
+import { WIDTH } from '../../utils/dimension';
+import YoutubePlayer from 'react-native-youtube-iframe';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.steamLink>;
 
@@ -80,50 +82,69 @@ const SteamLinkScreen = ({ navigation, route }: ScreenProps) => {
           return (
             <>
               <View style={styles.descriptionWrapper}>
-                <Text style={styles.descriptionHeading}>SteamID in use</Text>
+                <Text style={styles.descriptionHeading}>
+                  Steam account already in use
+                </Text>
+                <SteamIcon width={100} height={100} />
                 <Text style={styles.descriptionText}>
-                  We have noticed that your steam account is already registered
-                  to our database and linked to a different email address.
-                  Please try and link a different steam account.
+                  We've noticed that your Steam account is already linked to
+                  another profile registered in the app. Please link a different
+                  Steam account
                 </Text>
                 <Text style={styles.descriptionText}>
-                  If this is your only steam account and you haven't registered
-                  with our app using it, please contact our Support Team and
-                  they will held to solve the issue.
+                  If this is your only Steam account and you haven't registered
+                  with our app using it, please contact our Support Team, and
+                  they will help resolve the issue
                 </Text>
               </View>
-              <StandardButton
-                buttonText="Try different Steam Account"
-                onPress={() => navigation.navigate(StackScreenName.linkGame)}
-                style={styles.button}
-              />
+              <View style={styles.buttonsContainer}>
+                <StandardButton
+                  buttonText="Link a new Steam account"
+                  onPress={() => navigation.navigate(StackScreenName.linkGame)}
+                  style={styles.button}
+                />
+                <StandardButton
+                  buttonText="Support"
+                  logoName="discord"
+                  onPress={() => {}}
+                  style={styles.transparentButton}
+                />
+              </View>
             </>
           );
         } else if (isExpectedError.data.status === 406) {
           return (
             <>
               <View style={styles.descriptionWrapper}>
-                <Text style={styles.descriptionHeading}>
-                  Match History is not public
+                <Text style={[styles.descriptionHeading, { width: WIDTH }]}>
+                  Your match data is not public in Dota 2
                 </Text>
                 <Text style={styles.descriptionText}>
-                  We have noticed that your match history is set to be 'not
-                  public' in Dota 2 settings. We need this setting to be enbaled
-                  to allow point calcualtion. Please follow the guide below to
-                  enable it. Once the change is complete, press the 'Retry'
-                  button below.
+                  We've noticed that your match data is not set to public in
+                  your Dota 2 settings. We need this setting to be enabled in
+                  order to collect points
                 </Text>
                 <Text style={styles.descriptionText}>
-                  This is the guide blah blah blah. Can be a screenshot as
-                  well??? If the issue still persists, please contact out
-                  support team
+                  Please follow the tutorial below to enable this setting. Once
+                  you have done so, press the 'Retry' button
                 </Text>
               </View>
-              <StandardButton
-                buttonText="Retry"
-                onPress={() => navigation.navigate(StackScreenName.linkGame)}
-                style={styles.button}
-              />
+              <View style={{ width: '100%', height: 200 }}>
+                <YoutubePlayer height={200} videoId={'iee2TATGMyI'} />
+              </View>
+              <View style={styles.buttonsContainer}>
+                <StandardButton
+                  buttonText="Retry"
+                  onPress={handleRefetch}
+                  style={styles.button}
+                />
+                <StandardButton
+                  buttonText="Support"
+                  logoName="discord"
+                  onPress={() => {}}
+                  style={styles.transparentButton}
+                />
+              </View>
             </>
           );
         }
@@ -175,18 +196,13 @@ const SteamLinkScreen = ({ navigation, route }: ScreenProps) => {
   };
 
   return (
-    <CustomSafeAreaView style={styles.parentContainer} edges={['bottom']}>
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.scrollContent}>
       <LoadingComponent isLoading={isFetching} />
       <View style={styles.descriptionContainer}>{descriptionContent()}</View>
-      {/* {isSuccess ? (
-        <StandardButton
-          buttonText="Got it"
-          onPress={handleOnPress}
-          style={styles.button}
-        />
-      ) : null} */}
       {errorContent()}
-    </CustomSafeAreaView>
+    </ScrollView>
   );
 };
 

@@ -1,6 +1,6 @@
 import DeviceInfo from 'react-native-device-info';
 import axios from 'axios';
-import { devBaseUrl } from '../constans/urls';
+import { devBaseUrl, prodBaseUrl } from '../constans/urls';
 import { mainStore } from '../redux/store/mainStore';
 import { updateAppVersionCheck } from '../redux/slices/userDataSlice';
 

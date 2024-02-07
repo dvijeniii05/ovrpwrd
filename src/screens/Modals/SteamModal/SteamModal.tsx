@@ -26,6 +26,7 @@ const SteamModal = () => {
       source={{ uri: `${devBaseUrl}/auth/steam` }}
       onNavigationStateChange={stateChanged}
       startInLoadingState={true}
+      reset
       renderLoading={() => (
         <View style={styles.loaderWrapper}>
           <LottieView

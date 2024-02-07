@@ -6,30 +6,29 @@ import { styles } from './WelcomeScreen.styles';
 import StandardButton from '../../components/Buttons/StandardButton/StandardButton';
 import { useLoginUserQuery } from '../../redux/query/endpoints/userApi';
 import { StackScreenName } from '../../../ScreenNames';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateUserDetails } from '../../redux/slices/userDataSlice';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import { COLORS } from '../../constans/COLORS';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
+import { RootState } from '../../redux/store/mainStore';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.welcome>;
 
 const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
-  const { email } = route.params ?? '';
+  // const { email } = route.params ?? '';
+  const { email, appleUserId } = useSelector(
+    (state: RootState) => state.userData.data,
+  );
   const dispatch = useDispatch();
-
+  console.log('CHECK', email, appleUserId);
   const {
     data: userInfo,
     isSuccess,
     isFetching,
     isError,
     refetch,
-  } = useLoginUserQuery(
-    { email },
-    {
-      skip: email === undefined,
-    },
-  );
+  } = useLoginUserQuery({ email, appleUserId });
 
   const descriptionContent = () => {
     if (userInfo) {
@@ -79,7 +78,7 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
   };
 
   const errorContent = (
-    <View style={styles.descriptionWrapper}>
+    <View style={[styles.descriptionWrapper, { marginTop: 80 }]}>
       <Text style={styles.descriptionHeading}>
         There was an error while checking your account.
       </Text>
@@ -102,7 +101,7 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
         navigation.navigate(StackScreenName.avatar);
       }
     } else {
-      navigation.navigate(StackScreenName.registration, { email });
+      navigation.navigate(StackScreenName.registration);
     }
   }, [isSuccess]);
 

@@ -22,6 +22,7 @@ export interface UserRegisterArgProps {
   gender: string;
   country: string;
   avatar: string;
+  appleUserId: string;
   isFullyOnboarded?: boolean;
 }
 
@@ -77,12 +78,17 @@ export const userApi = apiSlice.injectEndpoints({
           response.status === 422,
       }),
     }),
-    loginUser: builder.query<UserLoginResponseProps, { email: string }>({
+    loginUser: builder.query<
+      UserLoginResponseProps,
+      { email: string | null; appleUserId?: string }
+    >({
       query: args => ({
-        url: `/userAuth/loginUser/${args.email}`,
+        url: `/userAuth/loginUser`,
         validateStatus: response =>
           (response.status >= 200 && response.status <= 299) ||
           response.status === 404,
+        method: 'POST',
+        body: args,
       }),
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {

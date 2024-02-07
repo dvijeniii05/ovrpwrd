@@ -31,7 +31,10 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
   const headerHeight = useHeaderHeight();
   const topMargin = headerHeight + 56;
 
-  const { email } = route.params ?? 'not ready yet';
+  // const { email } = route.params ?? 'not ready yet';
+  const { email, appleUserId } = useSelector(
+    (state: RootState) => state.userData.data,
+  );
   const [registerUser, { isLoading }] = useRegisterUserMutation();
   const { dob, gender, country } = useSelector(
     (state: RootState) => state.userData.data,
@@ -57,7 +60,15 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
     isAgeVerificationSuccess;
 
   const handleOnpress = () => {
-    registerUser({ nickname, email, fullName, dob, gender, country })
+    registerUser({
+      nickname,
+      email: email!,
+      appleUserId,
+      fullName,
+      dob,
+      gender,
+      country,
+    })
       .unwrap()
       .then(response => {
         if (response.token) {
@@ -102,7 +113,7 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
           placeholderText="Email"
           containerStyle={{ marginTop: 8 }}
           editable={false}
-          defaultValue={email}
+          defaultValue={email!}
         />
         <DetailInput
           placeholderText="Nickname"

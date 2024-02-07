@@ -31,6 +31,7 @@
 		B23B2BF4BFCF489D86E874BC /* Jost-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A694F2B907B44D31A04E6DB6 /* Jost-SemiBoldItalic.ttf */; };
 		BF9F6B5B8EEC439CA0518C98 /* Jost-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9004E4927934A52A75995BA /* Jost-SemiBold.ttf */; };
 		C53FC69D2A2FB905000E909C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C53FC69C2A2FB905000E909C /* GoogleService-Info.plist */; };
+		C561CB302B73CB5300F345A3 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C561CB2F2B73CB5300F345A3 /* StoreKit.framework */; };
 		C5CF721A2AFBE1A60010DEE3 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5CF72192AFBE1A60010DEE3 /* BootSplash.storyboard */; };
 		D87148B4E9534499BF53AEDE /* Jost-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 850906C1A6914572B1E391A4 /* Jost-ThinItalic.ttf */; };
 		F5B5D839C79446B3B30D7877 /* Jost-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 643FF64395FD4A878C2AF566 /* Jost-Italic.ttf */; };
@@ -78,7 +79,9 @@
 		B617CD773F7C423BA5B2655E /* Jost-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Jost-BoldItalic.ttf"; path = "../src/assets/fonts/Jost-BoldItalic.ttf"; sourceTree = "<group>"; };
 		B96E06728EB846D2B541E01D /* Jost-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Jost-LightItalic.ttf"; path = "../src/assets/fonts/Jost-LightItalic.ttf"; sourceTree = "<group>"; };
 		C29D1FC871CB4F6080B6B4DE /* Jost-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Jost-Thin.ttf"; path = "../src/assets/fonts/Jost-Thin.ttf"; sourceTree = "<group>"; };
+		C518D21E2B64144100A3A47F /* OVRPWRD.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = OVRPWRD.entitlements; path = OVRPWRD/OVRPWRD.entitlements; sourceTree = "<group>"; };
 		C53FC69C2A2FB905000E909C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C561CB2F2B73CB5300F345A3 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		C5CF72192AFBE1A60010DEE3 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = OVRPWRD/BootSplash.storyboard; sourceTree = "<group>"; };
 		D9210B4CA2414D3595A0B442 /* Jost-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Jost-ExtraBold.ttf"; path = "../src/assets/fonts/Jost-ExtraBold.ttf"; sourceTree = "<group>"; };
 		E0E6FDDBFB30456EA6FDAF17 /* Jost-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Jost-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Jost-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
@@ -100,6 +103,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-OVRPWRD.a in Frameworks */,
+				C561CB302B73CB5300F345A3 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +130,7 @@
 		13B07FAE1A68108700A75B9A /* OVRPWRD */ = {
 			isa = PBXGroup;
 			children = (
+				C518D21E2B64144100A3A47F /* OVRPWRD.entitlements */,
 				C53FC69C2A2FB905000E909C /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -141,6 +146,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C561CB2F2B73CB5300F345A3 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-OVRPWRD.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-OVRPWRD-OVRPWRDTests.a */,
@@ -587,9 +593,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = OVRPWRD/OVRPWRD.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y5JN4P4MM8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = OVRPWRD/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -600,8 +612,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = app.ovrpwrd;
 				PRODUCT_NAME = OVRPWRD;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -614,8 +627,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = OVRPWRD/OVRPWRD.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y5JN4P4MM8;
 				INFOPLIST_FILE = OVRPWRD/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -626,8 +646,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = app.ovrpwrd;
 				PRODUCT_NAME = OVRPWRD;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
