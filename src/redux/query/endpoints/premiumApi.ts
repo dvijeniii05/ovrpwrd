@@ -5,7 +5,6 @@ import { userApi } from './userApi';
 
 export interface PremiumStatusResponseProps {
   premium: {
-    hasPremium: boolean;
     isPremiumActive: boolean;
     premiumGamesLeft: number;
   };

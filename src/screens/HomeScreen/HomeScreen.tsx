@@ -1,5 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
-import { RefreshControl, ScrollView, StatusBar, View } from 'react-native';
+import {
+  Alert,
+  Button,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  StatusBar,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import StatsAndRewardsCard from '../../components/StatsAndRewardsCard/StatsAndRewardsCard';
 import ActiveLeagueProgress from '../../components/ActiveLeagueProgress/ActiveLeagueProgress';
 import Leaderboard from '../../components/Leaderboard/Leaderboard';
@@ -25,6 +34,8 @@ import { useDispatch } from 'react-redux';
 import { useSharedValue } from 'react-native-reanimated';
 import AnimatedUserInfo from '../../components/UserInfo/AnimatedUserInfo';
 import { useGetPremiumStatusQuery } from '../../redux/query/endpoints/premiumApi';
+import Purchases from 'react-native-purchases';
+import RevenueCatUI, { PAYWALL_RESULT } from 'react-native-purchases-ui';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.home>;
 
@@ -96,6 +107,45 @@ const Home = ({ navigation }: ScreenProps) => {
     debounceRefetch();
   }, []);
 
+  const getOffers = async () => {
+    try {
+      const offerings = await Purchases.getOfferings();
+      if (
+        offerings.current !== null &&
+        offerings.current.availablePackages.length !== 0
+      ) {
+        // Display packages for sale
+        console.log('CURRENT', offerings.current.monthly?.product);
+      }
+    } catch (e) {}
+  };
+
+  const getCustomerStatus = async () => {
+    try {
+      // access latest customerInfo
+      const customerInfo = await Purchases.getCustomerInfo();
+      console.log('CUSTOMER_INFO', customerInfo.entitlements.active);
+    } catch (e: any) {
+      Alert.alert('Error fetching customer info', e.message);
+    }
+  };
+
+  const presentPaywall = async () => {
+    const paywallResult: PAYWALL_RESULT = await RevenueCatUI.presentPaywall();
+
+    switch (paywallResult) {
+      case PAYWALL_RESULT.NOT_PRESENTED:
+      case PAYWALL_RESULT.ERROR:
+      case PAYWALL_RESULT.CANCELLED:
+        return false;
+      case PAYWALL_RESULT.PURCHASED:
+      case PAYWALL_RESULT.RESTORED:
+        return true;
+      default:
+        return false;
+    }
+  };
+
   return (
     <View>
       <StatusBar barStyle={'light-content'} />
@@ -107,6 +157,34 @@ const Home = ({ navigation }: ScreenProps) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         <Gradient type="conical" style={{ position: 'absolute' }} />
+        <TouchableOpacity
+          style={{
+            width: 100,
+            height: 50,
+            backgroundColor: 'red',
+            marginTop: 100,
+          }}
+          onPress={() => getOffers()}
+        />
+        <TouchableOpacity
+          style={{
+            width: 100,
+            height: 50,
+            backgroundColor: 'green',
+            marginTop: 20,
+          }}
+          onPress={() => getCustomerStatus()}
+        />
+
+        <TouchableOpacity
+          style={{
+            width: 100,
+            height: 50,
+            backgroundColor: 'yellow',
+            marginTop: 20,
+          }}
+          onPress={() => presentPaywall()}
+        />
         {isError || isUserDetailsError ? (
           <View
             style={{

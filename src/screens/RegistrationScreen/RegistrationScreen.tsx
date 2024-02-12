@@ -14,11 +14,15 @@ import Gradient from '../../components/Gradient/Gradient';
 import StandardButton from '../../components/Buttons/StandardButton/StandardButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch, useSelector } from 'react-redux';
-import { openBottomSheet } from '../../redux/slices/userDataSlice';
+import {
+  openBottomSheet,
+  updateUserDetails,
+} from '../../redux/slices/userDataSlice';
 import { RootState } from '../../redux/store/mainStore';
 import { useHeaderHeight } from '@react-navigation/elements';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import InformationModal from '../Modals/InformationModal/InformationModal';
+import uuid from 'react-native-uuid';
 
 type ScreenProps = StackScreenProps<
   StackParamList,
@@ -59,6 +63,9 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
     isProfanitySuccess &&
     isAgeVerificationSuccess;
 
+  const randomstring = uuid.v4().toString();
+  const revUserId = `${email}_${randomstring}`;
+
   const handleOnpress = () => {
     registerUser({
       nickname,
@@ -68,10 +75,12 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
       dob,
       gender,
       country,
+      revUserId,
     })
       .unwrap()
       .then(response => {
         if (response.token) {
+          dispatch(updateUserDetails({ revenueCatId: revUserId }));
           navigation.navigate(StackScreenName.avatar);
         } else {
           setInformationModalText(response.message!);

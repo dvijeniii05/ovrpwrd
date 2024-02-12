@@ -7,8 +7,12 @@ import PremiumButton from '../Buttons/PremiumButton/PremiumButton';
 import LottieView from 'lottie-react-native';
 import { useLazyGetUserStatsQuery } from '../../redux/query/endpoints/userApi';
 import GeneralErrorComponent from '../GeneralErrorComponent/GeneralErrorComponent';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store/mainStore';
 
 const PremiumContent = () => {
+  const { hasPremium } = useSelector((state: RootState) => state.userData.data);
+
   const {
     data,
     isSuccess: premiumStatusSuccess,
@@ -24,6 +28,7 @@ const PremiumContent = () => {
       isLoading: isPremiumActiveLoading,
     },
   ] = useActivatePremiumMutation();
+
   const [
     fetchLatestGames,
     { data: latestGames, isFetching: isLatestGamesLoading },
@@ -75,7 +80,7 @@ const PremiumContent = () => {
   }
 
   if (premiumStatusSuccess) {
-    const { hasPremium, isPremiumActive } = data.premium;
+    const { isPremiumActive } = data.premium;
     if (hasPremium) {
       return (
         <PremiumButton

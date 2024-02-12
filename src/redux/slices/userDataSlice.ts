@@ -14,6 +14,8 @@ interface StartingPointDataProps {
   isAppUpdateRequired: boolean;
   email: string | null;
   appleUserId: string;
+  revenueCatId: string | null;
+  hasPremium: boolean;
   // matchData: MatchStatsProps[];
 }
 
@@ -37,6 +39,8 @@ const userDataState: userDataStateProps = {
     isAppUpdateRequired: false,
     email: null,
     appleUserId: '',
+    revenueCatId: '',
+    hasPremium: false,
     // matchData: [],
   },
   status: 'idle',

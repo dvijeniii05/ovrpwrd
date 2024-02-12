@@ -5,6 +5,8 @@ import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
 import FramedImage from '../FramedImage/FramedImage';
 import { PremiumStatusResponseProps } from '../../redux/query/endpoints/premiumApi';
 import ProductTag from '../ProductTag/ProductTag';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store/mainStore';
 
 interface Props {
   currentPerks?: number;
@@ -17,8 +19,10 @@ interface Props {
 }
 
 const UserInfo = (props: Props) => {
+  const { hasPremium } = useSelector((state: RootState) => state.userData.data);
+
   if (props.premiumStatus) {
-    const { hasPremium, premiumGamesLeft } = props.premiumStatus.premium;
+    const { premiumGamesLeft } = props.premiumStatus.premium;
 
     return (
       <View style={styles.parentContainer}>

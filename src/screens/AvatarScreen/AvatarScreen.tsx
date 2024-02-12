@@ -22,6 +22,10 @@ import { useUpdateUserDetailsMutation } from '../../redux/query/endpoints/userAp
 import InformationModal from '../Modals/InformationModal/InformationModal';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
+import { avatars } from '../../constans/avatars';
+import { revenueCatInit } from '../../utils/revenueCatInit';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store/mainStore';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.avatar>;
 
@@ -33,6 +37,9 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
   const [isInformationModalVisible, setIsInformationModalVisible] =
     useState<boolean>(false);
   const [informationModalText, setInformationModalText] = useState<string>('');
+  const revUserId = useSelector(
+    (state: RootState) => state.userData.data.revenueCatId,
+  );
 
   // Code below is to disable hardware backButton action on old models of Android devices to stop user from going back
   useEffect(() => {
@@ -40,41 +47,14 @@ const AvatarScreen = ({ navigation }: ScreenProps) => {
       'hardwareBackPress',
       () => true,
     );
+    if (revUserId) {
+      revenueCatInit(revUserId);
+    }
 
     return () => backHandler.remove();
   }, []);
 
   const [addAvatar, { isLoading }] = useUpdateUserDetailsMutation();
-
-  const avatars = [
-    {
-      value: '1',
-    },
-    {
-      value: '2',
-    },
-    {
-      value: '3',
-    },
-    {
-      value: '4',
-    },
-    {
-      value: '5',
-    },
-    {
-      value: '6',
-    },
-    {
-      value: '7',
-    },
-    {
-      value: '8',
-    },
-    {
-      value: '9',
-    },
-  ];
 
   const renderItem = ({ item }: ListRenderItemInfo<{ value: string }>) => (
     <TouchableOpacity onPress={() => setSelectedAvatar(item.value)}>

@@ -12,18 +12,24 @@ import {
 import { Loader } from '../Loaders/Loader';
 import LottieView from 'lottie-react-native';
 import GeneralErrorComponent from '../GeneralErrorComponent/GeneralErrorComponent';
+import RevenueCatUI, { PAYWALL_RESULT } from 'react-native-purchases-ui';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store/mainStore';
+import { updateUserDetails } from '../../redux/slices/userDataSlice';
 
 const PremiumBanner = () => {
   const [bannerHeight, setBannerHeight] = useState<number>(0);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { hasPremium } = useSelector((state: RootState) => state.userData.data);
 
-  const {
-    data,
-    isSuccess: premiumStatusSuccess,
-    isError: premiumStatusError,
-    isFetching: premiumStatusFetching,
-    refetch,
-  } = useGetPremiumStatusQuery();
+  // const {
+  //   data,
+  //   isSuccess: premiumStatusSuccess,
+  //   isError: premiumStatusError,
+  //   isFetching: premiumStatusFetching,
+  //   refetch,
+  // } = useGetPremiumStatusQuery();
 
   const [
     buyPremium,
@@ -34,28 +40,49 @@ const PremiumBanner = () => {
     },
   ] = usePurchasePremiumMutation();
 
-  const fetchingContent = (
-    <LottieView
-      source={require('../../assets/lottie/greenLoader.json')}
-      style={{ width: 50, height: 50, marginTop: 16 }}
-      autoPlay
-      loop
-    />
-  );
+  // const fetchingContent = (
+  //   <LottieView
+  //     source={require('../../assets/lottie/greenLoader.json')}
+  //     style={{ width: 50, height: 50, marginTop: 16 }}
+  //     autoPlay
+  //     loop
+  //   />
+  // );
 
-  const errorContent = (
-    <GeneralErrorComponent
-      refetchFunction={() => refetch()}
-      customErrorMessage="Error fetching your premium status"
-      style={{ marginTop: 16 }}
-    />
-  );
+  // const errorContent = (
+  //   <GeneralErrorComponent
+  //     refetchFunction={() => refetch()}
+  //     customErrorMessage="Error fetching your premium status"
+  //     style={{ marginTop: 16 }}
+  //   />
+  // );
+
+  const presentPaywall = async () => {
+    const paywallResult: PAYWALL_RESULT = await RevenueCatUI.presentPaywall();
+
+    switch (paywallResult) {
+      case PAYWALL_RESULT.NOT_PRESENTED:
+      case PAYWALL_RESULT.ERROR:
+      case PAYWALL_RESULT.CANCELLED:
+        return false;
+      case PAYWALL_RESULT.PURCHASED:
+        () => {
+          buyPremium()
+            .unwrap()
+            .then(() => dispatch(updateUserDetails({ hasPremium: true })));
+        };
+      case PAYWALL_RESULT.RESTORED:
+        return true;
+      default:
+        return false;
+    }
+  };
+
+  console.log('PREMIUNM???', hasPremium);
 
   return (
-    <Loader
-      isFetching={premiumStatusFetching || isPurchaseLoading}
-      fetchFallback={fetchingContent}>
-      {premiumStatusSuccess && !data.premium.hasPremium ? (
+    <>
+      {!hasPremium ? (
         <View
           style={styles.parentContainer}
           onLayout={event => {
@@ -81,7 +108,7 @@ const PremiumBanner = () => {
               {t('premium.banner.description')}
             </Text>
             <StandardButton
-              onPress={() => buyPremium()}
+              onPress={() => presentPaywall()}
               buttonText="Buy Premium"
               iconName="round-chevron-right"
               buttonTextStyle={{ fontSize: 16 }}
@@ -90,8 +117,7 @@ const PremiumBanner = () => {
           </View>
         </View>
       ) : null}
-      {premiumStatusError ? errorContent : null}
-    </Loader>
+    </>
   );
 };
 

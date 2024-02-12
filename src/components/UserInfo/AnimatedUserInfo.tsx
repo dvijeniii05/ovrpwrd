@@ -7,6 +7,8 @@ import AnimatedCurrencyWrapper from '../CurrencyWrapper/AnimatedCurrencyWrapper'
 import { PremiumStatusResponseProps } from '../../redux/query/endpoints/premiumApi';
 import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
 import ProductTag from '../ProductTag/ProductTag';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store/mainStore';
 
 interface Props {
   rawPerks: SharedValue<number>;
@@ -20,8 +22,10 @@ interface Props {
 }
 
 const AnimatedUserInfo = (props: Props) => {
+  const { hasPremium } = useSelector((state: RootState) => state.userData.data);
+
   if (props.premiumStatus) {
-    const { hasPremium, premiumGamesLeft } = props.premiumStatus.premium;
+    const { premiumGamesLeft } = props.premiumStatus.premium;
     const perksConvertedToText = useDerivedValue(() => {
       return `${Number(props.rawPerks.value).toFixed(0)}`;
     });

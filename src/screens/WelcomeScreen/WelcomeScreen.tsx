@@ -21,7 +21,6 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
     (state: RootState) => state.userData.data,
   );
   const dispatch = useDispatch();
-  console.log('CHECK', email, appleUserId);
   const {
     data: userInfo,
     isSuccess,
