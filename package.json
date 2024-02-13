@@ -24,7 +24,6 @@
     "@react-navigation/stack": "^6.2.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@rnx-kit/align-deps": "^2.2.5",
-    "@shopify/flash-list": "^1.5.0",
     "@shopify/react-native-skia": "0.1.216",
     "axios": "^1.4.0",
     "carousel-with-pagination-rn": "^1.1.8",

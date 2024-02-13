@@ -15,7 +15,7 @@ export const vershionCheck = async () => {
   console.log('APP+V', appVersion);
 
   try {
-    const requiredVersion = await axios.get(`${devBaseUrl}/appVersionCheck`);
+    const requiredVersion = await axios.get(`${prodBaseUrl}/appVersionCheck`);
     console.log('CURRENT VERSION: ' + appVersion);
     console.log('REQUIRED VERSION: ' + requiredVersion.data.appVersion);
 
