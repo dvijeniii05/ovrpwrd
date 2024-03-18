@@ -129,9 +129,6 @@ const Leaderboard = (props: Props) => {
         <Text style={[styles.text, { fontSize: 18 }]} numberOfLines={1}>
           Monthly Ranking
         </Text>
-        <View style={styles.allUsersContainer}>
-          <Text style={styles.userCountText}>{leaderBoard?.totalUsers}</Text>
-        </View>
       </View>
       <Loader
         isFetching={isFetching || props.isUserFetching}

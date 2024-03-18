@@ -14,11 +14,15 @@ import Gradient from '../../components/Gradient/Gradient';
 import StandardButton from '../../components/Buttons/StandardButton/StandardButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch, useSelector } from 'react-redux';
-import { openBottomSheet } from '../../redux/slices/userDataSlice';
+import {
+  openBottomSheet,
+  updateUserDetails,
+} from '../../redux/slices/userDataSlice';
 import { RootState } from '../../redux/store/mainStore';
 import { useHeaderHeight } from '@react-navigation/elements';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import InformationModal from '../Modals/InformationModal/InformationModal';
+import uuid from 'react-native-uuid';
 
 type ScreenProps = StackScreenProps<
   StackParamList,
@@ -31,13 +35,15 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
   const headerHeight = useHeaderHeight();
   const topMargin = headerHeight + 56;
 
-  const { email } = route.params ?? 'not ready yet';
+  // const { email } = route.params ?? 'not ready yet';
+  const { email, appleUserId } = useSelector(
+    (state: RootState) => state.userData.data,
+  );
   const [registerUser, { isLoading }] = useRegisterUserMutation();
   const { dob, gender, country } = useSelector(
     (state: RootState) => state.userData.data,
   );
 
-  const [fullName, setFullName] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
   const [isProfanitySuccess, setIsProfanitySuccess] = useState<boolean>(false);
   const [isAgeVerificationSuccess, setIsAgeVerificationSuccess] =
@@ -51,16 +57,27 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
     dob &&
     gender &&
     country &&
-    fullName &&
     nickname &&
     isProfanitySuccess &&
     isAgeVerificationSuccess;
 
+  const randomstring = uuid.v4().toString();
+  const revUserId = `${email}_${randomstring}`;
+
   const handleOnpress = () => {
-    registerUser({ nickname, email, fullName, dob, gender, country })
+    registerUser({
+      nickname,
+      email: email!,
+      appleUserId,
+      dob,
+      gender,
+      country,
+      revUserId,
+    })
       .unwrap()
       .then(response => {
         if (response.token) {
+          dispatch(updateUserDetails({ revenueCatId: revUserId }));
           navigation.navigate(StackScreenName.avatar);
         } else {
           setInformationModalText(response.message!);
@@ -95,14 +112,10 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
       </View>
       <View style={{ width: '100%', marginTop: 40 }}>
         <DetailInput
-          placeholderText="Full name"
-          onChangeText={value => setFullName(value)}
-        />
-        <DetailInput
           placeholderText="Email"
           containerStyle={{ marginTop: 8 }}
           editable={false}
-          defaultValue={email}
+          defaultValue={email!}
         />
         <DetailInput
           placeholderText="Nickname"
@@ -135,7 +148,7 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
           icon
         />
         <DetailInput
-          placeholderText="Country"
+          placeholderText="Country of Residence"
           containerStyle={{ marginTop: 8 }}
           onPress={() => {
             Keyboard.dismiss();

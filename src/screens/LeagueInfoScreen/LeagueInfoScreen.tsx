@@ -21,6 +21,7 @@ import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
 import GeneralLeagueProgress from '../../components/GeneralLeagueProgress/GeneralLeaguesProgress';
 import { leagueDaysCountdown } from '../../utils/leagueHelpers/leagueHelpers';
+import { COLORS } from '../../constans/COLORS';
 
 type NavProps = StackScreenProps<StackParamList, StackScreenName.leagueInfo>;
 
@@ -76,7 +77,10 @@ const LeagueInfoScreen = ({ route }: NavProps) => {
 
   return (
     <View>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={COLORS.semiDarkBlue}
+      />
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContentContainer}

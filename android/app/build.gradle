@@ -93,13 +93,13 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.ovrpwrd"
+    namespace "app.ovrpwrd"
     defaultConfig {
-        applicationId "com.ovrpwrd"
+        applicationId "app.ovrpwrd"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 19
+        versionName "2.5"
     }
 
     splits {

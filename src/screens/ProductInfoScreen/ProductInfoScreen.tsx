@@ -105,7 +105,7 @@ const ProductInfoScreen = ({ navigation, route }: NavProps) => {
 
   return (
     <View>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar barStyle={'light-content'} backgroundColor={COLORS.darkGrey} />
       <View style={styles.parentContainer}>
         <Gradient
           type="conical"

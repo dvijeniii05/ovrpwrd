@@ -12,6 +12,9 @@ interface StartingPointDataProps {
   gender: string;
   country: string;
   isAppUpdateRequired: boolean;
+  email: string | null;
+  appleUserId: string;
+  revenueCatId: string | null;
   // matchData: MatchStatsProps[];
 }
 
@@ -33,6 +36,9 @@ const userDataState: userDataStateProps = {
     gender: '',
     country: '',
     isAppUpdateRequired: false,
+    email: null,
+    appleUserId: '',
+    revenueCatId: '',
     // matchData: [],
   },
   status: 'idle',

@@ -26,6 +26,8 @@ import GeneralErrorComponent from '../../components/GeneralErrorComponent/Genera
 import { useDispatch } from 'react-redux';
 import { useGetPremiumStatusQuery } from '../../redux/query/endpoints/premiumApi';
 import { useDeleteAccountMutation } from '../../redux/query/endpoints/supportApi';
+import { COLORS } from '../../constans/COLORS';
+import CardWrapper from '../../components/CardWrapper/CardWrapper';
 
 const AccountScreen = () => {
   const dispatch = useDispatch();
@@ -115,7 +117,7 @@ const AccountScreen = () => {
   const accountDeletionPress = () => {
     Alert.alert(
       'Deleting account?',
-      'Are you sure you want to delete this account?. Be aware that we will be processing your deletion reqeust within the next 7 days. If you wish to cancel the deletion process, please contact our support team.',
+      'Are you sure you want to delete this account?. Be aware that we will be processing your deletion request within the next 7 days. If you wish to cancel the deletion process, please contact our support team.',
       [
         {
           text: 'No',
@@ -132,7 +134,10 @@ const AccountScreen = () => {
 
   return (
     <View>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={COLORS.semiDarkBlue}
+      />
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         style={styles.scroll}>
@@ -156,7 +161,6 @@ const AccountScreen = () => {
               <UserInfo
                 currentPerks={userCurrency.perks}
                 currentRelics={userCurrency.relics}
-                userName={userDetails.fullName}
                 nickName={userDetails.nickname}
                 avatar={userDetails.avatar}
                 premiumStatus={premiumStatus}
@@ -187,9 +191,7 @@ const AccountScreen = () => {
                 />
               ) : (
                 <Text style={styles.noPurchaseText}>
-                  Your future purchases will be displayed here. You will be able
-                  to click on each "Purchase" tile to get access to more
-                  information
+                  You purchases will appear here
                 </Text>
               )}
             </View>
@@ -206,35 +208,45 @@ const AccountScreen = () => {
             />
           </View>
         ) : null}
-        <StandardButton
-          buttonText="Support"
-          logoName="discord"
-          onPress={() => {}}
-          style={styles.transparentButton}
-        />
-        <StandardButton
-          buttonText="Terms and Conditions"
-          logoName="tandc"
-          onPress={() => {}}
-          style={styles.transparentButton}
-        />
-        <StandardButton
-          buttonText="Privacy Policy"
-          logoName="privacy"
-          onPress={() => {}}
-          style={styles.transparentButton}
-        />
-        <StandardButton
-          buttonText="Log out"
-          onPress={onLogoutPress}
-          style={{ marginTop: 16 }}
-        />
-        <StandardButton
-          buttonText="Delete account"
-          onPress={accountDeletionPress}
-          style={styles.transparentButton}
-          buttonTextStyle={styles.accountDeleteButtonText}
-        />
+        <View style={styles.buttonsContainer}>
+          <CardWrapper style={styles.card}>
+            <StandardButton
+              buttonText="Support"
+              logoName="discord"
+              onPress={() => {}}
+              style={styles.transparentButton}
+              buttonTextStyle={styles.transparentButtonText}
+            />
+            <StandardButton
+              buttonText="Terms and Conditions"
+              logoName="tandc"
+              onPress={() => {}}
+              style={styles.transparentButton}
+              buttonTextStyle={styles.transparentButtonText}
+            />
+            <StandardButton
+              buttonText="Privacy Policy"
+              logoName="privacy"
+              onPress={() => {}}
+              style={styles.transparentButton}
+              buttonTextStyle={styles.transparentButtonText}
+            />
+            <StandardButton
+              buttonText="Logout"
+              logoName="logout"
+              onPress={onLogoutPress}
+              style={styles.transparentButton}
+              buttonTextStyle={styles.transparentButtonText}
+            />
+          </CardWrapper>
+
+          <StandardButton
+            buttonText="Delete account"
+            onPress={accountDeletionPress}
+            style={styles.accountDeleteButton}
+            buttonTextStyle={styles.accountDeleteButtonText}
+          />
+        </View>
       </ScrollView>
     </View>
   );

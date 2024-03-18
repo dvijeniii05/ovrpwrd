@@ -89,7 +89,7 @@ const MatchHistoryScreen = () => {
 
   return (
     <View>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar barStyle={'light-content'} backgroundColor={COLORS.darkGrey} />
       <View style={styles.parentContainer}>
         <Gradient type="shaded" style={styles.shadedGradient} />
         <Gradient type="noise" style={styles.noiseGradient} />

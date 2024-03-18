@@ -5,6 +5,7 @@ import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
 import FramedImage from '../FramedImage/FramedImage';
 import { PremiumStatusResponseProps } from '../../redux/query/endpoints/premiumApi';
 import ProductTag from '../ProductTag/ProductTag';
+import PremiumWrapper from '../PremiumWrapper/PremiumWrapper';
 
 interface Props {
   currentPerks?: number;
@@ -18,7 +19,8 @@ interface Props {
 
 const UserInfo = (props: Props) => {
   if (props.premiumStatus) {
-    const { hasPremium, premiumGamesLeft } = props.premiumStatus.premium;
+    const { premiumGamesLeft, hasPremium } = props.premiumStatus.premium;
+    const isLongNickname = props.nickName?.length! > 24;
 
     return (
       <View style={styles.parentContainer}>
@@ -35,8 +37,7 @@ const UserInfo = (props: Props) => {
         {hasPremium ? (
           <ProductTag isPremium style={{ marginTop: 8, paddingVertical: 4 }} />
         ) : null}
-        <Text style={styles.nameText}>{props.userName}</Text>
-        <Text style={styles.nickNameText}>{`@${props.nickName}`}</Text>
+        <Text style={styles.nameText(isLongNickname)}>{props.nickName}</Text>
         <View style={styles.currencyContainer}>
           <CurrencyWrapper
             value={Number(props.currentPerks).toFixed(0) ?? 0}
@@ -46,9 +47,7 @@ const UserInfo = (props: Props) => {
             value={Number(props.currentRelics).toFixed(2) ?? '0'}
             currencyType="relics"
           />
-          {hasPremium ? (
-            <CurrencyWrapper currencyType="premiums" value={premiumGamesLeft} />
-          ) : null}
+          {hasPremium ? <PremiumWrapper value={premiumGamesLeft} /> : null}
         </View>
       </View>
     );

@@ -13,7 +13,6 @@ const scroll: ViewStyle = {
 };
 
 const userContainer: ViewStyle = {
-  marginTop: 40,
   alignItems: 'center',
 };
 
@@ -28,7 +27,7 @@ const editButton: ViewStyle = {
 };
 
 const noPurchaseText: TextStyle = {
-  marginTop: 40,
+  marginVertical: 64,
   fontSize: 16,
   color: COLORS.white,
   fontFamily: 'Jost-Regular',
@@ -90,14 +89,38 @@ const separator: ViewStyle = {
   backgroundColor: COLORS.darkNeutral,
 };
 
+const card: ViewStyle = {
+  marginBottom: 0,
+  width: '90%',
+};
+
+const buttonsContainer: ViewStyle = {
+  backgroundColor: 'transparent',
+  width: '100%',
+  alignItems: 'center',
+};
+
 const transparentButton: ViewStyle = {
   backgroundColor: 'transparent',
+  justifyContent: 'flex-start',
+};
+
+const transparentButtonText: TextStyle = {
+  fontSize: 16,
+  fontFamily: 'JostRegular',
+};
+
+const accountDeleteButton: ViewStyle = {
+  backgroundColor: 'transparent',
+  paddingVertical: 0,
+  width: '50%',
 };
 
 const accountDeleteButtonText: TextStyle = {
   color: COLORS.red,
-  opacity: 0.8,
+  opacity: 0.5,
   marginTop: 32,
+  fontSize: 12,
 };
 
 export const styles = {
@@ -114,6 +137,10 @@ export const styles = {
   priceContainer,
   priceText,
   separator,
+  card,
+  buttonsContainer,
   transparentButton,
+  transparentButtonText,
+  accountDeleteButton,
   accountDeleteButtonText,
 };

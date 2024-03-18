@@ -33,6 +33,8 @@ export const productsApi = apiSlice.injectEndpoints({
             offers.push(product);
           } else if (product.type === 'Games') {
             games.push(product);
+          } else if (product.type === 'Physical') {
+            physical.push(product);
           }
         });
         return { offers, games, physical };

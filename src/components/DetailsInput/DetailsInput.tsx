@@ -8,6 +8,11 @@ import GreenCheckboxIcon from '../../assets/icons/selected-checkbox.svg';
 import RedCheckboxIcon from '../../assets/icons/canceled-checkbox.svg';
 import { badWords } from '../../constans/badWords';
 import { DateTime } from 'luxon';
+import { z } from 'zod';
+
+const nameSchema = z
+  .string()
+  .max(32, { message: 'Nickname can contain max 32 characters' });
 
 export enum ValidationTypes {
   age = 'age',
@@ -30,6 +35,9 @@ interface Props {
 
 const DetailInput = ({ editable = true, ...props }: Props) => {
   const [isProfanitySuccess, setIsProfanitySuccess] = useState<boolean>(false);
+  const [profanityErrorMessage, setProfanityErrorMessage] =
+    useState<string>('');
+
   const [isAgeVerificationSuccess, setIsAgeVerificationSuccess] =
     useState<boolean>(false);
 
@@ -68,10 +76,18 @@ const DetailInput = ({ editable = true, ...props }: Props) => {
 
     props.isProfanitySuccess ? props.isProfanitySuccess(!hasProfanity) : null;
 
-    if (!hasProfanity) {
+    const isNicknameLengthOk = nameSchema.safeParse(text);
+
+    if (!hasProfanity && isNicknameLengthOk.success) {
       setIsProfanitySuccess(true);
       props.onChangeText ? props.onChangeText(text) : null;
+    } else if (!isNicknameLengthOk.success) {
+      setProfanityErrorMessage(
+        isNicknameLengthOk.error.formErrors.formErrors[0],
+      );
+      setIsProfanitySuccess(false);
     } else {
+      setProfanityErrorMessage(' This nickname contains a profanity');
       setIsProfanitySuccess(false);
     }
   };
@@ -96,9 +112,7 @@ const DetailInput = ({ editable = true, ...props }: Props) => {
           <DividerLine
             style={[props.dividerStyle, { backgroundColor: COLORS.red }]}
           />
-          <Text style={styles.profanityText}>
-            This nickname contains a profanity
-          </Text>
+          <Text style={styles.profanityText}>{profanityErrorMessage}</Text>
         </>
       );
     } else if (

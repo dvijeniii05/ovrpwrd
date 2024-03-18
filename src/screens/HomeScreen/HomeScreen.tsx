@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
-import { RefreshControl, ScrollView, StatusBar, View } from 'react-native';
+import {
+  Alert,
+  RefreshControl,
+  ScrollView,
+  StatusBar,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import StatsAndRewardsCard from '../../components/StatsAndRewardsCard/StatsAndRewardsCard';
 import ActiveLeagueProgress from '../../components/ActiveLeagueProgress/ActiveLeagueProgress';
 import Leaderboard from '../../components/Leaderboard/Leaderboard';
@@ -24,7 +31,12 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { useSharedValue } from 'react-native-reanimated';
 import AnimatedUserInfo from '../../components/UserInfo/AnimatedUserInfo';
-import { useGetPremiumStatusQuery } from '../../redux/query/endpoints/premiumApi';
+import {
+  useGetPremiumStatusQuery,
+  useUpdatePremiumMutation,
+} from '../../redux/query/endpoints/premiumApi';
+import Purchases from 'react-native-purchases';
+import { COLORS } from '../../constans/COLORS';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.home>;
 
@@ -58,6 +70,8 @@ const Home = ({ navigation }: ScreenProps) => {
     isError: premiumStatusError,
     isFetching: premiumStatusFetching,
   } = useGetPremiumStatusQuery();
+
+  const [_, { isLoading: isPremiumUpdateLoading }] = useUpdatePremiumMutation();
 
   const userDetailsLoader = (
     <SkeletonLoader viewBox="0,0,300,200">
@@ -96,9 +110,24 @@ const Home = ({ navigation }: ScreenProps) => {
     debounceRefetch();
   }, []);
 
+  //BELOW IS FOR DEBUGGING
+  const getCustomerStatus = async () => {
+    try {
+      // access latest customerInfo
+      const customerInfo = await Purchases.getCustomerInfo();
+      console.log('CUSTOMER_INFO', customerInfo);
+      Alert.alert('REV_CAT', `${JSON.stringify(customerInfo.entitlements)}`);
+    } catch (e: any) {
+      Alert.alert('Error fetching customer info', e.message);
+    }
+  };
+
   return (
     <View>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={COLORS.semiDarkBlue}
+      />
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContentContainer}
@@ -107,6 +136,16 @@ const Home = ({ navigation }: ScreenProps) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         <Gradient type="conical" style={{ position: 'absolute' }} />
+        <TouchableOpacity
+          style={{
+            width: 100,
+            height: 30,
+            backgroundColor: 'transparent',
+            marginTop: 40,
+            position: 'absolute',
+          }}
+          onPress={() => getCustomerStatus()}></TouchableOpacity>
+
         {isError || isUserDetailsError ? (
           <View
             style={{
@@ -126,13 +165,15 @@ const Home = ({ navigation }: ScreenProps) => {
           <>
             <Loader
               isFetching={
-                isUserDetailsFetching || isFetching || premiumStatusFetching
+                isUserDetailsFetching ||
+                isFetching ||
+                premiumStatusFetching ||
+                isPremiumUpdateLoading
               }
               fetchFallback={userDetailsLoader}>
               <AnimatedUserInfo
                 rawPerks={rawPerks}
                 rawRelics={rawRelics}
-                userName={userDetails?.fullName}
                 nickName={userDetails?.nickname}
                 onAvatarPress={() =>
                   navigation.navigate(StackScreenName.account)

@@ -7,11 +7,14 @@ import { useNavigation } from '@react-navigation/native';
 import { StackProps } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
 import { LeaguePrize } from '../../redux/query/apiSlice';
+import { PremiumStatusResponseProps } from '../../redux/query/endpoints/premiumApi';
+import { presentPaywall } from '../../utils/presentPaywal';
 
 type Props =
   | {
       isPurchasable: true;
       product: Product;
+      userPremiumStatus: PremiumStatusResponseProps;
     }
   | {
       isPurchasable: false;
@@ -29,6 +32,19 @@ const ProductCard = (props: Props) => {
         return 'Out of Stock';
       }
       return `${props.product.price}`;
+    };
+
+    const handleOnBuyPress = () => {
+      if (
+        props.product.isPremium &&
+        !props.userPremiumStatus.premium.hasPremium
+      ) {
+        presentPaywall();
+      } else {
+        nav.navigate(StackScreenName.prodcutInfo, {
+          product: props.product,
+        });
+      }
     };
 
     return (
@@ -49,11 +65,7 @@ const ProductCard = (props: Props) => {
           </Text>
         </View>
         <StandardButton
-          onPress={() =>
-            nav.navigate(StackScreenName.prodcutInfo, {
-              product: props.product,
-            })
-          }
+          onPress={handleOnBuyPress}
           buttonText={buttonText()}
           iconName={isOutOfStock ? undefined : 'relic'}
           style={styles.button(props.isPurchasable, isOutOfStock)}

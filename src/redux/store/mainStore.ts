@@ -48,6 +48,8 @@ export const mainStore = configureStore({
       .concat(createDebugger(), apiSlice.middleware),
 });
 
+export const customDispatch = (action: any) => mainStore.dispatch(action);
+
 export const persistor = persistStore(mainStore);
 
 export type RootState = ReturnType<typeof mainStore.getState>;

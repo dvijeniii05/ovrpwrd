@@ -5,8 +5,8 @@ import FramedImage from '../FramedImage/FramedImage';
 import { SharedValue, useDerivedValue } from 'react-native-reanimated';
 import AnimatedCurrencyWrapper from '../CurrencyWrapper/AnimatedCurrencyWrapper';
 import { PremiumStatusResponseProps } from '../../redux/query/endpoints/premiumApi';
-import CurrencyWrapper from '../CurrencyWrapper/CurrencyWraper';
 import ProductTag from '../ProductTag/ProductTag';
+import PremiumWrapper from '../PremiumWrapper/PremiumWrapper';
 
 interface Props {
   rawPerks: SharedValue<number>;
@@ -21,7 +21,7 @@ interface Props {
 
 const AnimatedUserInfo = (props: Props) => {
   if (props.premiumStatus) {
-    const { hasPremium, premiumGamesLeft } = props.premiumStatus.premium;
+    const { premiumGamesLeft, hasPremium } = props.premiumStatus.premium;
     const perksConvertedToText = useDerivedValue(() => {
       return `${Number(props.rawPerks.value).toFixed(0)}`;
     });
@@ -29,6 +29,8 @@ const AnimatedUserInfo = (props: Props) => {
     const relicsConvertedToText = useDerivedValue(() => {
       return `${Number(props.rawRelics.value).toFixed(2)}`;
     });
+
+    const isLongNickname = props.nickName?.length! > 24;
 
     return (
       <View style={styles.parentContainer}>
@@ -45,8 +47,7 @@ const AnimatedUserInfo = (props: Props) => {
         {hasPremium ? (
           <ProductTag isPremium style={{ marginTop: 8, paddingVertical: 4 }} />
         ) : null}
-        <Text style={styles.nameText}>{props.userName}</Text>
-        <Text style={styles.nickNameText}>{`@${props.nickName}`}</Text>
+        <Text style={styles.nameText(isLongNickname)}>{props.nickName}</Text>
         <View style={styles.currencyContainer}>
           <AnimatedCurrencyWrapper
             isPerks
@@ -56,9 +57,7 @@ const AnimatedUserInfo = (props: Props) => {
             isPerks={false}
             animatedValue={relicsConvertedToText}
           />
-          {hasPremium ? (
-            <CurrencyWrapper currencyType="premiums" value={premiumGamesLeft} />
-          ) : null}
+          {hasPremium ? <PremiumWrapper value={premiumGamesLeft} /> : null}
         </View>
       </View>
     );

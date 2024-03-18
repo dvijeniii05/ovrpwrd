@@ -3,12 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1071597093913-5r2fjivtgrnnha1gsft7jt6flfr3dsj1.apps.googleusercontent.com</string>
+	<string>777683301792-sniotqj24feei5gq0rr80g0u3tlpkc6s.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1071597093913-5r2fjivtgrnnha1gsft7jt6flfr3dsj1</string>
+	<string>com.googleusercontent.apps.777683301792-sniotqj24feei5gq0rr80g0u3tlpkc6s</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.testAlpha.OVRPWRDtestSecond</string>
+	<string>app.ovrpwrd</string>
 </dict>
 </plist>

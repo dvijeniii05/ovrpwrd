@@ -2,6 +2,7 @@ import { ParsedMatch } from '../../../constans/interfaces';
 import { updateUserDetails } from '../../slices/userDataSlice';
 import { apiSlice } from '../apiSlice';
 import { startListening } from '../listenerMiddleware';
+import { revenueCatInit } from '../../../utils/revenueCatInit';
 
 export interface AuthResponseProps {
   token: string | undefined;
@@ -12,17 +13,20 @@ export interface AuthResponseProps {
 export interface UserLoginResponseProps {
   token: string | undefined;
   isFullyOnboarded: boolean;
+  email: string;
+  revUserId: string;
 }
 
 export interface UserRegisterArgProps {
   email: string;
-  fullName: string;
   nickname: string;
   dob: string;
   gender: string;
   country: string;
   avatar: string;
+  appleUserId: string;
   isFullyOnboarded?: boolean;
+  revUserId: string;
 }
 
 export interface PurchasedProduct {
@@ -77,18 +81,30 @@ export const userApi = apiSlice.injectEndpoints({
           response.status === 422,
       }),
     }),
-    loginUser: builder.query<UserLoginResponseProps, { email: string }>({
+    loginUser: builder.query<
+      UserLoginResponseProps,
+      { email: string | null; appleUserId?: string }
+    >({
       query: args => ({
-        url: `/userAuth/loginUser/${args.email}`,
+        url: `/userAuth/loginUser`,
         validateStatus: response =>
           (response.status >= 200 && response.status <= 299) ||
           response.status === 404,
+        method: 'POST',
+        body: args,
       }),
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
+
           if (data.token !== undefined) {
-            dispatch(updateUserDetails({ token: data.token }));
+            revenueCatInit(data.revUserId);
+            dispatch(
+              updateUserDetails({
+                token: data.token,
+                revenueCatId: data.revUserId,
+              }),
+            );
           }
         } catch {
           console.log('ERROR_ON_LOGIN');
@@ -127,7 +143,7 @@ export const userApi = apiSlice.injectEndpoints({
             dispatch({ type: 'USER_LOGOUT' });
           }
         } catch {
-          console.log('ERROR_ON_LOGIN');
+          console.log('ERROR_ON_GETTING_USER_DETAILS');
         }
       },
     }),
@@ -144,6 +160,7 @@ startListening({
     listenerApi.dispatch(userApi.util.invalidateTags(['currency', 'premium']));
   },
 });
+
 export const {
   useRegisterUserMutation,
   useLoginUserQuery,

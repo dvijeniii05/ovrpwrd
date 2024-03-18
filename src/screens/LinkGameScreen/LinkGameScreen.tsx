@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Image, ListRenderItemInfo, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Gradient from '../../components/Gradient/Gradient';
 import { styles } from './LinkGameScreen.styles';
-import SteamIcon from '../../assets/icons/steam.svg';
+import Steam from '../../assets/icons/steam.svg';
 import EpicIcon from '../../assets/icons/epic.svg';
 import RiotIcon from '../../assets/icons/riot.svg';
 import {
@@ -23,75 +22,53 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
 import CustomSafeAreaView from '../../components/CustomSafeAreaView/CustomSafeAreaView';
+import { publishersAndGames } from '../../constans/publishersAndGames';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.linkGame>;
 
 const LinkGame = ({ navigation }: ScreenProps) => {
-  const publishersAndGames = [
-    {
-      key: 1,
-      publisher: 'steam',
-      isLinkAvailable: true,
-      games: [
-        { key: 1, gameName: 'dota', isAvalable: true },
-        { key: 2, gameName: 'cs', isAvalable: false },
-        { key: 3, gameName: 'apex', isAvalable: false },
-      ],
-    },
-    {
-      key: 2,
-      publisher: 'riot',
-      isLinkAvailable: false,
-      games: [
-        { key: 1, gameName: 'valorant', isAvalable: false },
-        { key: 2, gameName: 'lol', isAvalable: false },
-      ],
-    },
-    {
-      key: 3,
-      publisher: 'epic',
-      isLinkAvailable: false,
-      games: [{ key: 1, gameName: 'fortnite', isAvalable: false }],
-    },
-  ];
-
   const { t } = useTranslation();
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [singleItemWidth, setSingleItemWidth] = useState<number>(WIDTH);
 
+  const imagePicker = (item: (typeof publishersAndGames)[0]) => {
+    switch (item.publisher) {
+      case 'steam':
+        return {
+          publisher: require('../../assets/images/Steam.png'),
+          icon: <Steam />,
+          style: { width: 104, height: 160, borderRadius: 16 },
+        };
+      case 'epic':
+        return {
+          publisher: require('../../assets/images/Epic.png'),
+          icon: <EpicIcon />,
+          style: { width: 320, height: 160, borderRadius: 16 },
+        };
+      case 'riot':
+        return {
+          publisher: require('../../assets/images/Riot.png'),
+          icon: <RiotIcon />,
+          style: { width: 160, height: 160, borderRadius: 16 },
+        };
+      default:
+        return {
+          publisher: null,
+          icon: null,
+          style: {},
+        };
+    }
+  };
   const renderItem = ({
     item,
   }: ListRenderItemInfo<(typeof publishersAndGames)[0]>) => {
-    function imagePicker() {
-      switch (item.publisher) {
-        case 'steam':
-          return {
-            publisher: require('../../assets/images/Steam.png'),
-            icon: <SteamIcon />,
-            style: { width: 104, height: 160, borderRadius: 16 },
-          };
-        case 'epic':
-          return {
-            publisher: require('../../assets/images/Epic.png'),
-            icon: <EpicIcon />,
-            style: { width: 320, height: 160, borderRadius: 16 },
-          };
-        case 'riot':
-          return {
-            publisher: require('../../assets/images/Riot.png'),
-            icon: <RiotIcon />,
-            style: { width: 160, height: 160, borderRadius: 16 },
-          };
-        default:
-          return {
-            publisher: null,
-            icon: null,
-            style: {},
-          };
-      }
-    }
-
     return (
-      <View style={styles.publisherContainer}>
+      <View
+        style={styles.publisherContainer}
+        onLayout={event => {
+          const width = event.nativeEvent.layout.width;
+          setSingleItemWidth(width);
+        }}>
         <Canvas style={styles.canvas}>
           <RoundedRect x={0} y={0} width={360} height={300} r={30}>
             <LinearGradient
@@ -102,11 +79,11 @@ const LinkGame = ({ navigation }: ScreenProps) => {
           </RoundedRect>
         </Canvas>
         <Image
-          source={imagePicker().publisher}
+          source={imagePicker(item).publisher}
           style={styles.publisherImage}
           resizeMode="contain"
         />
-        <View style={styles.publisherIcon}>{imagePicker().icon}</View>
+        <View style={styles.publisherIcon}>{imagePicker(item).icon}</View>
         <View>
           <View
             style={{
@@ -117,15 +94,18 @@ const LinkGame = ({ navigation }: ScreenProps) => {
               <GameCard
                 key={game.key}
                 gameName={game.gameName}
-                style={imagePicker().style}
+                style={imagePicker(item).style}
                 isAvailable={game.isAvalable}
               />
             ))}
           </View>
           <StandardButton
-            buttonText={item.isLinkAvailable ? 'Link account' : 'Coming soon'}
+            buttonText={
+              item.isLinkAvailable ? 'Sign in through Steam ' : 'Coming soon'
+            }
+            logoName={item.isLinkAvailable ? 'steam' : undefined}
             onPress={() => setIsModalVisible(true)}
-            style={{ marginTop: 24 }}
+            style={{ marginTop: 64 }}
             isDisabled={!item.isLinkAvailable}
           />
         </View>
@@ -153,8 +133,8 @@ const LinkGame = ({ navigation }: ScreenProps) => {
       <CustomCarousel
         data={publishersAndGames}
         renderItem={renderItem}
-        widthBoundaryForPagination={WIDTH * 0.9 + 8}
-        carouselContainerStyle={{ width: WIDTH * 0.9 + 8 }}
+        widthBoundaryForPagination={singleItemWidth}
+        carouselContainerStyle={{ width: singleItemWidth }}
         paginationContainerStyle={{ marginTop: 24 }}
         indicatorWidth={[8, 8, 8]}
         indicatorHeight={[8, 8, 8]}

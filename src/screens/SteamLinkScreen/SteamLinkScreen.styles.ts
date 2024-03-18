@@ -1,18 +1,24 @@
 import { TextStyle, ViewStyle } from 'react-native';
 import { COLORS } from '../../constans/COLORS';
-import { WIDTH } from '../../utils/dimension';
+import { HEIGHT, WIDTH } from '../../utils/dimension';
 
-const parentContainer: ViewStyle = {
-  flex: 1,
+const scroll: ViewStyle = {
   backgroundColor: COLORS.darkBlue,
   paddingHorizontal: 16,
+  height: HEIGHT,
+};
+
+const scrollContent: ViewStyle = {
+  alignItems: 'center',
+  paddingBottom: 40,
 };
 
 const descriptionContainer: ViewStyle = {
-  marginTop: 80,
+  marginTop: 48,
   alignItems: 'center',
-  flex: 1,
-  justifyContent: 'space-between',
+  height: '100%',
+  width: '100%',
+  gap: 40,
 };
 
 const descriptionWrapper: ViewStyle = {
@@ -25,20 +31,29 @@ const descriptionHeading: TextStyle = {
   fontSize: 28,
   fontFamily: 'Jost-SemiBold',
   textAlign: 'center',
+  padding: 16,
+  width: WIDTH * 0.7,
 };
 
 const descriptionText: TextStyle = {
   fontFamily: 'Jost-Regular',
   marginTop: 16,
-  fontSize: 20,
+  fontSize: 18,
   color: COLORS.white,
   textAlign: 'center',
+};
+
+const buttonsContainer: ViewStyle = {
+  gap: 24,
 };
 
 const button: ViewStyle = {
   bottom: 0,
 };
 
+const transparentButton: ViewStyle = {
+  backgroundColor: 'transparent',
+};
 const imageStyle = {
   marginTop: 16,
   width: WIDTH,
@@ -47,11 +62,14 @@ const imageStyle = {
 };
 
 export const styles = {
-  parentContainer,
+  scroll,
+  scrollContent,
   descriptionContainer,
   descriptionWrapper,
   descriptionHeading,
   descriptionText,
   button,
+  transparentButton,
+  buttonsContainer,
   imageStyle,
 };

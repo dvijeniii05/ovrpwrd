@@ -10,6 +10,8 @@ import { Loader } from '../../components/Loaders/Loader';
 import { SkeletonLoader } from '../../components/Loaders/SkeletonLoader';
 import { Rect } from 'react-content-loader/native';
 import GeneralErrorComponent from '../../components/GeneralErrorComponent/GeneralErrorComponent';
+import { COLORS } from '../../constans/COLORS';
+import { useGetPremiumStatusQuery } from '../../redux/query/endpoints/premiumApi';
 
 const MarketplaceScreen = () => {
   const headerHeight = useHeaderHeight();
@@ -19,6 +21,13 @@ const MarketplaceScreen = () => {
 
   const { data, isSuccess, isError, isFetching, refetch } =
     useGetAllProductsQuery();
+
+  const {
+    data: premiumStatus,
+    isSuccess: premiumStatusSuccess,
+    isFetching: premiumStatusFetching,
+    isError: prepremiumStatusError,
+  } = useGetPremiumStatusQuery();
 
   const marketplaceLoader = (
     <SkeletonLoader viewBox="0,0,370,380">
@@ -35,7 +44,10 @@ const MarketplaceScreen = () => {
 
   return (
     <View>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={COLORS.semiDarkBlue}
+      />
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContentContainer}
@@ -52,27 +64,32 @@ const MarketplaceScreen = () => {
           />
         </View>
         {isMarketplaceActive ? (
-          <Loader isFetching={isFetching} fetchFallback={marketplaceLoader}>
-            {isSuccess ? (
+          <Loader
+            isFetching={isFetching || premiumStatusFetching}
+            fetchFallback={marketplaceLoader}>
+            {isSuccess && premiumStatusSuccess ? (
               <>
                 <ProductsCarousel
                   data={data.offers}
                   headerText={data.offers[0].type}
                   style={{ marginTop: 48 }}
+                  userPremiumStatus={premiumStatus}
                 />
                 <ProductsCarousel
                   data={data.games}
                   headerText={data.games[0].type}
                   style={{ marginTop: 48 }}
+                  userPremiumStatus={premiumStatus}
                 />
                 <ProductsCarousel
                   data={data.physical}
                   headerText={'Physical'}
                   style={{ marginTop: 48 }}
+                  userPremiumStatus={premiumStatus}
                 />
               </>
             ) : null}
-            {isError ? (
+            {isError || prepremiumStatusError ? (
               <GeneralErrorComponent
                 refetchFunction={() => {
                   refetch();

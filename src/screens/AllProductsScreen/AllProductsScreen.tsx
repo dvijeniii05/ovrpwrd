@@ -13,6 +13,7 @@ import ProductCard from '../../components/ProductCard/ProductCard';
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
+import { COLORS } from '../../constans/COLORS';
 
 type NavProps = StackScreenProps<StackParamList, StackScreenName.allProducts>;
 
@@ -20,12 +21,16 @@ const AllProductsScreen = ({ route }: NavProps) => {
   const headerHeight = useHeaderHeight();
   const topMargin = headerHeight + 80;
 
-  const { productType, products } = route?.params;
+  const { productType, products, userPremiumStatus } = route?.params;
 
   const productRenderItem = ({ item }: ListRenderItemInfo<Product>) => {
     return (
       <View>
-        <ProductCard isPurchasable product={item} />
+        <ProductCard
+          isPurchasable
+          product={item}
+          userPremiumStatus={userPremiumStatus}
+        />
       </View>
     );
   };
@@ -38,7 +43,10 @@ const AllProductsScreen = ({ route }: NavProps) => {
 
   return (
     <View>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={COLORS.semiDarkBlue}
+      />
       <View style={styles.parentContainer}>
         <Gradient type="shaded" style={{ position: 'absolute' }} />
         <FlatList

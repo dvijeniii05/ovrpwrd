@@ -1,14 +1,13 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { leaugeNames } from '../constans/interfaces';
 import { Product } from '../redux/query/endpoints/productsApi';
+import { PremiumStatusResponseProps } from '../redux/query/endpoints/premiumApi';
 
 export type StackParamList = {
   Landing: undefined;
   WelcomeInfo: undefined;
-  Welcome: { email: string };
-  Registration: {
-    email: string;
-  };
+  Welcome: undefined;
+  Registration: undefined;
   Avatar: undefined;
   LinkGame: undefined;
   SteamModal: undefined;
@@ -25,6 +24,7 @@ export type StackParamList = {
   AllProducts: {
     products: Product[];
     productType: string;
+    userPremiumStatus: PremiumStatusResponseProps;
   };
   ProductInfo: {
     product: Product;
