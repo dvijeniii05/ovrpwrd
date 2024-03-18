@@ -1,9 +1,8 @@
 import { ParsedMatch } from '../../../constans/interfaces';
-import { revCatApiKey } from '../../../constans/revCat';
 import { updateUserDetails } from '../../slices/userDataSlice';
 import { apiSlice } from '../apiSlice';
 import { startListening } from '../listenerMiddleware';
-import Purchases from 'react-native-purchases';
+import { revenueCatInit } from '../../../utils/revenueCatInit';
 
 export interface AuthResponseProps {
   token: string | undefined;
@@ -20,7 +19,6 @@ export interface UserLoginResponseProps {
 
 export interface UserRegisterArgProps {
   email: string;
-  fullName: string;
   nickname: string;
   dob: string;
   gender: string;
@@ -100,12 +98,7 @@ export const userApi = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
 
           if (data.token !== undefined) {
-            Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
-            Purchases.configure({
-              apiKey: revCatApiKey,
-              appUserID: data.revUserId,
-            });
-            console.log('REVENUE_CAT_INIT_ON_LOGIN', data.revUserId);
+            revenueCatInit(data.revUserId);
             dispatch(
               updateUserDetails({
                 token: data.token,

@@ -16,7 +16,6 @@ import { RootState } from '../../redux/store/mainStore';
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.welcome>;
 
 const WelcomeScreen = ({ navigation, route }: ScreenProps) => {
-  // const { email } = route.params ?? '';
   const { email, appleUserId } = useSelector(
     (state: RootState) => state.userData.data,
   );

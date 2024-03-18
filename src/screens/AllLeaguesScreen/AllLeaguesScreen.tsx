@@ -20,6 +20,7 @@ import { StackScreenName } from '../../../ScreenNames';
 import { ScrollView } from 'react-native-gesture-handler';
 import CardWrapper from '../../components/CardWrapper/CardWrapper';
 import LottieView from 'lottie-react-native';
+import { COLORS } from '../../constans/COLORS';
 
 type NavProps = StackScreenProps<StackParamList, StackScreenName.allLeagues>;
 
@@ -85,7 +86,6 @@ const AllLeaguesScreen = ({ navigation }: NavProps) => {
             source={require('../../assets/lottie/swords.json')}
             style={{ width: 180, height: 180 }}
             autoPlay
-            loop
           />
         </CardWrapper>
       );
@@ -117,7 +117,10 @@ const AllLeaguesScreen = ({ navigation }: NavProps) => {
 
   return (
     <SafeAreaView edges={['bottom']}>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={COLORS.semiDarkBlue}
+      />
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContentContainer}

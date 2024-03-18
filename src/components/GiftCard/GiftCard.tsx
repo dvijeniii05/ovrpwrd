@@ -28,7 +28,6 @@ interface Props {
 const GiftCard = (props: Props) => {
   const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  // const [test, setTest] = useState(false);
 
   const { data } = useGetRewardsStatusQuery();
   const [trigger, { isLoading, isError, isSuccess }] = useClaimRewardMutation();

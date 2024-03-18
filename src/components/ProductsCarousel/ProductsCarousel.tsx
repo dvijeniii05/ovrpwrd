@@ -18,11 +18,13 @@ import ArrowRight from '../../assets/icons/arrow-right.svg';
 import { useNavigation } from '@react-navigation/native';
 import { StackProps } from '../../navigation/navigationTypes';
 import { StackScreenName } from '../../../ScreenNames';
+import { PremiumStatusResponseProps } from '../../redux/query/endpoints/premiumApi';
 
 interface Props {
   data: Product[];
   headerText: string;
   style?: ViewStyle;
+  userPremiumStatus: PremiumStatusResponseProps;
 }
 
 const ProductsCarousel = (props: Props) => {
@@ -53,7 +55,13 @@ const ProductsCarousel = (props: Props) => {
   };
 
   const productRenderItem = ({ item }: ListRenderItemInfo<Product>) => {
-    return <ProductCard isPurchasable product={item} />;
+    return (
+      <ProductCard
+        isPurchasable
+        product={item}
+        userPremiumStatus={props.userPremiumStatus}
+      />
+    );
   };
 
   const content = () => {
@@ -120,6 +128,7 @@ const ProductsCarousel = (props: Props) => {
             navigation.navigate(StackScreenName.allProducts, {
               products: props.data,
               productType: props.headerText,
+              userPremiumStatus: props.userPremiumStatus,
             })
           }>
           <ArrowRight />

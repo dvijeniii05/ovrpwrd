@@ -1,5 +1,4 @@
 import { TextStyle, ViewStyle } from 'react-native';
-import { WIDTH } from '../../utils/dimension';
 import { COLORS } from '../../constans/COLORS';
 
 const parentContainer: ViewStyle = {
@@ -7,18 +6,13 @@ const parentContainer: ViewStyle = {
   alignItems: 'center',
 };
 
-const nameText: TextStyle = {
+const nameText = (isLongNickname: boolean): TextStyle => ({
   fontFamily: 'Jost-Regular',
-  fontSize: 25,
+  fontSize: isLongNickname ? 18 : 25,
   color: COLORS.white,
   marginTop: 4,
-};
-
-const nickNameText: TextStyle = {
-  ...nameText,
-  fontSize: 12,
-  marginTop: 0,
-};
+  paddingHorizontal: 20,
+});
 
 const currencyContainer: ViewStyle = {
   flexDirection: 'row',
@@ -30,6 +24,5 @@ const currencyContainer: ViewStyle = {
 export const styles = {
   parentContainer,
   nameText,
-  nickNameText,
   currencyContainer,
 };

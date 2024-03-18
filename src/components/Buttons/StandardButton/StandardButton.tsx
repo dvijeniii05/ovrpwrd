@@ -11,10 +11,18 @@ import DiscordIcon from '../../../assets/icons/discord.svg';
 import TandCIcon from '../../../assets/icons/fileIcon.svg';
 import PrivacyIcon from '../../../assets/icons/infoShieldIcon.svg';
 import SteamIcon from '../../../assets/icons/steam2.svg';
+import Logout from '../../../assets/icons/logout.svg';
 
 import LottieView from 'lottie-react-native';
 
-type LogoNames = 'apple' | 'google' | 'discord' | 'tandc' | 'privacy' | 'steam';
+type LogoNames =
+  | 'apple'
+  | 'google'
+  | 'discord'
+  | 'tandc'
+  | 'privacy'
+  | 'steam'
+  | 'logout';
 
 type IconNames =
   | 'round-chevron-right'
@@ -46,6 +54,8 @@ const StandardButton = ({ isDisabled = false, ...props }: Props) => {
         return <TandCIcon width={20} height={20} />;
       case 'privacy':
         return <PrivacyIcon width={20} height={20} />;
+      case 'logout':
+        return <Logout width={20} height={20} />;
       case 'steam':
         return <SteamIcon width={20} height={20} />;
       default:

@@ -14,7 +14,6 @@ import { SharedValue } from 'react-native-reanimated';
 import SingleGameStatsCard from '../SingleGameStatsCard./SingleGameStatsCard';
 import NoGamesCard from '../NoGamesCard/NoGamesCard';
 import GiftCardsContainer from '../GiftCardsContainer/GiftCardsContainer';
-import PremiumContent from '../PremiumContent/PremiumContent';
 
 interface Props {
   lastTenMatches?: ParsedMatch[];
@@ -73,7 +72,6 @@ const StatsAndRewardsCard = (props: Props) => {
           <Text style={styles.tabsButtonText}>Daily rewards</Text>
         </Pressable>
       </View>
-      <PremiumContent />
       {isTodaysStatsCard ? (
         carouselContent()
       ) : (

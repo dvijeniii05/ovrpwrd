@@ -44,7 +44,6 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
     (state: RootState) => state.userData.data,
   );
 
-  const [fullName, setFullName] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
   const [isProfanitySuccess, setIsProfanitySuccess] = useState<boolean>(false);
   const [isAgeVerificationSuccess, setIsAgeVerificationSuccess] =
@@ -58,7 +57,6 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
     dob &&
     gender &&
     country &&
-    fullName &&
     nickname &&
     isProfanitySuccess &&
     isAgeVerificationSuccess;
@@ -71,7 +69,6 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
       nickname,
       email: email!,
       appleUserId,
-      fullName,
       dob,
       gender,
       country,
@@ -115,10 +112,6 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
       </View>
       <View style={{ width: '100%', marginTop: 40 }}>
         <DetailInput
-          placeholderText="Full name"
-          onChangeText={value => setFullName(value)}
-        />
-        <DetailInput
           placeholderText="Email"
           containerStyle={{ marginTop: 8 }}
           editable={false}
@@ -155,7 +148,7 @@ const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
           icon
         />
         <DetailInput
-          placeholderText="Country"
+          placeholderText="Country of Residence"
           containerStyle={{ marginTop: 8 }}
           onPress={() => {
             Keyboard.dismiss();

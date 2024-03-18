@@ -3,7 +3,7 @@ import { View, Text, ViewStyle, TextStyle } from 'react-native';
 import { styles } from './CurrencyWrapper.styles';
 import Perks from '../../assets/Perks.svg';
 import Relics from '../../assets/Relics.svg';
-import Premiums from '../../assets/Premium.svg';
+import Premiums from '../../assets/icons/premium-bolt.svg';
 import LottieView from 'lottie-react-native';
 
 export type currencyType = 'perks' | 'relics' | 'premiums';

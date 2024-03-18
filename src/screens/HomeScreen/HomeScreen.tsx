@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import {
   Alert,
-  Button,
-  Pressable,
   RefreshControl,
   ScrollView,
   StatusBar,
@@ -33,9 +31,12 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { useSharedValue } from 'react-native-reanimated';
 import AnimatedUserInfo from '../../components/UserInfo/AnimatedUserInfo';
-import { useGetPremiumStatusQuery } from '../../redux/query/endpoints/premiumApi';
+import {
+  useGetPremiumStatusQuery,
+  useUpdatePremiumMutation,
+} from '../../redux/query/endpoints/premiumApi';
 import Purchases from 'react-native-purchases';
-import RevenueCatUI, { PAYWALL_RESULT } from 'react-native-purchases-ui';
+import { COLORS } from '../../constans/COLORS';
 
 type ScreenProps = StackScreenProps<StackParamList, StackScreenName.home>;
 
@@ -69,6 +70,8 @@ const Home = ({ navigation }: ScreenProps) => {
     isError: premiumStatusError,
     isFetching: premiumStatusFetching,
   } = useGetPremiumStatusQuery();
+
+  const [_, { isLoading: isPremiumUpdateLoading }] = useUpdatePremiumMutation();
 
   const userDetailsLoader = (
     <SkeletonLoader viewBox="0,0,300,200">
@@ -107,48 +110,24 @@ const Home = ({ navigation }: ScreenProps) => {
     debounceRefetch();
   }, []);
 
-  const getOffers = async () => {
-    try {
-      const offerings = await Purchases.getOfferings();
-      if (
-        offerings.current !== null &&
-        offerings.current.availablePackages.length !== 0
-      ) {
-        // Display packages for sale
-        console.log('CURRENT', offerings.current.monthly?.product);
-      }
-    } catch (e) {}
-  };
-
+  //BELOW IS FOR DEBUGGING
   const getCustomerStatus = async () => {
     try {
       // access latest customerInfo
       const customerInfo = await Purchases.getCustomerInfo();
-      console.log('CUSTOMER_INFO', customerInfo.entitlements.active);
+      console.log('CUSTOMER_INFO', customerInfo);
+      Alert.alert('REV_CAT', `${JSON.stringify(customerInfo.entitlements)}`);
     } catch (e: any) {
       Alert.alert('Error fetching customer info', e.message);
     }
   };
 
-  const presentPaywall = async () => {
-    const paywallResult: PAYWALL_RESULT = await RevenueCatUI.presentPaywall();
-
-    switch (paywallResult) {
-      case PAYWALL_RESULT.NOT_PRESENTED:
-      case PAYWALL_RESULT.ERROR:
-      case PAYWALL_RESULT.CANCELLED:
-        return false;
-      case PAYWALL_RESULT.PURCHASED:
-      case PAYWALL_RESULT.RESTORED:
-        return true;
-      default:
-        return false;
-    }
-  };
-
   return (
     <View>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={COLORS.semiDarkBlue}
+      />
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContentContainer}
@@ -160,31 +139,13 @@ const Home = ({ navigation }: ScreenProps) => {
         <TouchableOpacity
           style={{
             width: 100,
-            height: 50,
-            backgroundColor: 'red',
-            marginTop: 100,
+            height: 30,
+            backgroundColor: 'transparent',
+            marginTop: 40,
+            position: 'absolute',
           }}
-          onPress={() => getOffers()}
-        />
-        <TouchableOpacity
-          style={{
-            width: 100,
-            height: 50,
-            backgroundColor: 'green',
-            marginTop: 20,
-          }}
-          onPress={() => getCustomerStatus()}
-        />
+          onPress={() => getCustomerStatus()}></TouchableOpacity>
 
-        <TouchableOpacity
-          style={{
-            width: 100,
-            height: 50,
-            backgroundColor: 'yellow',
-            marginTop: 20,
-          }}
-          onPress={() => presentPaywall()}
-        />
         {isError || isUserDetailsError ? (
           <View
             style={{
@@ -204,13 +165,15 @@ const Home = ({ navigation }: ScreenProps) => {
           <>
             <Loader
               isFetching={
-                isUserDetailsFetching || isFetching || premiumStatusFetching
+                isUserDetailsFetching ||
+                isFetching ||
+                premiumStatusFetching ||
+                isPremiumUpdateLoading
               }
               fetchFallback={userDetailsLoader}>
               <AnimatedUserInfo
                 rawPerks={rawPerks}
                 rawRelics={rawRelics}
-                userName={userDetails?.fullName}
                 nickName={userDetails?.nickname}
                 onAvatarPress={() =>
                   navigation.navigate(StackScreenName.account)

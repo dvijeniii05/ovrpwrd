@@ -2,72 +2,44 @@ import { TextStyle, ViewStyle } from 'react-native';
 import { COLORS } from '../../constans/COLORS';
 
 const parentContainer: ViewStyle = {
-  width: '100%',
-  marginTop: 16,
-  alignItems: 'center',
-  justifyContent: 'center',
-};
-
-const canvas: ViewStyle = {
-  width: '100%',
-  height: '100%',
-  position: 'absolute',
-  zIndex: 2,
+  marginTop: 32,
 };
 
 const contentContainer: ViewStyle = {
-  zIndex: 3,
-  position: 'absolute',
-  paddingHorizontal: 16,
-  paddingBottom: 24,
-  height: '100%',
-  justifyContent: 'flex-end',
+  flexDirection: 'row',
+  width: '100%',
+};
+
+const textContainer: ViewStyle = {
+  width: '70%',
 };
 
 const headingText: TextStyle = {
   color: 'white',
-  fontSize: 32,
+  fontSize: 36,
   fontFamily: 'Jost-Regular',
-};
-
-const withPremiumHeadingText: TextStyle = {
-  color: 'white',
-  fontSize: 26,
-  fontFamily: 'Jost-Regular',
-  textAlign: 'center',
+  lineHeight: 40,
 };
 
 const descriptionText: TextStyle = {
   ...headingText,
-  fontSize: 14,
-};
-
-const withPremiumDescriptionText: TextStyle = {
-  ...withPremiumHeadingText,
-  fontSize: 16,
+  fontSize: 18,
+  lineHeight: 20,
+  marginTop: 8,
+  color: COLORS.green,
 };
 
 const button: ViewStyle = {
   maxWidth: 160,
   paddingVertical: 8,
-  marginTop: 16,
-};
-
-const withPremiumButton: ViewStyle = {
-  width: '100%',
-  paddingVertical: 8,
-  marginTop: 16,
-  backgroundColor: COLORS.green,
+  marginTop: 24,
 };
 
 export const styles = {
   parentContainer,
-  canvas,
   contentContainer,
+  textContainer,
   headingText,
-  withPremiumHeadingText,
-  withPremiumDescriptionText,
   descriptionText,
   button,
-  withPremiumButton,
 };

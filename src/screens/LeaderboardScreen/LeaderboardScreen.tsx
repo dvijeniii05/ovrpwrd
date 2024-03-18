@@ -124,7 +124,7 @@ const LeaderboardScreen = ({ route }: NavProps) => {
 
   return (
     <View>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar barStyle={'light-content'} backgroundColor={COLORS.darkGrey} />
       <View style={styles.parentContainer}>
         <InformationModal
           isVisible={isModalVisible}
