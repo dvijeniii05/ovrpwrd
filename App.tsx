@@ -20,7 +20,9 @@ import {
 import { closeBottomSheet } from './src/redux/slices/userDataSlice';
 import { vershionCheck } from './src/utils/versionChecker';
 import { useAppInit } from './src/utils/useAppInit';
+import { init } from '@amplitude/analytics-react-native';
 import Root from './Root';
+import { amplitudeKey } from './src/constans/amplitude';
 
 const App = () => {
   const { isDone, isError } = useAppInit();
@@ -37,6 +39,11 @@ const App = () => {
         return null; //TODO: create error screen during initation
       }
       console.log('DONE?');
+      init(amplitudeKey, undefined, {
+        trackingOptions: {
+          adid: false,
+        },
+      });
       return <Root />;
     }
     return null;

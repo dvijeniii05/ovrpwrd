@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Keyboard, Text, View } from 'react-native';
 import { StackParamList } from '../../navigation/navigationTypes';
@@ -23,22 +23,27 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import InformationModal from '../Modals/InformationModal/InformationModal';
 import uuid from 'react-native-uuid';
+import { setUserId } from '@amplitude/analytics-react-native';
 
 type ScreenProps = StackScreenProps<
   StackParamList,
   StackScreenName.registration
 >;
 
-const RegistrationScreen = ({ navigation, route }: ScreenProps) => {
+const RegistrationScreen = ({ navigation }: ScreenProps) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const headerHeight = useHeaderHeight();
   const topMargin = headerHeight + 56;
 
-  // const { email } = route.params ?? 'not ready yet';
   const { email, appleUserId } = useSelector(
     (state: RootState) => state.userData.data,
   );
+
+  useEffect(() => {
+    setUserId(email!);
+  }, [email]);
+
   const [registerUser, { isLoading }] = useRegisterUserMutation();
   const { dob, gender, country } = useSelector(
     (state: RootState) => state.userData.data,

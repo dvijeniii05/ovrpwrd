@@ -49,6 +49,7 @@ const buttonsContainer: ViewStyle = {
 
 const button: ViewStyle = {
   bottom: 0,
+  width: '100%',
 };
 
 const transparentButton: ViewStyle = {

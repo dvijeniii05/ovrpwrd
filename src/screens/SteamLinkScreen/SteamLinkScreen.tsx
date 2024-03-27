@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { StackParamList } from '../../navigation/navigationTypes';
@@ -89,12 +89,12 @@ const SteamLinkScreen = ({ navigation, route }: ScreenProps) => {
                 <Text style={styles.descriptionText}>
                   We've noticed that your Steam account is already linked to
                   another profile registered in the app. Please link a different
-                  Steam account
+                  Steam account.
                 </Text>
                 <Text style={styles.descriptionText}>
                   If this is your only Steam account and you haven't registered
                   with our app using it, please contact our Support Team, and
-                  they will help resolve the issue
+                  they will help resolve the issue.
                 </Text>
               </View>
               <View style={styles.buttonsContainer}>

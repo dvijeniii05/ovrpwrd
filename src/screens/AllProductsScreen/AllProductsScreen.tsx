@@ -19,7 +19,7 @@ type NavProps = StackScreenProps<StackParamList, StackScreenName.allProducts>;
 
 const AllProductsScreen = ({ route }: NavProps) => {
   const headerHeight = useHeaderHeight();
-  const topMargin = headerHeight + 80;
+  const topMargin = headerHeight + 40;
 
   const { productType, products, userPremiumStatus } = route?.params;
 

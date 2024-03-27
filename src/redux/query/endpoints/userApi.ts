@@ -3,6 +3,7 @@ import { updateUserDetails } from '../../slices/userDataSlice';
 import { apiSlice } from '../apiSlice';
 import { startListening } from '../listenerMiddleware';
 import { revenueCatInit } from '../../../utils/revenueCatInit';
+import { setUserId } from '@amplitude/analytics-react-native';
 
 export interface AuthResponseProps {
   token: string | undefined;
@@ -99,6 +100,7 @@ export const userApi = apiSlice.injectEndpoints({
 
           if (data.token !== undefined) {
             revenueCatInit(data.revUserId);
+            setUserId(data.email);
             dispatch(
               updateUserDetails({
                 token: data.token,
